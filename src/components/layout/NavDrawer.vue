@@ -2,8 +2,11 @@
   <v-navigation-drawer
       dark app
       color="secondary"
-      class="pa-3"
+      class="pa-2"
+      mini-variant-width="75"
   >
+
+    <!----------- User Card ------------>
     <v-list-item class="mb-5 pt-2 pb-2 rounded user-card">
       <v-list-item-avatar>
         <v-avatar color="secondary" size="43" class="lighten-3">
@@ -19,24 +22,38 @@
         </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
-    <v-spacer/>
+    <!---------- User Card Ends ----------->
 
-    <v-list dense nav>
-      <v-list-item link>
+    <div style="height: 50px"/>
+
+    <!--  Navigation Links  -->
+    <v-list dense nav class="pa-0">
+      <v-list-item
+          v-for="item in config"
+          link :key="item.name"
+          :to="item.to"
+      >
         <v-list-item-icon>
-          <v-icon>mdi-home</v-icon>
+          <v-icon>{{ item.icon }}</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title>Sample</v-list-item-title>
+          <v-list-item-title>{{ item.name }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
+    <!--  End Navigation Links  -->
+
   </v-navigation-drawer>
 </template>
 
 <script>
+import config from "./navbar.config"
+
 export default {
-  name: "NavDrawer"
+  name: "NavDrawer",
+  data: () => ({
+    config
+  })
 }
 </script>
 
