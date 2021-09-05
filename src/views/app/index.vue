@@ -1,6 +1,6 @@
 <template>
   <Layout>
-      <h3>Dashboard</h3>
+      <router-view/>
   </Layout>
 </template>
 
