@@ -52,29 +52,25 @@
           md="3"
         >
     <subtitle-1>Languages (select one by one)</subtitle-1>
-    <v-flex v-model="checkbox" :rules="[v => !!v || 'You must agree to continue!']">
-    <v-checkbox class="ma-0" 
-      :label="'Python 2'"></v-checkbox>
-      <v-checkbox class="ma-0"
-    v-model="checkbox"
-      :label="'Python 3'"></v-checkbox>
-      <v-checkbox class="ma-0"
-    v-model="checkbox"
-      :label="'Java'"></v-checkbox>
-      <v-checkbox class="ma-0"
-    v-model="checkbox"
-      :label="'Visual Basic'"></v-checkbox>
-      <v-checkbox class="ma-0"
-    v-model="checkbox"
-      :label="'C++'"></v-checkbox>
-    </v-flex>
+      <v-select
+            v-model="selectLanguage"
+            :items="languages"
+            chips
+            item-color='primary'
+            multiple
+            outlined
+            placeholder="Select Languages"
+            :rules="selectRules"
+          >
+          </v-select>
 
     <subtitle-1>Set question dificulty</subtitle-1>
       <v-select
           :items="dificulties"
-          v-model="select"
-          :rules="[v => !!v || 'Dificulty is required']"
+          v-model="selectDificulty"
+          :rules="dificultyRules"
           outlined
+          placeholder="Select Dificulty"
         ></v-select>
     </v-col>
     </v-row>
@@ -244,19 +240,18 @@ export default {
   components: { VueEditor },
 
   data: () => ({
-    valid: true,
+      valid: true,
       title: '',
-      titleRules: [
-        v => !!v || 'Title is required',
-      ],
-      nameRules: [
-        v => !!v || 'Name is required',
-      ],
-
-    content: "<p>Type your question description here...</p>",
-    select: null,
-    dificulties: ['Hard', 'Medium', 'Easy'],
-    checkbox: false,
+      titleRules: [v => !!v || 'Title is required'],
+      nameRules: [v => !!v || 'Name is required'],
+      selectRules:[v => !!v || 'At least one language is required'],
+      dificultyRules:[v => !!v || 'Deficulty is required'],
+      selectLanguage:null,
+      languages:['Python 2','Python 3','Java','Visual Basic'],
+      content: "<p>Type your question description here...</p>",
+      selectDificulty: null,
+      dificulties: ['Hard', 'Medium', 'Easy'],
+      checkbox: false,
   
       dialog: false,
       dialogDelete: false,
@@ -339,8 +334,8 @@ export default {
       },
 
       saveTestcase () {
-        validtest=this.$refs.testcaseForm.validate()
-        if(validtest){
+  
+        if(this.$refs.testcaseForm.validate()){
         if (this.editedIndex > -1) {
           Object.assign(this.testcases[this.editedIndex], this.editedItem)
         } else {
@@ -355,7 +350,7 @@ export default {
         validquestion=this.$refs.questionForm.validate()
       },
       reset () {
-        this.$refs.form.reset()
+        this.$refs.questionForm.reset()
       },
     },
   
