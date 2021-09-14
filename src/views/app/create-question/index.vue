@@ -28,6 +28,7 @@
 
     
     <v-text-field
+    dense
     outlined
       v-model="title"
       :rules="titleRules"
@@ -53,6 +54,7 @@
         >
     <subtitle-1>Languages (select one by one)</subtitle-1>
       <v-select
+      dense
             v-model="selectLanguage"
             :items="languages"
             chips
@@ -66,6 +68,7 @@
 
     <subtitle-1>Set question dificulty</subtitle-1>
       <v-select
+      dense
           :items="dificulties"
           v-model="selectDificulty"
           :rules="dificultyRules"
@@ -125,6 +128,7 @@
                   <v-col>
                   <subtitle-1>Test Case</subtitle-1>
                     <v-text-field
+                    dense
                       v-model="editedItem.name"
                       placeholder="Enter Test Case name"
                       :rules="nameRules"
@@ -152,6 +156,7 @@
                   <v-col>
                   <subtitle-1>Points</subtitle-1>
                     <v-text-field
+                    dense
                       v-model="editedItem.points"
                       placeholder="Points"
                       outlined
@@ -219,6 +224,7 @@
       </v-col>
     </v-row>
     <v-btn
+    color="success"
       class="mr-4"
       @click="submitQuestion"
     >

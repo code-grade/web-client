@@ -11,7 +11,9 @@
         </v-flex>
         <v-flex
         style="float:right">
+        <div style="float:right">
           <v-btn to="/app/question/create" class="mt-3" color="secondary"><v-icon>mdi-plus</v-icon>Create Question</v-btn>
+          </div>
         </v-flex>
     </v-row>
 
@@ -44,6 +46,7 @@
                   <v-col>
                   <subtitle-1>Question Title</subtitle-1>
                     <v-text-field
+                    dense
                       v-model="editedItem.title"
                       placeholder="Question Title"
                       outlined
@@ -62,6 +65,7 @@
                   <v-col>
                     <subtitle-1>Points</subtitle-1>
                     <v-text-field
+                    dense
                       v-model="editedItem.points"
                       placeholder="Max Points"
                       type="number" min="0" step="1" 
@@ -74,6 +78,7 @@
                     <subtitle-1>Dificulty
                     </subtitle-1>
                    <v-select
+                   dense
                     :items="dificulties"
                     v-model="editedItem.dificulty"
                     outlined
@@ -153,14 +158,16 @@
         >
        
         <v-text-field
+        dense
           v-model="search"
           label="Search..."
           outlined
           prepend-inner-icon="mdi-magnify"
-        > <v-icon>mdi-plus</v-icon></v-text-field>  </v-col>
+        ></v-text-field>  
+        </v-col>
         </v-row>
         </template>
-<!--Data table header start-->
+<!--Data table header end-->
 <!--actions for question section start-->
         <template v-slot:start>
             <v-checkbox></v-checkbox>        
