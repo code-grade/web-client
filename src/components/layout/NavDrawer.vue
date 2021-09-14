@@ -15,10 +15,10 @@
       </v-list-item-avatar>
       <v-list-item-content>
         <v-list-item-title>
-          Thilina
+          {{user.firstName}} {{user.lastName}}
         </v-list-item-title>
         <v-list-item-subtitle>
-          Administrator
+          {{user.role}}
         </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
@@ -48,12 +48,16 @@
 
 <script>
 import config from "./navbar.config"
+import {mapGetters} from "vuex";
 
 export default {
   name: "NavDrawer",
   data: () => ({
     config
-  })
+  }),
+  computed: {
+    user: mapGetters(["user"]).user
+  }
 }
 </script>
 
