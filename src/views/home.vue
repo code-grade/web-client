@@ -8,27 +8,14 @@
 
 <script>
 import {mapGetters} from "vuex"
+import router from "../router";
 
 export default {
   name: 'Home',
+
   computed: {
     ...mapGetters(["isLogged"])
   },
-  mounted() {
-    if (!this.isLogged) {
-      this.$vToastify.info("System will login as an admin automatically in 5 sec.", "Info")
-      setTimeout(async () => {
-        const {status, message} = await this.$store.dispatch(
-            "login",
-            {username: "admin", password: "admin"}
-        )
-        if (status === 200) {
-          this.$vToastify.info(message, "Info")
-        } else {
-          this.$vToastify.error(message, "Done")
-        }
-      }, 5000)
-    }
-  }
+
 }
 </script>
