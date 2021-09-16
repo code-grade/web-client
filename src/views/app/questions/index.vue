@@ -11,7 +11,9 @@
         </v-flex>
         <v-flex
         style="float:right">
+        <div style="float:right">
           <v-btn to="/app/question/create" class="mt-3" color="secondary"><v-icon>mdi-plus</v-icon>Create Question</v-btn>
+          </div>
         </v-flex>
     </v-row>
 
@@ -44,18 +46,29 @@
                   <v-col>
                   <subtitle-1>Question Title</subtitle-1>
                     <v-text-field
+                    dense
                       v-model="editedItem.title"
                       placeholder="Question Title"
                       outlined
                     ></v-text-field>
                   </v-col>
                 </v-row>
+                <v-row>
+                  <v-col>
+                  <subtitle-1>Question Description</subtitle-1>
+                     <vue-editor
+                     v-model="editedItem.description" 
+                     />
+                  </v-col>
+                </v-row>
                   <v-row>
                   <v-col>
                     <subtitle-1>Points</subtitle-1>
                     <v-text-field
+                    dense
                       v-model="editedItem.points"
                       placeholder="Max Points"
+                      type="number" min="0" step="1" 
                       outlined
                     ></v-text-field>
                   </v-col>
@@ -64,21 +77,26 @@
                   <v-col>
                     <subtitle-1>Dificulty
                     </subtitle-1>
-                    <v-text-field
-                      v-model="editedItem.dificulty"
-                      placeholder="Dificulty"
-                      outlined
-                    ></v-text-field>
+                   <v-select
+                   dense
+                    :items="dificulties"
+                    v-model="editedItem.dificulty"
+                    outlined
+                  ></v-select>
                   </v-col>
                   </v-row>
-                  <v-row>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                  </v-col>
-                </v-row>
+                   <v-row>
+                    <v-col>
+                    <subtitle-1>Test Cases</subtitle-1>
+                    <v-data-table
+                  :headers="testCaseheaders"
+                  :items="editedItem.testcases"
+                  class="elevation-2 mb-4"
+                  disable-sort
+                  hide-default-footer>
+                </v-data-table>
+                    </v-col>
+                  </v-row>
               </v-container>
             </v-card-text>
 
@@ -112,7 +130,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="primary" text @click="closeDelete">Cancel</v-btn>
-              <v-btn color="primary" text @click="deleteItemConfirm">OK</v-btn>
+              <v-btn color="primary" text @click="deleteConfirm">OK</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
@@ -140,15 +158,17 @@
         >
        
         <v-text-field
+        dense
           v-model="search"
           label="Search..."
           outlined
           prepend-inner-icon="mdi-magnify"
-        > <v-icon>mdi-plus</v-icon></v-text-field>  </v-col>
+        ></v-text-field>  
+        </v-col>
         </v-row>
         </template>
-<!--Data table header start-->
-
+<!--Data table header end-->
+<!--actions for question section start-->
         <template v-slot:start>
             <v-checkbox></v-checkbox>        
     </template>
@@ -157,18 +177,18 @@
         small
         color="primary"
         class="mr-2"
-        @click="editItem(item)"
+        @click="editQuestion(item)"
       >
         mdi-pencil-outline
       </v-icon>
       <v-icon
         small
         color="red"
-        @click="deleteItem(item)"
+        @click="deleteQuestion(item)"
       >
         mdi-delete-outline
       </v-icon>
-     
+ <!--actions for question section end-->    
     </template>
         <template v-slot:[`item.dificulty`]="{ item }">
            <v-btn 
@@ -195,8 +215,6 @@
         
         </template>
 
-       
-        
     </v-data-table>
 
     <!--data table end-->
@@ -206,8 +224,11 @@
 </template>
 
 <script>
+import { VueEditor } from "vue2-editor";
+
 export default {
   name: "index",
+  components: { VueEditor },
   data: () => ({
       dialog: false,
       dialogDelete: false,
@@ -224,13 +245,28 @@ export default {
           { text: 'DIFICULTY', value: 'dificulty' },
           { text: 'ACTIONS', value: 'actions' },
         ],
-    questions: [],
-          editedItem: {
-            title: '',
-            points: 0,
-            date: 0,
-            dificulty: 0,
+      testCaseheaders:[{
+          text: 'TEST CASE',
+            align: 'start',
+            filterable: true,
+            value: 'name',
           },
+          { text: 'POINTS', value: 'points' },
+          { text: 'INPUT', value: 'input' },
+          { text: 'OUTPUT', value: 'output' },
+          { text: 'ACTIONS', value: 'actions' },
+      ],
+      questions: [],      
+
+      editedItem: {
+            title: '',
+            points: '',
+            dificulty: '',
+            description:"",
+            testcases:[{}]
+          },
+    select: null,
+    dificulties: ['Hard', 'Medium', 'Easy'],
 
         }),
 
@@ -251,81 +287,115 @@ export default {
       initialize () {
         this.questions = [
           {
+            id:'1',
             title: 'Write a function',
             points: 10.0,
             date: '05 Sep 2021',
             dificulty: 'easy',
+            description:"this is a question description",
+            testcases:[{
+              id:1,
+              name:"test 1",
+              points:2,
+              input:'sample in',
+              output:'sample out'
+            }]
           },
           {
+            id:'2',
             title: 'Minion Game',
             points: 10.0,
             date: '05 Sep 2021',
             dificulty: 'medium',
+            description:'this is a question description',
+            testcases:[{
+              id:1,
+              name:"test 1",
+              points:2,
+              input:'sample in',
+              output:'sample out'
+            }]
           },
           {
+            id:'3',
             title: 'Linked List',
             points: 10.0,
             date: '05 Sep 2021',
             dificulty: 'easy',
+            description:'this is a question description'
           },
           {
+            id:'4',
             title: 'Matrices',
             points: 10.0,
             date: '05 Sep 2021',
             dificulty: 'hard',
+            description:'this is a question description'
           },
           {
+            id:'5',
             title: 'Shortest Path',
             points: 10.0,
             date: '05 Sep 2021',
             dificulty: 'easy',
+            description:'this is a question description'
           },
          {
+           id:'6',
             title: 'Palindroms',
             points: 10.0,
             date: '05 Sep 2021',
             dificulty: 'easy',
+            description:'this is a question description'
           },
           {
+            id:'7',
             title: 'Word Count',
             points: 10.0,
             date: '05 Sep 2021',
             dificulty: 'easy',
+            description:'this is a question description'
           },
           {
+            id:'8',
             title: 'Secret Message',
             points: 10.0,
             date: '05 Sep 2021',
             dificulty: 'easy',
+            description:'this is a question description'
           },
           {
+            id:'9',
             title: 'Write a function',
             points: 10.0,
             date: '05 Sep 2021',
             dificulty: 'easy',
+            description:'this is a question description'
           },
           {
+            id:'10',
             title: 'Write a function',
             points: 10.0,
             date: '05 Sep 2021',
             dificulty: 'easy',
+            description:'this is a question description'
           },
         ]
       },
 
-      editItem (item) {
+      editQuestion (item) {
         this.editedIndex = this.questions.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
 
-      deleteItem (item) {
+      deleteQuestion (item) {
         this.editedIndex = this.questions.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
 
-      deleteItemConfirm () {
+      deleteConfirm () {
         this.questions.splice(this.editedIndex, 1)
         this.closeDelete()
       },
