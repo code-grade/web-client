@@ -4,12 +4,12 @@
       <v-container class="fill-height" fluid>
         <v-row align="center" justify="center">
           <v-col cols="12" md="8" sm="8">
-            <v-card class="elevation-12">
+            <v-card class="elevation-12 auth__container rounded pa-12">
               <v-window v-model="step">
                 <v-window-item :value="1">
-                  <v-row class="fill-height pa-3">
-                    <v-col class="login__col" cols="12" md="6">
-                      <v-card-text class="mt-12">
+                  <v-row class="fill-height ">
+                    <v-col class="login__col " cols="12" md="6">
+                      <v-card-text >
                         <h1
                             class="text-center display-2 secondary--text text--accent-3"
                         >Welcome Back!</h1>
@@ -42,7 +42,7 @@
                       </div>
                     </v-col>
                     <v-col class="login__col" cols="12" md="6">
-                      <v-card-text class="secondary--text mt-12">
+                      <v-card-text class="secondary--text ">
                         <h1 class="text-center display-1">New User?</h1>
                         <h5
                             class="text-center"
@@ -64,7 +64,7 @@
                 <v-window-item :value="2">
                   <v-row class="fill-height pa-3">
                     <v-col class="login__col" cols="12" md="6">
-                      <v-card-text class="secondary--text mt-12">
+                      <v-card-text class="secondary--text">
                         <h1 class="text-center display-1">Already memeber?</h1>
                         <h5
                             class="text-center"
@@ -82,7 +82,7 @@
                     </v-col>
 
                     <v-col class="login__col" cols="12" md="6">
-                      <v-card-text class="mt-12">
+                      <v-card-text >
                         <h1 class="text-center display-2 secondary--text text--accent-3 mb-3">Create Account</h1>
 
 
@@ -143,7 +143,7 @@
                           <p>User Role</p>
 
                           <v-btn-toggle
-                              v-model="icon"
+
                               borderless
                               class="pa-0 ma-0"
                               dense
@@ -180,7 +180,7 @@
 </template>
 
 <script>
-
+import router from "../../router"
 export default {
   data: () => ({
     step: 1,
@@ -192,22 +192,21 @@ export default {
   },
   methods:{
     async signIn() {
-      try{
-        console.log(this.username)
-        // const {status, message} = await this.$store.dispatch(
-        //     "login",
-        //     {username: this.username, password: this.password}
-        // )
-        //
-        // if (status === 200) {
-        //   this.$vToastify.info(message, "Info")
-        // } else {
-        //   this.$vToastify.error(message, "Done")
-        // }
-      } catch (e) {
 
-        this.$vToastify.error(e.message, "Error")
-      }
+
+        const {status, message} = await this.$store.dispatch(
+            "login",
+            {username: this.username, password: this.password}
+        )
+
+        if (status === 200) {
+
+          this.$vToastify.info(message, "Info")
+          router.push('app')
+        } else {
+          this.$vToastify.error(message, "Done")
+        }
+
 
     }
   }
@@ -223,5 +222,8 @@ export default {
   justify-content: space-between;
 
 
+}
+.auth__container{
+  min-height: 90vh;
 }
 </style>
