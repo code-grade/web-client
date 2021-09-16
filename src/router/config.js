@@ -32,6 +32,11 @@ export const router_config = [
                 name: 'Create Question',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/create-question')
             },
+            {
+                path: 'users',
+                name: 'Users',
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/users')
+            },
         ]
     }
 ]
