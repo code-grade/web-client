@@ -38,6 +38,10 @@ export const router_config = [
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/users')
             },
         ]
+    },
+    {
+        path: "*",
+        component: () => import("../views/NotFound.vue")
     }
 ]
 

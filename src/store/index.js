@@ -53,6 +53,22 @@ export default new Vuex.Store({
             await context.dispatch('syncTo_storage')
             return status
         },
+        async signup(context, payload) {
+            const {username,firstName,lastName,email, password,role} = payload
+
+            const [status, res_data] = await api.user.register({username, firstName, lastName, email, password,role})
+            if (status.status !== 200) {
+                return status
+            }
+            console.log(res_data,status)
+            const {token, data} = res_data
+            data.username = username
+            context.commit('SET_user', data)
+            context.commit('SET_token', token)
+            await context.dispatch("update_user_details")
+            await context.dispatch('syncTo_storage')
+            return status
+        },
         async update_user_details(context) {
             const [status, res_data] = await api.user.getDetails()
             console.log(res_data)
