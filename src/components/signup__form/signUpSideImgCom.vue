@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="signup__form__img fill-height">
 
     <v-card-text class="secondary--text">
       <h1 class="text-center display-1">Already memeber?</h1>
@@ -32,5 +32,12 @@ export default {
 </script>
 
 <style scoped>
+.signup__form__img{
+  display: flex;
+  flex-direction: column;
 
+  flex-wrap: nowrap;
+  justify-content: space-between;
+
+}
 </style>

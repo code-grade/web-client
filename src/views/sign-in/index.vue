@@ -7,7 +7,7 @@
             <v-card class="elevation-12 auth__container rounded pa-12">
               <v-window v-model="step">
                 <v-window-item :value="1">
-                  <v-row class="fill-height ">
+                  <v-row class="fill-height">
                     <v-col class="login__col " cols="12" md="6">
                       <SignInForm/>
                     </v-col>
@@ -69,6 +69,7 @@ export default {
 
   flex-wrap: nowrap;
   justify-content: space-between;
+
 
 
 }
