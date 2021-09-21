@@ -6,7 +6,7 @@ export const user = {
     getDetails: () => extractDataResolve(axios.get("/api/auth/user")),
     all: () => extractDataResolve(axios.get("/api/auth/user/all")),
     update: {
-        enable: (userId, isEnabled) => extractDataResolve(axios.put(`/api/auth/${userId}/enable/${isEnabled}`))
+        enable: (userId, isEnabled) => extractDataResolve(axios.put(`/api/auth/user/${userId}/enable/${isEnabled}`))
     },
 }
 

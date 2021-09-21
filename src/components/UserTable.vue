@@ -87,6 +87,7 @@
           v-model="item.isEnabled"
           label="enable"
           color="success"
+          @change="toggleEnableUser(item.userId,item.isEnabled)"
       ></v-switch>
     </template>
   </v-data-table>
@@ -109,8 +110,8 @@ export default {
       },
       { text: 'FIRST NAME', value: 'firstName' },
       { text: 'LAST NAME', value: 'lastName' },
-      { text: 'EMAIL', value: 'email' },
-      { text: 'IS VERIFIED', value: 'isVerified' },
+      { text: 'EMAIL', value: 'email.email' },
+      { text: 'IS VERIFIED', value: 'email.verified' },
       { text: 'ACTIONS', value: 'isEnabled' },
     ],
     users: [],
@@ -124,6 +125,7 @@ export default {
     async initialize () {
       this.loading = true;
       const [status, res_data] = await api.user.all()
+      console.log(res_data)
       this.loading = false;
       if (status.status === 200) {
 
@@ -131,9 +133,20 @@ export default {
       } else {
         this.$vToastify.error(res_data, "Done")
       }
-
-
     },
+    async toggleEnableUser(userId, isEnabled) {
+      // this.loading = true;
+
+      const [status, res_data] = await api.user.update.enable(userId, isEnabled)
+      // // this.loading = false;
+      if (status.status === 200) {
+
+        this.$vToastify.info(status.message, "Info")
+        // this.users = [...res_data]
+      } else {
+        this.$vToastify.error(res_data, "Done")
+      }
+    }
 
   },
 }
