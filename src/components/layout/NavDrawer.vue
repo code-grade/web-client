@@ -1,9 +1,11 @@
 <template>
   <v-navigation-drawer
       dark app
-      color="secondary"
-      class="pa-2"
+      fixed
+      width="200px"
       mini-variant-width="75"
+      class="pa-2"
+      color="secondary"
   >
 
     <!----------- User Card ------------>

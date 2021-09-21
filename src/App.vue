@@ -6,15 +6,17 @@
         <router-view/>
       </v-fade-transition>
     </v-main>
+    <Footer />
   </v-app>
 </template>
 
 <script>
 import Header from "./components/layout/Header";
+import Footer from "./components/layout/Footer";
 
 export default {
   name: 'App',
-  components: {Header},
+  components: {Footer, Header},
   data: () => ({
     //
   }),
