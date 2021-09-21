@@ -8,13 +8,12 @@ export const BASE_URL = process.env.VUE_APP_API
 export const axios = Axios
 Axios.defaults.baseURL = BASE_URL
 Axios.interceptors.request.use(function (config) {
-    if (store.getters["isLogged"]) {
-        const token = store.getters["token"];
-        config.headers.Authorization =  `Bearer ${token}`;
+    const token = store.getters["token"];
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
 });
-
 
 
 /**

@@ -53,6 +53,7 @@ export default new Vuex.Store({
             await context.dispatch('syncTo_storage')
             return status
         },
+
         async update_user_details(context) {
             const [status, res_data] = await api.user.getDetails()
             console.log(res_data)
