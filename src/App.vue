@@ -1,14 +1,20 @@
 <template>
   <v-app>
+    <Header/>
     <v-main>
-      <router-view/>
+      <v-fade-transition>
+        <router-view/>
+      </v-fade-transition>
     </v-main>
   </v-app>
 </template>
 
 <script>
+import Header from "./components/layout/Header";
+
 export default {
   name: 'App',
+  components: {Header},
   data: () => ({
     //
   }),

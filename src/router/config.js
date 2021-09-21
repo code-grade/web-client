@@ -14,6 +14,11 @@ export const router_config = [
         component: () => import(/* webpackChunkName: "about" */ '../views/sign-in')
     },
     {
+        path: '/about-us',
+        name: 'AboutUs',
+        component: () => import(/* webpackChunkName: "about" */ '../views/about-us')
+    },
+    {
         path: '/app',
         component: App,
         children: [
