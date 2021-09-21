@@ -22,11 +22,17 @@
                 style="font-size: 16px"
             >Automated Programming Assignment Evaluator</h5>
             <div class="mt-5">
-              <v-btn class="ml-1 mr-1" color="primary">Test Skills!</v-btn>
+              <v-btn
+                  class="ml-1 mr-1" color="primary"
+                  :to="{name: 'App'}"
+              >
+                Test Skills!
+              </v-btn>
               <v-btn
                   class="ml-1 mr-1"
                   color="primary"
                   outlined
+                  :to="{name: 'App'}"
               >Create Assignment
               </v-btn>
             </div>
