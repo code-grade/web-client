@@ -31,7 +31,7 @@
       <h3 class="text-center mt-4">Forgot your password ?</h3>
     </v-card-text>
     <div class="text-center ">
-      <v-btn :disabled="!valid" rounded color="secondary accent-3"  type="submit" form="login-form" dark>SIGN IN</v-btn>
+      <v-btn :disabled="!valid" :loading="loading" rounded color="secondary accent-3"  type="submit" form="login-form" dark>SIGN IN</v-btn>
     </div>
   </div>
 </template>
@@ -48,19 +48,24 @@ export default {
     valid: true,
     userNameRules :[Validators.required()],
     passwordRules:[Validators.required()],
+    loading: false
 
   }),
 
   methods:{
     async signIn() {
+      this.loading = true
       const {status, message} = await this.$store.dispatch(
           "login",
           {username: this.username, password: this.password}
       )
+      this.loading = false
       if (status === 200) {
+
         this.$vToastify.info(message, "Info")
         await router.push('/app')
       } else {
+
         this.$vToastify.error(message, "Done")
       }
     },
