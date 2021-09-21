@@ -112,7 +112,7 @@
       </v-form>
     </v-card-text>
     <div class="text-center mt-5">
-      <v-btn rounded color="secondary accent-3" type="submit" form="signup-form" dark>SIGN UP</v-btn>
+      <v-btn :loading="loading" rounded color="secondary accent-3" type="submit" form="signup-form" dark>SIGN UP</v-btn>
     </div>
   </div>
 </template>
@@ -135,6 +135,7 @@ export default {
     passwordRules:[Validators.required(),Validators.strong_password()],
     roleRules:[Validators.required()],
     emailRules:[Validators.email()],
+    loading: false
 
 
 
@@ -143,9 +144,10 @@ export default {
   }),
   methods:{
     async signUp() {
+      this.loading = true
 
       const [status, res_data] = await api.user.register({username: this.newUserName, firstName:this.firstName,lastName:this.lastName,email:this.email, password: this.newPassword,role:this.user_role})
-
+      this.loading = false
       if (status.status === 200) {
         this.$vToastify.info(res_data, "Info")
         this.moveToSignIn()
