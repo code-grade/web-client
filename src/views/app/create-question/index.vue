@@ -12,7 +12,7 @@
 
     </v-row>
 
-  <v-form class="elevation-3 ma-10 pa-5" 
+  <v-form class="rounded-lg elevation-3 ma-10 pa-5" 
     ref="questionForm"
     v-model="valid"
     lazy-validation>
