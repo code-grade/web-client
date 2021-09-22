@@ -141,7 +141,7 @@ export default {
       // // this.loading = false;
       if (status.status === 200) {
 
-        this.$vToastify.info(status.message, "Info")
+        this.$vToastify.success(status.message, "Info")
         // this.users = [...res_data]
       } else {
         this.$vToastify.error(res_data, "Done")

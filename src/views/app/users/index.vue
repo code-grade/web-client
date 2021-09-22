@@ -12,7 +12,7 @@
 
         </v-flex>
     </v-row>
-   =
+  
 
     <!--data table start-->
 
