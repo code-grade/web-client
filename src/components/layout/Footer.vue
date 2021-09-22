@@ -20,7 +20,6 @@ export default {
   }),
   computed: {
     show_light() {
-
       return Boolean(this.$route.path.match(/^\/app($|\/)/))
     },
     show_detailed() {

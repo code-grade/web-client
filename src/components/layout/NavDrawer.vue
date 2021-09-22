@@ -1,47 +1,35 @@
 <template>
   <v-navigation-drawer
       dark app
-      fixed
-      width="200px"
+      fixed clipped
+      width="220px"
       mini-variant-width="75"
-      class="pa-2"
-      color="secondary"
+      class="pl-3"
+      style="border-top-right-radius: 5px"
   >
-
-    <!----------- User Card ------------>
-    <v-list-item class="mb-5 pt-2 pb-2 rounded user-card">
-      <v-list-item-avatar>
-        <v-avatar color="secondary" size="43" class="lighten-3">
-          TL
-        </v-avatar>
-      </v-list-item-avatar>
-      <v-list-item-content>
-        <v-list-item-title>
-          {{user.firstName}} {{user.lastName}}
-        </v-list-item-title>
-        <v-list-item-subtitle>
-          {{user.role}}
-        </v-list-item-subtitle>
-      </v-list-item-content>
-    </v-list-item>
-    <!---------- User Card Ends ----------->
-
-    <div style="height: 50px"/>
-
+    <div style="height: 40px"/>
     <!--  Navigation Links  -->
-    <v-list dense nav class="pa-0">
-      <v-list-item
-          v-for="item in config"
-          link :key="item.name"
-          :to="item.to"
-      >
-        <v-list-item-icon>
-          <v-icon>{{ item.icon }}</v-icon>
-        </v-list-item-icon>
-        <v-list-item-content>
-          <v-list-item-title>{{ item.name }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+    <v-list dense nav class="pa-0 v-list-item-border-left-rounded">
+      <div v-for="item in nav_config" :key="item.name" >
+        <v-divider
+            v-if="item.type === 'divider'"
+            class="mt-2"
+        />
+        <v-list-item
+            v-else-if="item.type === 'link'"
+            active-class="active-item"
+            class="mt-2"
+            link
+            :to="item.to"
+        >
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>{{ item.name }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </div>
     </v-list>
     <!--  End Navigation Links  -->
 
@@ -55,17 +43,30 @@ import {mapGetters} from "vuex";
 export default {
   name: "NavDrawer",
   data: () => ({
-    config
   }),
   computed: {
-    user: mapGetters(["user"]).user
+    user: mapGetters(["user"]).user,
+    user_role: mapGetters(["user_role"]).user_role,
+    nav_config_raw: () => config,
+    nav_config() {
+      const filtered = this.nav_config_raw.filter((item) => !Boolean(item.roles) || item.roles.includes(this.user_role))
+      return filtered.map((item) =>  ({
+          name: item.name || "Default",
+          to: item.to || '/app',
+          type: item.type || 'link',
+          icon: item.icon || '',
+        })
+      )
+    },
   }
 }
 </script>
 
 <style lang="scss" scoped>
 
-.user-card {
-  background-color: var(--v-secondary-lighten1)
+.active-item {
+  background-color: #f5f5f5;
+  color: black !important;
 }
+
 </style>

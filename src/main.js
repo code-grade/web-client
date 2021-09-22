@@ -5,6 +5,7 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import VueToastify, {settings} from "./plugins/toastify";
+import "./plugins/global.scss"
 
 Vue.config.productionTip = false
 
