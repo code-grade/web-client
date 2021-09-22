@@ -13,6 +13,12 @@ export default new Vuex.Store({
             firstName: "",
             lastName: "",
             role: USER_ROLES.ANONYMOUS
+        },
+        question:{
+            title:"",
+            description:"",
+            difficulty:"",
+            testcases:[]
         }
     },
     getters: {
@@ -20,6 +26,8 @@ export default new Vuex.Store({
         isLogged: state => Boolean(state.token) && (state.user?.role !== USER_ROLES.ANONYMOUS),
         user: state => state.user,
         user_role: state => state.user.role,
+        question:state=> state.question
+
     },
     mutations: {
         SET_token(state, payload) {
@@ -37,6 +45,9 @@ export default new Vuex.Store({
                 lastName: "",
                 role: USER_ROLES.ANONYMOUS
             })
+        },
+        SET_question(state,payload){
+            Object.assign(state.question,payload)
         },
     },
     actions: {
@@ -76,6 +87,13 @@ export default new Vuex.Store({
         async clear_storage() {
             STORAGE.clear(STORAGE.KEY_USER)
             STORAGE.clear(STORAGE.KEY_TOKEN)
+        },
+        async create(context,payload){
+            const data = payload
+            console.log(data)
+            const [status,res_data]= await api.question.create(data)
+            context.commit("SET_question",res_data)
+            return status
         }
     },
     plugins: [(store) => {
