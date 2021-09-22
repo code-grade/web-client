@@ -1,0 +1,19 @@
+.header--vertical-line {
+  border-left: 2px solid lighten(black, 70);
+  height: 70%;
+  margin: auto 10px;
+}
+
+.v-btn--active.no-active::before {
+  opacity: 0 !important;
+}
+
+.v-list-item-border-left-rounded {
+  .v-list-item {
+    border-radius: 4px 0 0 4px !important;
+  }
+
+  .v-list-item:before {
+    border-radius: 4px 0 0 4px !important;
+  }
+}

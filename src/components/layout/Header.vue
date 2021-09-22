@@ -1,6 +1,6 @@
 <template>
   <v-app-bar
-      app
+      app clipped-left
       elevate-on-scroll
       elevation="1"
   >
@@ -101,13 +101,5 @@ export default {
 </script>
 
 <style lang="scss">
-.header--vertical-line {
-  border-left: 2px solid lighten(black, 70);
-  height: 70%;
-  margin: auto 10px;
-}
 
-.v-btn--active.no-active::before {
-  opacity: 0 !important;
-}
 </style>
