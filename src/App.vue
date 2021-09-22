@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <Header/>
-    <v-main>
+    <v-main style="background-color: #f5f5f5">
       <v-fade-transition>
         <router-view/>
       </v-fade-transition>

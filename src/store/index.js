@@ -18,7 +18,8 @@ export default new Vuex.Store({
     getters: {
         token: state => state.token,
         isLogged: state => Boolean(state.token) && (state.user?.role !== USER_ROLES.ANONYMOUS),
-        user: state => state.user
+        user: state => state.user,
+        user_role: state => state.user.role,
     },
     mutations: {
         SET_token(state, payload) {

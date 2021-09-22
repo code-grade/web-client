@@ -16,4 +16,9 @@
   .v-list-item:before {
     border-radius: 4px 0 0 4px !important;
   }
+
+  .v-list-item__icon:first-child {
+    margin-right: 20px;
+    margin-left: 5px;
+  }
 }
