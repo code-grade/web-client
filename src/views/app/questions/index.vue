@@ -7,7 +7,7 @@
         style="float:left">
           <h2>Questions
           </h2>
-          <subtitle-1> You can manage all questions in your qustion bank</subtitle-1>
+          <h5> You can manage all questions in your qustion bank</h5>
         </v-flex>
         <v-flex
         style="float:right">
@@ -27,12 +27,14 @@
       class="elevation-3 ma-10 pa-5"
       :search="search"
       disable-sort
+      :loading="loading"
+      ref="questionTable"
     >
     <!--Edit question area start-->
 
       <template v-slot:top>
         <v-dialog
-          v-model="dialog"
+          v-model="qdialog"
           max-width="1000px"
         >
           <v-card>
@@ -44,10 +46,10 @@
               <v-container>
                 <v-row>
                   <v-col>
-                  <subtitle-1>Question Title</subtitle-1>
+                  <h5>Question Title</h5>
                     <v-text-field
                     dense
-                      v-model="editedItem.title"
+                      v-model="editedQuestion.title"
                       placeholder="Question Title"
                       outlined
                     ></v-text-field>
@@ -55,18 +57,18 @@
                 </v-row>
                 <v-row>
                   <v-col>
-                  <subtitle-1>Question Description</subtitle-1>
+                  <h5>Question Description</h5>
                      <vue-editor
-                     v-model="editedItem.description" 
+                     v-model="editedQuestion.description" 
                      />
                   </v-col>
                 </v-row>
                   <v-row>
                   <v-col>
-                    <subtitle-1>Points</subtitle-1>
+                    <h5>Points</h5>
                     <v-text-field
                     dense
-                      v-model="editedItem.points"
+                      v-model="editedQuestion.points"
                       placeholder="Max Points"
                       type="number" min="0" step="1" 
                       outlined
@@ -75,25 +77,43 @@
                   </v-row>
                   <v-row>
                   <v-col>
-                    <subtitle-1>Dificulty
-                    </subtitle-1>
+                    <h5>Difficulty
+                    </h5>
                    <v-select
                    dense
                     :items="dificulties"
-                    v-model="editedItem.dificulty"
+                    v-model="editedQuestion.difficulty"
                     outlined
                   ></v-select>
                   </v-col>
                   </v-row>
                    <v-row>
                     <v-col>
-                    <subtitle-1>Test Cases</subtitle-1>
+                    <h5>Test Cases</h5>
                     <v-data-table
                   :headers="testCaseheaders"
-                  :items="editedItem.testcases"
+                  :items="editedQuestion.testCases"
                   class="elevation-2 mb-4"
                   disable-sort
                   hide-default-footer>
+                 
+                   <template v-slot:[`item.actions`]="{ item }">
+                    <v-icon
+                      small
+                      color="primary"
+                      class="mr-2"
+                      @click="editTestCase(item)"
+                    >
+                      mdi-pencil-outline
+                    </v-icon>
+                    <v-icon
+                      small
+                      color="red"
+                      @click="deleteTestCase(item)"
+                    >
+                      mdi-delete-outline
+                    </v-icon>   
+                  </template>
                 </v-data-table>
                     </v-col>
                   </v-row>
@@ -112,7 +132,7 @@
               <v-btn
                 color="blue darken-1"
                 text
-                @click="save"
+                @click="updateQuestion(editedQuestion.questionId,editedQuestion)"
               >
                 Save
               </v-btn>
@@ -122,7 +142,7 @@
 <!--Edit question area end-->
 
 <!--Delete question area start-->
-        <v-dialog v-model="dialogDelete" max-width="500px">
+        <v-dialog v-model="dialogDeleteQuestion" max-width="500px">
           <v-card>
             <v-card-title class="justify-center" ><v-icon x-large color="red">mdi-alert-circle-outline</v-icon></v-card-title>
             <v-spacer></v-spacer>
@@ -130,7 +150,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="primary" text @click="closeDelete">Cancel</v-btn>
-              <v-btn color="primary" text @click="deleteConfirm">OK</v-btn>
+              <v-btn color="primary" text @click="deleteConfirm(editedQuestion.questionId)">OK</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
@@ -187,30 +207,30 @@
         @click="deleteQuestion(item)"
       >
         mdi-delete-outline
-      </v-icon>
- <!--actions for question section end-->    
+      </v-icon>   
     </template>
-        <template v-slot:[`item.dificulty`]="{ item }">
+    <!--actions for question section end--> 
+        <template v-slot:[`item.difficulty`]="{ item }">
            <v-btn 
             x-small
             id="easy-btn"
             class="green--text"
-            v-if="(item.dificulty==='easy')" color="green lighten-4"
-              >easy
+            v-if="(item.difficulty==='Easy')" color="green lighten-4"
+              >Easy
           </v-btn>
           <v-btn
             x-small
             id="medium-btn"
             class="orange--text"
-            v-else-if="(item.dificulty==='medium')" color="orange lighten-4"
-              >medium
+            v-else-if="(item.difficulty==='Medium')" color="orange lighten-4"
+              >Medium
           </v-btn>
           <v-btn 
             x-small
             id="hard-btn"
             class="red--text"
             v-else color="red lighten-4"
-              >hard
+              >Hard
           </v-btn>
         
         </template>
@@ -225,14 +245,18 @@
 
 <script>
 import { VueEditor } from "vue2-editor";
+import api from "@/api";
 
 export default {
   name: "index",
   components: { VueEditor },
   data: () => ({
-      dialog: false,
-      dialogDelete: false,
+      qdialog: false,
+      tdialog:false,
+      dialogDeleteQuestion: false,
       search:'',
+      loading:'true',
+      evaluationCase:['Yes','No'],
       headers: [
           {
             text: 'TITLE',
@@ -241,40 +265,43 @@ export default {
             value: 'title',
           },
           { text: 'MAX POINTS', value: 'points' },
-          { text: 'DATE CREATED', value: 'date' },
-          { text: 'DIFICULTY', value: 'dificulty' },
+          { text: 'DIFFICULTY', value: 'difficulty' },
           { text: 'ACTIONS', value: 'actions' },
         ],
       testCaseheaders:[{
-          text: 'TEST CASE',
+          text: 'INPUT',
             align: 'start',
             filterable: true,
-            value: 'name',
+            value: 'input',
           },
-          { text: 'POINTS', value: 'points' },
-          { text: 'INPUT', value: 'input' },
           { text: 'OUTPUT', value: 'output' },
-          { text: 'ACTIONS', value: 'actions' },
+          { text: 'IsEvaluate', value: 'evaluation' },
       ],
       questions: [],      
 
-      editedItem: {
+      editedQuestion: {
             title: '',
-            points: '',
-            dificulty: '',
+            points: 0,
+            difficulty: '',
             description:"",
-            testcases:[{}]
+            testCases:[{}]
           },
     select: null,
     dificulties: ['Hard', 'Medium', 'Easy'],
 
         }),
 
+     computed: {
+      formTitle () {
+        return this.teditedIndex === -1 ? 'New Test Case' : 'Edit Test Case'
+      },
+    },
+
     watch: {
       dialog (val) {
         val || this.close()
       },
-      dialogDelete (val) {
+      dialogDeleteQuestion (val) {
         val || this.closeDelete()
       },
     },
@@ -284,147 +311,79 @@ export default {
     },
 
     methods: {
-      initialize () {
-        this.questions = [
-          {
-            id:'1',
-            title: 'Write a function',
-            points: 10.0,
-            date: '05 Sep 2021',
-            dificulty: 'easy',
-            description:"this is a question description",
-            testcases:[{
-              id:1,
-              name:"test 1",
-              points:2,
-              input:'sample in',
-              output:'sample out'
-            }]
-          },
-          {
-            id:'2',
-            title: 'Minion Game',
-            points: 10.0,
-            date: '05 Sep 2021',
-            dificulty: 'medium',
-            description:'this is a question description',
-            testcases:[{
-              id:1,
-              name:"test 1",
-              points:2,
-              input:'sample in',
-              output:'sample out'
-            }]
-          },
-          {
-            id:'3',
-            title: 'Linked List',
-            points: 10.0,
-            date: '05 Sep 2021',
-            dificulty: 'easy',
-            description:'this is a question description'
-          },
-          {
-            id:'4',
-            title: 'Matrices',
-            points: 10.0,
-            date: '05 Sep 2021',
-            dificulty: 'hard',
-            description:'this is a question description'
-          },
-          {
-            id:'5',
-            title: 'Shortest Path',
-            points: 10.0,
-            date: '05 Sep 2021',
-            dificulty: 'easy',
-            description:'this is a question description'
-          },
-         {
-           id:'6',
-            title: 'Palindroms',
-            points: 10.0,
-            date: '05 Sep 2021',
-            dificulty: 'easy',
-            description:'this is a question description'
-          },
-          {
-            id:'7',
-            title: 'Word Count',
-            points: 10.0,
-            date: '05 Sep 2021',
-            dificulty: 'easy',
-            description:'this is a question description'
-          },
-          {
-            id:'8',
-            title: 'Secret Message',
-            points: 10.0,
-            date: '05 Sep 2021',
-            dificulty: 'easy',
-            description:'this is a question description'
-          },
-          {
-            id:'9',
-            title: 'Write a function',
-            points: 10.0,
-            date: '05 Sep 2021',
-            dificulty: 'easy',
-            description:'this is a question description'
-          },
-          {
-            id:'10',
-            title: 'Write a function',
-            points: 10.0,
-            date: '05 Sep 2021',
-            dificulty: 'easy',
-            description:'this is a question description'
-          },
-        ]
+      async initialize () {
+        this.loading = true;
+        const [status, res_data] = await api.question.all()
+        this.loading = false;
+        if (status.status === 200) {
+
+        this.questions = [...res_data]
+      } else {
+        this.$vToastify.error(res_data, "Done")
+      }
+    },
+
+    editQuestion (item) {
+        this.editedIndex = this.questions.indexOf(item)
+        this.editedQuestion = Object.assign({}, item)
+        this.qdialog = true
       },
 
-      editQuestion (item) {
-        this.editedIndex = this.questions.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
+    async updateQuestion(questionId,data){
+      
+       const[status,res_data]= await api.question.update(questionId,data)
+       if(status.status===200){
+        this.$vToastify.success(status.message, "Successfully Updated!")
+        this.close()
+        this.initialize()
+       }else{
+         this.$vToastify.error(res_data, "Error")
+       }
+    },
 
       deleteQuestion (item) {
         this.editedIndex = this.questions.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialogDelete = true
+        this.editedQuestion = Object.assign({}, item)
+        this.dialogDeleteQuestion = true
       },
 
-      deleteConfirm () {
-        this.questions.splice(this.editedIndex, 1)
+      async deleteConfirm (questionId) {
+        const[status]= await api.question.delete(questionId)
+        if(status.status===200){
+          this.$vToastify.success("Successfully Deleted")
+        }else{
+          this.$vToastify.error("Something went wrong")
+        }
         this.closeDelete()
+        this.initialize()
       },
 
       close () {
-        this.dialog = false
+        this.qdialog = false
         this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedQuestion = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
         })
       },
 
       closeDelete () {
-        this.dialogDelete = false
+        this.dialogDeleteQuestion = false
         this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedQuestion = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
         })
       },
 
       save () {
         if (this.editedIndex > -1) {
-          Object.assign(this.questions[this.editedIndex], this.editedItem)
+          Object.assign(this.questions[this.editedIndex], this.editedQuestion)
         } else {
-          this.questions.push(this.editedItem)
+          this.questions.push(this.editedQuestion)
         }
         this.close()
       },
-    },
+
+    }
   }
 
 </script>

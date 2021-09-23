@@ -135,21 +135,9 @@
                   lazy-validation>
                 <v-row>
                   <v-col>
-                  <h5>Test Case</h5>
-                    <v-text-field
-                    dense
-                      v-model="editedItem.name"
-                      placeholder="Enter Test Case name"
-                      :rules="nameRules"
-                      outlined
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col>
                   <h5>Sample Input</h5>
                     <vue-editor 
-                      v-model="editedItem.input"
+                      v-model="editedTestCase.input"
                     />
                   </v-col>
                 </v-row>
@@ -157,7 +145,7 @@
                  <v-col>
                   <h5>Sample output</h5>
                     <vue-editor 
-                      v-model="editedItem.output"
+                      v-model="editedTestCase.output"
                     />
                  </v-col>
                 </v-row>
@@ -168,7 +156,7 @@
                        dense
                       
                         :items="evaluationCase"
-                        v-model="editedItem.evaluation"
+                        v-model="editedTestCase.evaluation"
                         outlined>
                     </v-select>
                  </v-col>
@@ -250,7 +238,7 @@
 <script>
 import { VueEditor } from "vue2-editor";
 import Validators from "@/utils/validators"
-
+import api from "@/api";
 
 export default {
   name: "index",
@@ -277,12 +265,11 @@ export default {
       dialogDelete: false,
       headers: [
         {
-          text: 'Test Case',
+          text: 'Input',
           align: 'start',
           sortable: false,
-          value: 'name',
+          value: 'input',
         },
-        { text: 'Input', value: 'input' },
         { text: 'Output', value: 'output' },
         { text: 'IsEvaluate', value: 'evaluation' },
         { text: 'Actions', value: 'actions' },
@@ -290,14 +277,14 @@ export default {
       testCases: [],
       evaluationCases:[],
       editedIndex: -1,
-      editedItem: {
-        name: '',
+      editedTestCase: {
+        id:0,
         input: '',
         output: '',
         evaluation:'',
       },
-      defaultItem: {
-        name: '',
+      defaultTestCase: {
+        id: 0,
         input: '',
         output: '',
         evaluation:''
@@ -323,13 +310,13 @@ export default {
       
       editItem (item) {
         this.editedIndex = this.testCases.indexOf(item)
-        this.editedItem = Object.assign({}, item)
+        this.editedTestCase = Object.assign({}, item)
         this.dialog = true
       },
 
       deleteItem (item) {
         this.editedIndex = this.testCases.indexOf(item)
-        this.editedItem = Object.assign({}, item)
+        this.editedTestCase = Object.assign({}, item)
         this.dialogDelete = true
       },
 
@@ -341,7 +328,7 @@ export default {
       close () {
         this.dialog = false
         this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedTestCase = Object.assign({}, this.defaultTestCase)
           this.editedIndex = -1
         })
       },
@@ -349,7 +336,7 @@ export default {
       closeDelete () {
         this.dialogDelete = false
         this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedTestCase = Object.assign({}, this.defaultTestCase)
           this.editedIndex = -1
         })
       },
@@ -358,12 +345,9 @@ export default {
   
         if(this.$refs.testcaseForm.validate()){
         if (this.editedIndex > -1) {
-          Object.assign(this.testCases[this.editedIndex], this.editedItem)
+          Object.assign(this.testCases[this.editedIndex], this.editedTestCase)
         } else {
-          this.testCases.push(this.editedItem)
-        }
-        if(this.editedItem.evaluation==='Yes'){
-          this.evaluationCases.push(this.editedItem)
+          this.testCases.push(this.editedTestCase)
         }
         this.close()
         }
@@ -381,25 +365,30 @@ export default {
 
       async  submitQuestion(){
         if(this.title!=='' && this.description!=='' && this.difficulty!=='' && this.testCases.length!==0 && this.points!==0){
+          for(let i=0; i<this.testCases.length;i++){
+            this.testCases[i].id=i+1
+            if(this.testCases[i].evaluation==='Yes'){
+              this.evaluationCases.push(this.testCases[i])
+        }
+          }
             let questionData=
             {
             title:this.title,
             description:this.description,
             difficulty:this.difficulty,
+            points:this.points,
             testCases:this.testCases,
             evaluationCases:this.evaluationCases
             }
-    const {status,message} = await this.$store.dispatch(
-          "create",
-          questionData
-      )
-      if (status === 200) {
-        this.$vToastify.info(message, "Info")
+    const [status,res_data] = await api.question.create(questionData)
+          
+      if (status.status === 200) {
+        this.$vToastify.success(status.message, "Successfully Added!")
         this.$refs.questionForm.reset()
         this.description=''
         this.testCases=[]
       } else {
-        this.$vToastify.error(message, "Done")
+        this.$vToastify.error(res_data, "Done")
       }
       }else{
         this.$vToastify.error("Please fill all the fields", "Incomplete Data")
