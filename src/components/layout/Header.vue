@@ -1,11 +1,12 @@
 <template>
   <v-app-bar
-      app
+      app clipped-left
       elevate-on-scroll
+      :color="app_bar_color"
       elevation="1"
   >
     <!--  Logo  -->
-    <router-link class="d-inline text-decoration-none"  to="/">
+    <router-link class="d-inline text-decoration-none" to="/">
       <v-img
           :src="require('../../assets/code.svg')"
           aspect-ratio="1"
@@ -43,7 +44,7 @@
       About Us
     </v-btn>
 
-    <div class="header--vertical-line" />
+    <div class="header--vertical-line"/>
 
     <!--  User Account   -->
     <div v-if="isLogged">
@@ -88,6 +89,10 @@ export default {
   computed: {
     isLogged() {
       return this.$store.getters.isLogged
+    },
+    app_bar_color() {
+      // return Boolean(this.$route.path.match(/^\/app($|\/)/))? '#fcfcfc' : '#f5f5f5'
+      return '#f5f5f5'
     }
   },
   methods: {
@@ -101,13 +106,5 @@ export default {
 </script>
 
 <style lang="scss">
-.header--vertical-line {
-  border-left: 2px solid lighten(black, 70);
-  height: 70%;
-  margin: auto 10px;
-}
 
-.v-btn--active.no-active::before {
-  opacity: 0 !important;
-}
 </style>

@@ -7,12 +7,12 @@
         style="float:left">
           <h2>Create New Question
           </h2>
-          <subtitle-1> You are going to add a new item to your question bank!</subtitle-1>
+          <h5> You are going to add a new item to your question bank!</h5>
         </v-flex>
 
     </v-row>
 
-  <v-form class="elevation-3 ma-10 pa-5" 
+  <v-form class="rounded-lg elevation-3 ma-10 pa-5" 
     ref="questionForm"
     v-model="valid"
     lazy-validation>
@@ -24,7 +24,7 @@
         >
       <v-row>
         <v-col>
-    <subtitle-1>Title</subtitle-1>
+    <h5>Title</h5>
 
     
     <v-text-field
@@ -33,15 +33,14 @@
       v-model="title"
       :rules="titleRules"
       placeholder="Title of the question"
-      required
     ></v-text-field>
     </v-col>
     </v-row>
      <v-row>
         <v-col>
-    <subtitle-1>Description</subtitle-1>
+    <h5>Description</h5>
     <v-flex class="mb-2">
-        <vue-editor v-model="content" />
+        <vue-editor v-model="description" :rules="descriptionRules"/>
     </v-flex>
     </v-col>
     </v-row>
@@ -52,7 +51,7 @@
           sm="6"
           md="3"
         >
-    <subtitle-1>Languages (select one by one)</subtitle-1>
+    <!--subtitle-1>Languages (select one by one)</subtitle-1>
       <v-select
       dense
             v-model="selectLanguage"
@@ -64,17 +63,26 @@
             placeholder="Select Languages"
             :rules="selectRules"
           >
-          </v-select>
+          </v-select-->
 
-    <subtitle-1>Set question dificulty</subtitle-1>
+    <h5>Set question dificulty</h5>
       <v-select
       dense
           :items="dificulties"
-          v-model="selectDificulty"
+          v-model="difficulty"
           :rules="dificultyRules"
           outlined
           placeholder="Select Dificulty"
         ></v-select>
+
+     <h5>Points<h6>(min-1 | max-20)</h6></h5>
+        <v-text-field
+          dense
+          v-model="points"
+          placeholder="Points"
+          outlined
+          type="number" min="1" max="20" step="1" 
+        ></v-text-field>
     </v-col>
     </v-row>
 
@@ -83,13 +91,14 @@
       <v-col
          
         >
-      <subtitle-1>Test Cases</subtitle-1>
+      <h5>Test Cases</h5>
       <v-data-table
     :headers="headers"
-    :items="testcases"
+    :items="testCases"
     class="elevation-2 mb-4"
     disable-sort
     hide-default-footer
+    ref="testcaseTable"
 
   >
     <template v-slot:top>
@@ -126,44 +135,32 @@
                   lazy-validation>
                 <v-row>
                   <v-col>
-                  <subtitle-1>Test Case</subtitle-1>
-                    <v-text-field
-                    dense
-                      v-model="editedItem.name"
-                      placeholder="Enter Test Case name"
-                      :rules="nameRules"
-                      outlined
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col>
-                  <subtitle-1>Sample Input</subtitle-1>
+                  <h5>Sample Input</h5>
                     <vue-editor 
-                      v-model="editedItem.input"
+                      v-model="editedTestCase.input"
                     />
                   </v-col>
                 </v-row>
                <v-row>
                  <v-col>
-                  <subtitle-1>Sample output</subtitle-1>
+                  <h5>Sample output</h5>
                     <vue-editor 
-                      v-model="editedItem.output"
+                      v-model="editedTestCase.output"
                     />
                  </v-col>
                 </v-row>
                 <v-row>
-                  <v-col>
-                  <subtitle-1>Points</subtitle-1>
-                    <v-text-field
-                    dense
-                      v-model="editedItem.points"
-                      placeholder="Points"
-                      outlined
-                      type="number" min="0" step="1" 
-                    ></v-text-field>
-                  </v-col>
-                </v-row> 
+                 <v-col>
+                  <h5>Evluation Case?</h5>
+                    <v-select
+                       dense
+                      
+                        :items="evaluationCase"
+                        v-model="editedTestCase.evaluation"
+                        outlined>
+                    </v-select>
+                 </v-col>
+                </v-row>
                  </v-form>
               </v-container>
             </v-card-text>
@@ -218,7 +215,7 @@
       </v-icon>
     </template>
     <template v-slot:no-data>
-      <subtitle-1>No test cases available</subtitle-1>
+      <h5>No test cases available</h5>
     </template>
   </v-data-table>
       </v-col>
@@ -240,52 +237,57 @@
 
 <script>
 import { VueEditor } from "vue2-editor";
+import Validators from "@/utils/validators"
+import api from "@/api";
 
 export default {
   name: "index",
   components: { VueEditor },
 
   data: () => ({
+    
       valid: true,
       title: '',
-      titleRules: [v => !!v || 'Title is required'],
-      nameRules: [v => !!v || 'Name is required'],
-      selectRules:[v => !!v || 'At least one language is required'],
-      dificultyRules:[v => !!v || 'Deficulty is required'],
+      description:'',
+      difficulty:'',
+      points:0,
+      titleRules: [Validators.required()],
+      nameRules: [Validators.required()],
+      selectRules:[Validators.required()],
+      dificultyRules:[Validators.required()],
+      descriptionRules:[Validators.required()],
       selectLanguage:null,
-      languages:['Python 2','Python 3','Java','Visual Basic'],
-      content: "<p>Type your question description here...</p>",
-      selectDificulty: null,
       dificulties: ['Hard', 'Medium', 'Easy'],
+      evaluationCase:['Yes','No'],
       checkbox: false,
   
       dialog: false,
       dialogDelete: false,
       headers: [
         {
-          text: 'Test Case',
+          text: 'Input',
           align: 'start',
           sortable: false,
-          value: 'name',
+          value: 'input',
         },
-        { text: 'Input', value: 'input' },
         { text: 'Output', value: 'output' },
-        { text: 'Points', value: 'points' },
+        { text: 'IsEvaluate', value: 'evaluation' },
         { text: 'Actions', value: 'actions' },
       ],
-      testcases: [],
+      testCases: [],
+      evaluationCases:[],
       editedIndex: -1,
-      editedItem: {
-        name: '',
-        input: 0,
-        output: 0,
-        points: 0,
+      editedTestCase: {
+        id:0,
+        input: '',
+        output: '',
+        evaluation:'',
       },
-      defaultItem: {
-        name: '',
-        input: 0,
-        output: 0,
-        points: 0,
+      defaultTestCase: {
+        id: 0,
+        input: '',
+        output: '',
+        evaluation:''
       },
     }),
 
@@ -307,26 +309,26 @@ export default {
     methods: {
       
       editItem (item) {
-        this.editedIndex = this.testcases.indexOf(item)
-        this.editedItem = Object.assign({}, item)
+        this.editedIndex = this.testCases.indexOf(item)
+        this.editedTestCase = Object.assign({}, item)
         this.dialog = true
       },
 
       deleteItem (item) {
-        this.editedIndex = this.testcases.indexOf(item)
-        this.editedItem = Object.assign({}, item)
+        this.editedIndex = this.testCases.indexOf(item)
+        this.editedTestCase = Object.assign({}, item)
         this.dialogDelete = true
       },
 
       deleteItemConfirm () {
-        this.testcases.splice(this.editedIndex, 1)
+        this.testCases.splice(this.editedIndex, 1)
         this.closeDelete()
       },
 
       close () {
         this.dialog = false
         this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedTestCase = Object.assign({}, this.defaultTestCase)
           this.editedIndex = -1
         })
       },
@@ -334,7 +336,7 @@ export default {
       closeDelete () {
         this.dialogDelete = false
         this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedTestCase = Object.assign({}, this.defaultTestCase)
           this.editedIndex = -1
         })
       },
@@ -343,9 +345,9 @@ export default {
   
         if(this.$refs.testcaseForm.validate()){
         if (this.editedIndex > -1) {
-          Object.assign(this.testcases[this.editedIndex], this.editedItem)
+          Object.assign(this.testCases[this.editedIndex], this.editedTestCase)
         } else {
-          this.testcases.push(this.editedItem)
+          this.testCases.push(this.editedTestCase)
         }
         this.close()
         }
@@ -357,7 +359,41 @@ export default {
       },
       reset () {
         this.$refs.questionForm.reset()
+        this.description='',
+        this.testCases=[]
       },
+
+      async  submitQuestion(){
+        if(this.title!=='' && this.description!=='' && this.difficulty!=='' && this.testCases.length!==0 && this.points!==0){
+          for(let i=0; i<this.testCases.length;i++){
+            this.testCases[i].id=i+1
+            if(this.testCases[i].evaluation==='Yes'){
+              this.evaluationCases.push(this.testCases[i])
+        }
+          }
+            let questionData=
+            {
+            title:this.title,
+            description:this.description,
+            difficulty:this.difficulty,
+            points:this.points,
+            testCases:this.testCases,
+            evaluationCases:this.evaluationCases
+            }
+    const [status,res_data] = await api.question.create(questionData)
+          
+      if (status.status === 200) {
+        this.$vToastify.success(status.message, "Successfully Added!")
+        this.$refs.questionForm.reset()
+        this.description=''
+        this.testCases=[]
+      } else {
+        this.$vToastify.error(res_data, "Done")
+      }
+      }else{
+        this.$vToastify.error("Please fill all the fields", "Incomplete Data")
+      }
+      }
     },
   
 };

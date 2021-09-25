@@ -13,12 +13,14 @@ export default new Vuex.Store({
             firstName: "",
             lastName: "",
             role: USER_ROLES.ANONYMOUS
-        }
+        },
     },
     getters: {
         token: state => state.token,
         isLogged: state => Boolean(state.token) && (state.user?.role !== USER_ROLES.ANONYMOUS),
-        user: state => state.user
+        user: state => state.user,
+        user_role: state => state.user.role,
+
     },
     mutations: {
         SET_token(state, payload) {
@@ -75,7 +77,7 @@ export default new Vuex.Store({
         async clear_storage() {
             STORAGE.clear(STORAGE.KEY_USER)
             STORAGE.clear(STORAGE.KEY_TOKEN)
-        }
+        },
     },
     plugins: [(store) => {
         store.commit("SET_user", STORAGE.read(STORAGE.KEY_USER))
