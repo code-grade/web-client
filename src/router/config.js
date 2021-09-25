@@ -58,6 +58,10 @@ export const router_config = [
     {
         path: "*",
         component: () => import("../views/NotFound.vue")
+    },
+    {
+        path: '/verify-email',
+        component:()=>import("../views/emailVerification.vue")
     }
 ]
 
