@@ -5,12 +5,13 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import VueToastify, {settings} from "./plugins/toastify";
+import DatetimePicker from 'vuetify-datetime-picker'
 import "./plugins/global.scss"
 
 Vue.config.productionTip = false
 
 Vue.use(VueToastify, settings, router);
-
+Vue.use(DatetimePicker)
 new Vue({
   router,
   store,

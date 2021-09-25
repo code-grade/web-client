@@ -37,6 +37,18 @@ export const router_config = [
                 name: 'Create Question',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/create-question')
             },
+            ,
+            {
+                path: 'assignments',
+                name: 'Assignments',
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/assignments')
+            },
+            {
+                path: 'assignments/create',
+                name: 'Create Assignment',
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/create-assignment')
+            },
+
             {
                 path: 'users',
                 name: 'Users',
@@ -48,7 +60,7 @@ export const router_config = [
                 name: 'View Users',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/user-profile')
             },
-{
+            {
                 path: 'student-assignments',
                 name: 'Student Assignment',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/student-assignments')
