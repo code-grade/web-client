@@ -43,12 +43,12 @@ export const router_config = [
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/users')
             },
             {
-<<<<<<< HEAD
+
                 path: 'users/view',
                 name: 'View Users',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/user-profile')
             },
-=======
+{
                 path: 'student-assignments',
                 name: 'Student Assignment',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/student-assignments')
@@ -59,7 +59,7 @@ export const router_config = [
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/view-assignment')
             },
             
->>>>>>> 71dfddf668e80d744c61e7053fb485d06cbf5cc0
+
         ]
     },
     {
