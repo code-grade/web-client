@@ -8,6 +8,7 @@ export const user = {
     update: {
         enable: (userId, isEnabled) => extractDataResolve(axios.put(`/api/auth/user/${userId}/enable/${isEnabled}`))
     },
+    updateUserProfile:(data) => extractDataResolve(axios.put("/api/auth/user", data))
 }
 
 export default user;

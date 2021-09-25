@@ -16,7 +16,7 @@
       >
 
             <v-card class="pa-5">
-              <v-form>
+              <v-form ref="form" v-model="valid" @submit.prevent="updateUser" id="user-update-form" lazy-validation>
                 <v-container class="py-0">
                   <v-row>
                     <v-col
@@ -60,6 +60,7 @@
                       <v-text-field
                           label="First Name"
                           v-model="firstName"
+                          :rules="nameRules"
                           color="secondary darken-2"
                       />
                     </v-col>
@@ -69,7 +70,7 @@
 
                     >
                       <div class="font-weight-medium pt-5">
-                        User Name
+                        Last Name
 
                       </div>
 
@@ -82,6 +83,7 @@
                       <v-text-field
                           label="Last Name"
                           v-model="lastName"
+                          :rules="nameRules"
                           color="secondary darken-2"
                       />
                     </v-col>
@@ -103,6 +105,8 @@
                           label="Email"
                           color="secondary darken-2"
                           v-model="email"
+                          :rules="emailRules"
+
                       />
                     </v-col>
                     <v-col
@@ -122,8 +126,7 @@
                         class="text-left"
                     >
                       <v-btn
-                          color="primary"
-                          class="mt-0"
+                          :loading="loading" rounded color="primary accent-3" type="submit" form="user-update-form" dark
                       >
                         Save Changes
                       </v-btn>
@@ -279,7 +282,8 @@ export default {
     nameRules :[Validators.required(),Validators.min(5),Validators.max(15)],
     emailRules:[Validators.email()],
     loading: false,
-    fetchingDataLoader:true
+    fetchingDataLoader:true,
+
   }),
   created () {
     this.initialize()
@@ -307,14 +311,14 @@ export default {
     async updateUser() {
       this.loading = true
 
-      // const [status, res_data] = await api.user.register({username: this.newUserName, firstName:this.firstName,lastName:this.lastName,email:this.email, password: this.newPassword,role:this.user_role})
-      // this.loading = false
-      // if (status.status === 200) {
-      //   this.$vToastify.info(res_data, "Info")
-      //   this.moveToSignIn()
-      // } else {
-      //   this.$vToastify.error(res_data, "Done")
-      // }
+      const [status, res_data] = await api.user.updateUserProfile({firstName:this.firstName,lastName:this.lastName,email:this.email})
+      this.loading = false
+      if (status.status === 200) {
+        this.$vToastify.info("User updated successfully", "Info")
+        // this.moveToSignIn()
+      } else {
+        this.$vToastify.error(res_data, "Done")
+      }
     },
 
   }}

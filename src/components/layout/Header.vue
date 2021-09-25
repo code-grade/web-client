@@ -48,6 +48,7 @@
 
     <!--  User Account   -->
     <div v-if="isLogged">
+
       <v-btn
           small color="primary"
           @click="logout"
@@ -56,6 +57,11 @@
       >
         Logout
       </v-btn>
+      <v-avatar  color="primary" size="32" @click="viewUserProfile" style="cursor:pointer;">
+        <v-icon dark >
+          mdi-account-circle
+        </v-icon>
+      </v-avatar>
     </div>
 
     <div v-else>
@@ -81,7 +87,7 @@
 </template>
 
 <script>
-
+import router from "../../router/index"
 
 export default {
   name: "Header",
@@ -100,7 +106,11 @@ export default {
       await this.$store.dispatch("logout")
       this.$vToastify.success("Successfully logged out!", "Done")
       await this.$router.push({name: "Home"})
+    },
+    async viewUserProfile() {
+      await router.push("/app/users/view")
     }
+
   }
 }
 </script>
