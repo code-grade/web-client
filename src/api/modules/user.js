@@ -1,5 +1,5 @@
 import {axios, extractBodyResolve, extractDataResolve} from "../client";
-
+//
 export const user = {
     register: (data) => extractDataResolve(axios.post("/api/auth/user", data)),
     login: (username, password) => extractBodyResolve(axios.post("/api/auth/login", {username, password})),

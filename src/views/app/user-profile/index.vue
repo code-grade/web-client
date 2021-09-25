@@ -36,7 +36,7 @@
 
                     >
                       <v-text-field
-                          label="User name (disabled)"
+
                           disabled
                           v-model="userName"
                       />
@@ -307,14 +307,14 @@ export default {
     async updateUser() {
       this.loading = true
 
-      const [status, res_data] = await api.user.register({username: this.newUserName, firstName:this.firstName,lastName:this.lastName,email:this.email, password: this.newPassword,role:this.user_role})
-      this.loading = false
-      if (status.status === 200) {
-        this.$vToastify.info(res_data, "Info")
-        this.moveToSignIn()
-      } else {
-        this.$vToastify.error(res_data, "Done")
-      }
+      // const [status, res_data] = await api.user.register({username: this.newUserName, firstName:this.firstName,lastName:this.lastName,email:this.email, password: this.newPassword,role:this.user_role})
+      // this.loading = false
+      // if (status.status === 200) {
+      //   this.$vToastify.info(res_data, "Info")
+      //   this.moveToSignIn()
+      // } else {
+      //   this.$vToastify.error(res_data, "Done")
+      // }
     },
 
   }}
