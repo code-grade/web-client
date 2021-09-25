@@ -42,6 +42,11 @@ export const router_config = [
                 name: 'Users',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/users')
             },
+            {
+                path: 'users/view',
+                name: 'View Users',
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/user-profile')
+            },
         ]
     },
     {
