@@ -85,6 +85,7 @@ export const router_config = [
     },
     {
         path: '/verify-email',
+        name: 'VerifyEmail',
         component:()=>import("../views/emailVerification.vue")
     },
     
