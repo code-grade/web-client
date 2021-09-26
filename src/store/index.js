@@ -58,7 +58,7 @@ export default new Vuex.Store({
 
         async update_user_details(context) {
             const [status, res_data] = await api.user.getDetails()
-            console.log(res_data)
+
             if (status.status !== 200) {
                 return status
             }

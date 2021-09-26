@@ -80,15 +80,21 @@ export const router_config = [
         ]
     },
     {
-        path: "*",
-        component: () => import("../views/NotFound.vue")
-    },
-    {
         path: '/verify-email',
         name: 'VerifyEmail',
         component:()=>import("../views/emailVerification.vue")
     },
-    
+    {
+        path: '/verify/:id',
+        name: 'VerifyEmail',
+        component:()=>import("../views/EmailVerifyStatus.vue")
+    },
+
+    {
+        path: "*",
+        component: () => import("../views/NotFound.vue")
+    },
+
 ]
 
 export default router_config
