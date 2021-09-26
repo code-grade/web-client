@@ -74,15 +74,7 @@
           outlined
           placeholder="Select Dificulty"
         ></v-select>
-
-     <h5>Points<h6>(min-1 | max-20)</h6></h5>
-        <v-text-field
-          dense
-          v-model="points"
-          placeholder="Points"
-          outlined
-          type="number" min="1" max="20" step="1" 
-        ></v-text-field>
+        
     </v-col>
     </v-row>
 
@@ -92,6 +84,7 @@
          
         >
       <h5>Test Cases</h5>
+      <h6>(Total points of the question will be the sum of all points of test cases)</h6>
       <v-data-table
     :headers="headers"
     :items="testCases"
@@ -151,12 +144,24 @@
                 </v-row>
                 <v-row>
                  <v-col>
+                  <h5>Points</h5>
+                    <v-text-field
+                        dense
+                        v-model="editedTestCase.points"
+                        placeholder="Points"
+                        outlined
+                        type="number" min="1" step="1"
+                    ></v-text-field>
+                 </v-col>
+                </v-row>
+                <v-row>
+                 <v-col>
                   <h5>Evluation Case?</h5>
                     <v-select
                        dense
                       
                         :items="evaluationCase"
-                        v-model="editedTestCase.evaluation"
+                        v-model="editedTestCase.sample"
                         outlined>
                     </v-select>
                  </v-col>
@@ -251,6 +256,7 @@ export default {
       description:'',
       difficulty:'',
       points:0,
+      totalpoints:0,
       titleRules: [Validators.required()],
       nameRules: [Validators.required()],
       selectRules:[Validators.required()],
@@ -258,7 +264,7 @@ export default {
       descriptionRules:[Validators.required()],
       selectLanguage:null,
       dificulties: ['Hard', 'Medium', 'Easy'],
-      evaluationCase:['Yes','No'],
+      evaluationCase:[true,false],
       checkbox: false,
   
       dialog: false,
@@ -271,23 +277,25 @@ export default {
           value: 'input',
         },
         { text: 'Output', value: 'output' },
-        { text: 'IsEvaluate', value: 'evaluation' },
+        { text: 'Points', value: 'points' },
+        { text: 'IsEvaluate', value: 'sample' },
         { text: 'Actions', value: 'actions' },
       ],
       testCases: [],
-      evaluationCases:[],
       editedIndex: -1,
       editedTestCase: {
         id:0,
         input: '',
         output: '',
-        evaluation:'',
+        points:null,
+        sample:false,
       },
       defaultTestCase: {
         id: 0,
         input: '',
         output: '',
-        evaluation:''
+        points:null,
+        sample:false
       },
     }),
 
@@ -364,24 +372,21 @@ export default {
       },
 
       async  submitQuestion(){
-        if(this.title!=='' && this.description!=='' && this.difficulty!=='' && this.testCases.length!==0 && this.points!==0){
+        if(this.title!=='' && this.description!=='' && this.difficulty!=='' && this.testCases.length!==0){
           for(let i=0; i<this.testCases.length;i++){
             this.testCases[i].id=i+1
-            if(this.testCases[i].evaluation==='Yes'){
-              this.evaluationCases.push(this.testCases[i])
-        }
+            this.totalpoints+=this.testCases[i].points
           }
             let questionData=
             {
             title:this.title,
             description:this.description,
             difficulty:this.difficulty,
-            points:this.points,
+            totalpoints:this.totalpoints,
             testCases:this.testCases,
-            evaluationCases:this.evaluationCases
             }
     const [status,res_data] = await api.question.create(questionData)
-          
+    console.log(status)
       if (status.status === 200) {
         this.$vToastify.success(status.message, "Successfully Added!")
         this.$refs.questionForm.reset()
