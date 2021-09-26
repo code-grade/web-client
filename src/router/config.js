@@ -70,6 +70,11 @@ export const router_config = [
                 name: 'View Assignment',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/view-assignment')
             },
+            {
+                path: 'view-question',
+                name: 'View Question',
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/view-question')
+            },
             
 
         ]
@@ -81,7 +86,8 @@ export const router_config = [
     {
         path: '/verify-email',
         component:()=>import("../views/emailVerification.vue")
-    }
+    },
+    
 ]
 
 export default router_config
