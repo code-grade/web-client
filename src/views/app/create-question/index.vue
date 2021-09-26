@@ -375,7 +375,7 @@ export default {
         if(this.title!=='' && this.description!=='' && this.difficulty!=='' && this.testCases.length!==0){
           for(let i=0; i<this.testCases.length;i++){
             this.testCases[i].id=i+1
-            this.totalpoints+=this.testCases[i].points
+            this.totalpoints=+this.testCases[i].points+ +this.totalpoints
           }
             let questionData=
             {
@@ -385,6 +385,7 @@ export default {
             totalpoints:this.totalpoints,
             testCases:this.testCases,
             }
+            console.log(questionData)
     const [status,res_data] = await api.question.create(questionData)
     console.log(status)
       if (status.status === 200) {
