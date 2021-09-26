@@ -13,7 +13,9 @@ const config = [
     {name: 'Users', icon: 'mdi-account-group', to: '/app/users', roles: [USER_ROLES.ADMIN]},
 
     {name: 'Questions', icon: 'mdi-comment-question', to: '/app/questions', roles: [USER_ROLES.INSTRUCTOR]},
-    {name: 'Create', icon: 'mdi-new-box', to: '/app/question/create', roles: [USER_ROLES.INSTRUCTOR]},
+    {name: 'Create Question', icon: 'mdi-new-box', to: '/app/question/create', roles: [USER_ROLES.INSTRUCTOR]},
+    {name: 'Assignment', icon: 'mdi-comment-question', to: '/app/assignments', roles: [USER_ROLES.INSTRUCTOR]},
+    {name: 'Create Assignment', icon: 'mdi-new-box', to: '/app/assignments/create', roles: [USER_ROLES.INSTRUCTOR]},
 
     {name: 'Assignments', icon: 'mdi-new-box', to: '/app/student-assignments', roles: [USER_ROLES.STUDENT]},
 ]

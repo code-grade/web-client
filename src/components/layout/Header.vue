@@ -22,6 +22,7 @@
 
     <v-spacer/>
 
+
     <v-btn
         text
         small
@@ -49,6 +50,7 @@
     <!--  User Account   -->
     <div v-if="isLogged">
 
+
       <v-btn
           small color="primary"
           @click="logout"
@@ -62,6 +64,7 @@
           mdi-account-circle
         </v-icon>
       </v-avatar>
+
     </div>
 
     <div v-else>
@@ -83,6 +86,7 @@
       </v-btn>
     </div>
 
+
   </v-app-bar>
 </template>
 
@@ -96,6 +100,7 @@ export default {
     isLogged() {
       return this.$store.getters.isLogged
     },
+
     app_bar_color() {
       // return Boolean(this.$route.path.match(/^\/app($|\/)/))? '#fcfcfc' : '#f5f5f5'
       return '#f5f5f5'

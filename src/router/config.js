@@ -37,6 +37,18 @@ export const router_config = [
                 name: 'Create Question',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/create-question')
             },
+            ,
+            {
+                path: 'assignments',
+                name: 'Assignments',
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/assignments')
+            },
+            {
+                path: 'assignments/create',
+                name: 'Create Assignment',
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/create-assignment')
+            },
+
             {
                 path: 'users',
                 name: 'Users',
@@ -48,7 +60,7 @@ export const router_config = [
                 name: 'View Users',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/user-profile')
             },
-{
+            {
                 path: 'student-assignments',
                 name: 'Student Assignment',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/student-assignments')
@@ -68,14 +80,21 @@ export const router_config = [
         ]
     },
     {
+        path: '/verify-email',
+        name: 'VerifyEmail',
+        component:()=>import("../views/emailVerification.vue")
+    },
+    {
+        path: '/verify/:id',
+        name: 'VerifyEmail',
+        component:()=>import("../views/EmailVerifyStatus.vue")
+    },
+
+    {
         path: "*",
         component: () => import("../views/NotFound.vue")
     },
-    {
-        path: '/verify-email',
-        component:()=>import("../views/emailVerification.vue")
-    },
-    
+
 ]
 
 export default router_config

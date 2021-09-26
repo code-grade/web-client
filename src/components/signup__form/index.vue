@@ -120,6 +120,7 @@
 <script>
 import api from "@/api"
 import Validators from "@/utils/validators";
+import router from "@/router"
 export default {
   name: "index.vue",
   data: () => ({
@@ -150,7 +151,7 @@ export default {
       this.loading = false
       if (status.status === 200) {
         this.$vToastify.info(res_data, "Info")
-        this.moveToSignIn()
+        await router.push("/verify-email")
       } else {
         this.$vToastify.error(res_data, "Done")
       }
