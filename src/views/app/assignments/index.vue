@@ -210,7 +210,7 @@
       </v-icon>   
     </template>
     <!--actions for question section end--> 
-        <template v-slot:[`item.difficulty`]="{ item }">
+        <template v-slot:[`item.type`]="{ item }">
            <v-btn 
             x-small
             id="easy-btn"
@@ -222,15 +222,15 @@
             x-small
             id="medium-btn"
             class="orange--text"
-            v-else-if="(item.difficulty==='Medium')" color="orange lighten-4"
-              >Medium
+            v-else-if="(item.type==='PUBLIC')" color="orange lighten-4"
+              >PUBLIC
           </v-btn>
           <v-btn 
             x-small
             id="hard-btn"
             class="red--text"
             v-else color="red lighten-4"
-              >Hard
+              >PRIVATE
           </v-btn>
         
         </template>
@@ -251,12 +251,12 @@ export default {
   name: "index",
   components: { VueEditor },
   data: () => ({
-      qdialog: false,
-      tdialog:false,
+
+
       dialogDeleteQuestion: false,
       search:'',
       loading:'true',
-      evaluationCase:['Yes','No'],
+
       headers: [
           {
             text: 'TITLE',
@@ -264,8 +264,8 @@ export default {
             filterable: true,
             value: 'title',
           },
-          { text: 'MAX POINTS', value: 'points' },
-          { text: 'DIFFICULTY', value: 'difficulty' },
+          { text: 'NO OF Question', value: 'questions.length' },
+          { text: 'TYPE', value: 'type' },
           { text: 'ACTIONS', value: 'actions' },
         ],
       testCaseheaders:[{
@@ -291,20 +291,10 @@ export default {
 
         }),
 
-     computed: {
-      formTitle () {
-        return this.teditedIndex === -1 ? 'New Test Case' : 'Edit Test Case'
-      },
-    },
 
-    watch: {
-      dialog (val) {
-        val || this.close()
-      },
-      dialogDeleteQuestion (val) {
-        val || this.closeDelete()
-      },
-    },
+
+
+
 
     created () {
       this.initialize()
@@ -313,7 +303,8 @@ export default {
     methods: {
       async initialize () {
         this.loading = true;
-        const [status, res_data] = await api.question.all()
+        const [status, res_data] = await api.assignment.instructor()
+
         this.loading = false;
         if (status.status === 200) {
 
