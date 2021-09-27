@@ -38,52 +38,148 @@
 
         <v-stepper-items>
           <v-stepper-content step="1">
-            <AssignmentInfo/>
+<!--            <AssignmentInfo/>-->
+              <v-form class="rounded-lg elevation-3 mb-5 pa-5"
+                      ref="assignmentForm"
+                      id="qn-info-form"
+                      v-model="valid"
+                      @submit.prevent="sendToAddQuestions"
+                      lazy-validation>
+                <v-row>
+                  <v-col
+                      cols="12"
+                      sm="6"
+                      md="8"
+                  >
+                    <v-row>
+                      <v-col>
+                        <h5>Title</h5>
 
-            <v-btn
-                color="primary"
-                @click="e1 = 2"
-            >
-              Continue
-            </v-btn>
 
-            <v-btn text>
-              Cancel
-            </v-btn>
+                        <v-text-field
+                            dense
+                            outlined
+                            v-model="title"
+                            :rules="titleRules"
+                            placeholder="Title of the assignment"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col>
+                        <h5>Description</h5>
+                        <v-flex class="mb-2">
+                          <vue-editor v-model="description" :rules="descriptionRules"/>
+                        </v-flex>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+
+                  <v-col
+                      cols="12"
+                      sm="6"
+                      md="3"
+                  >
+
+
+                    <h5>Set question privacy</h5>
+                    <v-select
+                        dense
+                        :items="types"
+                        v-model="type"
+                        :rules="dificultyRules"
+                        outlined
+                        placeholder="Select Type"
+                    ></v-select>
+
+
+                    <v-checkbox
+                        v-model="autoOpenClose"
+                        :label="`Auto Open/Close`"
+                    ></v-checkbox>
+                    <div v-if="autoOpenClose">
+                      <v-datetime-picker label="Select start Datetime" class="secondary" v-model="openTime"> </v-datetime-picker>
+                      <v-datetime-picker label="Select end Datetime" class="secondary" v-model="closeTime"> </v-datetime-picker>
+                    </div>
+
+                  </v-col>
+                </v-row>
+
+
+              </v-form>
+            <div class="text-right ">
+              <v-btn
+                  :disabled="!valid"    type="submit" form="qn-info-form" class="primary "
+              >
+                Next
+              </v-btn>
+            </div>
           </v-stepper-content>
 
           <v-stepper-content step="2">
-            <QuestionCollection/>
+<!--            <QuestionCollection/>-->
+            <v-data-table
+                v-model="selected"
+                :headers="headers"
+                :items="questions"
+                :single-select="singleSelect"
+                item-key="questionId"
+                show-select
+                class="elevation-1 mb-5"
 
-            <v-btn
-                color="primary"
-                @click="e1 = 3"
-            >
-              Continue
-            </v-btn>
+            > </v-data-table>
+            <div class="text-right ">
+              <v-btn text @click="e1 = 1" >
+                Back
+              </v-btn>
+              <v-btn
+                  color="primary"
+                  @click="e1 = 3"
+                  dark
+              >
+                Next
+              </v-btn>
 
-            <v-btn text>
-              Cancel
-            </v-btn>
+            </div>
+
+
+
+
           </v-stepper-content>
 
           <v-stepper-content step="3">
             <v-card
                 class="mb-12"
-                color="grey lighten-1"
+
                 height="200px"
-            ></v-card>
 
-            <v-btn
-                color="primary"
-                @click="e1 = 1"
             >
-              Continue
-            </v-btn>
+                  <v-card-title primary-title class="justify-center">
+                    <div>
+                      <h1 class="text--center text-center ">Confirm</h1>
+                      <h4>Are you sure, you want to create this assignment?</h4>
+                    </div>
+                  </v-card-title>
+                  <v-card-actions class="justify-center">
+                    <v-btn
+                        color="success"
+                        @click="createAssignment"
+                    >
+                      Submit
+                    </v-btn>
+                  </v-card-actions>
 
-            <v-btn text>
-              Cancel
-            </v-btn>
+            </v-card>
+            <div class="text-right ">
+              <v-btn text  @click="e1 = 2">
+                Back
+              </v-btn>
+
+            </div>
+
+
+
+
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>
@@ -100,7 +196,7 @@ import Validators from "@/utils/validators"
 import api from "@/api";
 import AssignmentInfo from "@/views/app/create-assignment/AssignmentInfo";
 import QuestionCollection from "@/views/app/create-assignment/QuestionCollection";
-
+import router from "@/router"
 export default {
   name: "index",
   components: {QuestionCollection, AssignmentInfo, VueEditor },
@@ -111,145 +207,89 @@ export default {
       e1: 1,
       title: '',
       description:'',
-      difficulty:'',
-      points:0,
+      type:'PUBLIC',
+      openTime:'',
+      closeTime:'',
+      autoOpenClose:false,
       titleRules: [Validators.required()],
       nameRules: [Validators.required()],
       selectRules:[Validators.required()],
       dificultyRules:[Validators.required()],
       descriptionRules:[Validators.required()],
       selectLanguage:null,
-      dificulties: ['Hard', 'Medium', 'Easy'],
-      evaluationCase:['Yes','No'],
+      types: ['PUBLIC', 'PRIVATE'],
       checkbox: false,
-  
       dialog: false,
       dialogDelete: false,
+      selected: [],
       headers: [
         {
-          text: 'Input',
+          text: 'TITLE',
           align: 'start',
-          sortable: false,
-          value: 'input',
+          filterable: true,
+          value: 'title',
         },
-        { text: 'Output', value: 'output' },
-        { text: 'IsEvaluate', value: 'evaluation' },
-        { text: 'Actions', value: 'actions' },
+        { text: 'MAX POINTS', value: 'points' },
+        { text: 'DIFFICULTY', value: 'difficulty' },
       ],
-      testCases: [],
-      evaluationCases:[],
-      editedIndex: -1,
-      editedTestCase: {
-        id:0,
-        input: '',
-        output: '',
-        evaluation:'',
-      },
-      defaultTestCase: {
-        id: 0,
-        input: '',
-        output: '',
-        evaluation:''
-      },
+      questions: [],
     }),
 
-    computed: {
-      formTitle () {
-        return this.editedIndex === -1 ? 'New Test Case' : 'Edit Test Case'
-      },
+    created () {
+      this.initialize()
     },
 
-    watch: {
-      dialog (val) {
-        val || this.close()
-      },
-      dialogDelete (val) {
-        val || this.closeDelete()
-      },
-    },
+
 
     methods: {
-      
-      editItem (item) {
-        this.editedIndex = this.testCases.indexOf(item)
-        this.editedTestCase = Object.assign({}, item)
-        this.dialog = true
-      },
+      async initialize () {
+        this.loading = true;
+        const [status, res_data] = await api.question.instructor()
+        this.loading = false;
+        if (status.status === 200) {
 
-      deleteItem (item) {
-        this.editedIndex = this.testCases.indexOf(item)
-        this.editedTestCase = Object.assign({}, item)
-        this.dialogDelete = true
-      },
-
-      deleteItemConfirm () {
-        this.testCases.splice(this.editedIndex, 1)
-        this.closeDelete()
-      },
-
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedTestCase = Object.assign({}, this.defaultTestCase)
-          this.editedIndex = -1
-        })
-      },
-
-      closeDelete () {
-        this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editedTestCase = Object.assign({}, this.defaultTestCase)
-          this.editedIndex = -1
-        })
-      },
-
-      saveTestcase () {
-  
-        if(this.$refs.testcaseForm.validate()){
-        if (this.editedIndex > -1) {
-          Object.assign(this.testCases[this.editedIndex], this.editedTestCase)
+          this.questions = [...res_data]
         } else {
-          this.testCases.push(this.editedTestCase)
+          this.$vToastify.error(res_data, "Done")
         }
-        this.close()
+      },
+      sendToAddQuestions() {
+        this.e1='2'
+      },
+      async  createAssignment(){
+        const selectedQuestions = []
+        this.selected.forEach(q =>{
+          selectedQuestions.push(q.questionId)
+        })
+        if(this.title!=='' && this.description!==""){
+
+
+            let assignmentData=
+            {
+              title:this.title,
+              description:this.description,
+              type:this.type,
+              openTime: this.openTime,
+              closeTime: this.closeTime,
+              questions: selectedQuestions
+            }
+            const [status,res_data] = await api.assignment.create(assignmentData)
+
+
+            if (status.status === 200) {
+              this.$vToastify.success(status.message, "Successfully Added!")
+              this.$refs.assignmentForm.reset()
+              await router.push("/app/assignments")
+
+            } else {
+              this.$vToastify.error(res_data, "Done")
+            }
+          }else{
+            this.$vToastify.error("Please fill all the fields", "Incomplete Data")
+          }
         }
       },
 
-
-
-      async  submitQuestion(){
-        if(this.title!=='' && this.description!=='' && this.difficulty!=='' && this.testCases.length!==0 && this.points!==0){
-          for(let i=0; i<this.testCases.length;i++){
-            this.testCases[i].id=i+1
-            if(this.testCases[i].evaluation==='Yes'){
-              this.evaluationCases.push(this.testCases[i])
-        }
-          }
-            let questionData=
-            {
-            title:this.title,
-            description:this.description,
-            difficulty:this.difficulty,
-            points:this.points,
-            testCases:this.testCases,
-            evaluationCases:this.evaluationCases
-            }
-    const [status,res_data] = await api.question.create(questionData)
-          
-      if (status.status === 200) {
-        this.$vToastify.success(status.message, "Successfully Added!")
-        this.$refs.questionForm.reset()
-        this.description=''
-        this.testCases=[]
-      } else {
-        this.$vToastify.error(res_data, "Done")
-      }
-      }else{
-        this.$vToastify.error("Please fill all the fields", "Incomplete Data")
-      }
-      }
-    },
-  
 };
 </script>
 
