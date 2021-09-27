@@ -153,7 +153,7 @@ export default {
         this.$vToastify.info(res_data, "Info")
         await router.push("/verify-email")
       } else {
-        this.$vToastify.error(res_data, "Done")
+        this.$vToastify.error(status.message, "Done")
       }
     },
 

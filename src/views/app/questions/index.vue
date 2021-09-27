@@ -68,7 +68,7 @@
                     <h5>Points</h5>
                     <v-text-field
                     dense
-                      v-model="editedQuestion.points"
+                      v-model="editedQuestion.totalPoints"
                       placeholder="Max Points"
                       type="number" min="0" step="1" 
                       outlined
@@ -264,7 +264,7 @@ export default {
             filterable: true,
             value: 'title',
           },
-          { text: 'MAX POINTS', value: 'points' },
+          { text: 'MAX POINTS', value: 'totalPoints' },
           { text: 'DIFFICULTY', value: 'difficulty' },
           { text: 'ACTIONS', value: 'actions' },
         ],
@@ -281,7 +281,7 @@ export default {
 
       editedQuestion: {
             title: '',
-            points: 0,
+            totalPoints: 0,
             difficulty: '',
             description:"",
             testCases:[{}]
@@ -316,7 +316,6 @@ export default {
         const [status, res_data] = await api.question.instructor()
         this.loading = false;
         if (status.status === 200) {
-
         this.questions = [...res_data]
       } else {
         this.$vToastify.error(res_data, "Done")

@@ -18,6 +18,7 @@ const config = [
     {name: 'Create Assignment', icon: 'mdi-new-box', to: '/app/assignments/create', roles: [USER_ROLES.INSTRUCTOR]},
 
     {name: 'Assignments', icon: 'mdi-new-box', to: '/app/student-assignments', roles: [USER_ROLES.STUDENT]},
+    {name: 'Public Assignments', icon: 'mdi-new-box', to: '/app/public-assignments', roles: [USER_ROLES.STUDENT]},
 ]
 
 

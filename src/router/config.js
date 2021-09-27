@@ -75,6 +75,11 @@ export const router_config = [
                 name: 'View Question',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/view-question')
             },
+            {
+                path: 'public-assignments',
+                name: 'Public Assignments',
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/public-assignments')
+            },
             
 
         ]
