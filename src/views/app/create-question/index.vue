@@ -256,7 +256,7 @@ export default {
       description:'',
       difficulty:'',
       points:0,
-      totalpoints:0,
+      totalPoints:0,
       titleRules: [Validators.required()],
       nameRules: [Validators.required()],
       selectRules:[Validators.required()],
@@ -375,17 +375,18 @@ export default {
         if(this.title!=='' && this.description!=='' && this.difficulty!=='' && this.testCases.length!==0){
           for(let i=0; i<this.testCases.length;i++){
             this.testCases[i].id=i+1
-            this.totalpoints=+this.testCases[i].points+ +this.totalpoints
+            this.totalPoints=+this.testCases[i].points+ +this.totalPoints
           }
             let questionData=
             {
             title:this.title,
             description:this.description,
             difficulty:this.difficulty,
-            totalpoints:this.totalpoints,
+            totalPoints:this.totalPoints,
             testCases:this.testCases,
             }
-            console.log(questionData)
+            console.log(questionData.totalPoints
+            )
     const [status,res_data] = await api.question.create(questionData)
     console.log(status)
       if (status.status === 200) {

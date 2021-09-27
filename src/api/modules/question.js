@@ -28,7 +28,7 @@ export const question = {
     ),
 
     update:(questionId,data) => extractDataResolve(axios.put(`/api/auth/question/${questionId}`, data)),
-    delete:(questionId)=>extractDataResolve(axios.delete(`/api/auth/question/${questionId}`)),
+    delete:(questionId)=>extractDataResolve(axios.delete(`/api/question/${questionId}`)),
 }
 
 export default question;
