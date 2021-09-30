@@ -94,10 +94,10 @@
 
 
                     <v-checkbox
-                        v-model="autoOpenClose"
-                        :label="`Auto Open/Close`"
+                        v-model="scheduled"
+                        :label="`Schedule assignment`"
                     ></v-checkbox>
-                    <div v-if="autoOpenClose">
+                    <div v-if="scheduled">
                       <v-datetime-picker label="Select start Datetime" class="secondary" v-model="openTime"> </v-datetime-picker>
                       <v-datetime-picker label="Select end Datetime" class="secondary" v-model="closeTime"> </v-datetime-picker>
                     </div>
@@ -210,7 +210,7 @@ export default {
       type:'PUBLIC',
       openTime:'',
       closeTime:'',
-      autoOpenClose:false,
+      scheduled:false,
       titleRules: [Validators.required()],
       nameRules: [Validators.required()],
       selectRules:[Validators.required()],
@@ -271,7 +271,8 @@ export default {
               type:this.type,
               openTime: this.openTime,
               closeTime: this.closeTime,
-              questions: selectedQuestions
+              questions: selectedQuestions,
+              scheduled:this.scheduled
             }
             const [status,res_data] = await api.assignment.create(assignmentData)
 
