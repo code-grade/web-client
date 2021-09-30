@@ -129,17 +129,17 @@
                 <v-row>
                   <v-col>
                   <h5>Sample Input</h5>
-                    <vue-editor 
-                      v-model="editedTestCase.input"
-                    />
+                    <v-textarea 
+                      v-model="editedTestCase.input">
+                    </v-textarea>
                   </v-col>
                 </v-row>
                <v-row>
                  <v-col>
                   <h5>Sample output</h5>
-                    <vue-editor 
-                      v-model="editedTestCase.output"
-                    />
+                    <v-textarea 
+                      v-model="editedTestCase.output">
+                    </v-textarea>
                  </v-col>
                 </v-row>
                 <v-row>
@@ -149,6 +149,18 @@
                         dense
                         v-model="editedTestCase.points"
                         placeholder="Points"
+                        outlined
+                        type="number" min="1" step="1"
+                    ></v-text-field>
+                 </v-col>
+                </v-row>
+                <v-row>
+                 <v-col>
+                  <h5>Time Limit(Seconds)</h5>
+                    <v-text-field
+                        dense
+                        v-model="editedTestCase.timeLimit"
+                        placeholder="time limit"
                         outlined
                         type="number" min="1" step="1"
                     ></v-text-field>
@@ -256,6 +268,7 @@ export default {
       description:'',
       difficulty:'',
       points:0,
+      timeLimit:5,
       totalPoints:0,
       titleRules: [Validators.required()],
       nameRules: [Validators.required()],
@@ -288,6 +301,7 @@ export default {
         input: '',
         output: '',
         points:null,
+        timeLimit:5,
         sample:false,
       },
       defaultTestCase: {
@@ -295,6 +309,7 @@ export default {
         input: '',
         output: '',
         points:null,
+        timeLimit:5,
         sample:false
       },
     }),
