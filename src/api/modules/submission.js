@@ -6,9 +6,17 @@ export const submission = {
      * @param data {*} submission data
      * @returns {Promise<[*, *]>}
      */
+    test: (questionId,data) => extractDataResolve(
+        axios.post(`/api/runtime/test/${questionId}`, data)
+    ),
+    /**
+     * make new submission
+     * @param data {*} submission data
+     * @returns {Promise<[*, *]>}
+     */
     make: (assignmentId,questionId,data) => extractDataResolve(
         axios.post(`/api/submission/${assignmentId}/${questionId}`, data)
-        ),
+    ),
 
     /**
      * Get submission for a question by Id to the current user(student)
