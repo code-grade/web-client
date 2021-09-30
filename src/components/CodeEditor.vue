@@ -1,12 +1,11 @@
 <template>
     <v-container>
 		<h4>Write your code here : </h4>
-      <MonacoEditor class="editor" v-model="code" language="python" theme="vs-dark"/>
+      <MonacoEditor class="editor" v-model="code" language="python" style="max-height:500px" ></MonacoEditor>
 <!--		<v-btn color="primary" class="ma-5" @click="runningCode()">Run Code</v-btn>-->
       <v-btn  :loading="submitting" @click="submitCode" rounded color="secondary accent-3"   dark>Submit</v-btn>
       <v-btn  :loading="testing" @click="testCode" rounded color="primary accent-3"   dark>Test</v-btn>
-      {{testCases}}
-		<RunView :runCode='this.runCode' />
+		<RunView :testCases='this.testCases' />
     </v-container>
 
 	

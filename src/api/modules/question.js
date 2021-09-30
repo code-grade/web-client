@@ -23,8 +23,8 @@ export const question = {
      * @param complete {boolean} default=false
      * @returns {Promise<[*, *]>}
      */
-    single: (complete= false) => extractDataResolve(
-        axios.get("/api/question/instructor", {params: {complete}})
+    single: (complete= false,questionId) => extractDataResolve(
+        axios.get(`/api/question/${questionId}`, {params: {complete}})
     ),
 
     update:(questionId,data) => extractDataResolve(axios.put(`/api/auth/question/${questionId}`, data)),

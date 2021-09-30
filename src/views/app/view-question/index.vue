@@ -1,6 +1,6 @@
 <template>
   <v-card class="ma-10" elevation="2">
-      <v-card-title>Question Name</v-card-title>
+      <v-card-title>{{this.question.title}}</v-card-title>
     
         <v-tabs
           v-model="tabs"
@@ -21,7 +21,18 @@
     <v-tabs-items v-model="tabs">
       <v-tab-item>
         
-        <TaskView :questionId='this.questionId'></TaskView>
+        <v-card flat class="ma-5">
+      <v-row>
+            <v-col cols="8" xs="6">
+         <div v-html='this.question.description'></div>
+          </v-col>
+        <v-divider vertical></v-divider>
+                <v-col class="ma-5">
+                    <v-row class="pb-2"><v-icon>mdi-account</v-icon>Difficulty : {{this.question.difficulty}}</v-row>
+                    <v-row class="pb-2"><v-icon>mdi-account</v-icon>Max-Score :   {{this.question.totalPoints}}</v-row>
+                </v-col>
+            </v-row>
+    </v-card>
         <CodeEditor />
     
       </v-tab-item>
@@ -37,19 +48,30 @@
 import TaskView from "@/components/TaskView";
 import Submission from "@/components/Submission";
 import CodeEditor from "@/components/CodeEditor";
+import api from "@/api";
 
   export default {
       name:'index',
       components: {TaskView,Submission,CodeEditor},
       
-    data () {
-      return {
-        tabs: null,
-        questionId:1,
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      }
+    data: ()=> ({
+        tabs: null,   
+        question:[], 
 
+    }),
+
+    created(){
+      this.initialize()
     },
+
+    methods:{
+      async initialize(){
+        const[status,res_data]=await api.question.single(false,this.$route.params.questionId)
+        if(status.status==200){
+          this.question=res_data
+        }
+      }
+    }
   }
 </script>
 
