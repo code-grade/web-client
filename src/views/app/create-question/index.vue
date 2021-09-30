@@ -385,8 +385,7 @@ export default {
             totalPoints:this.totalPoints,
             testCases:this.testCases,
             }
-            console.log(questionData.totalPoints
-            )
+            console.log(questionData)
     const [status,res_data] = await api.question.create(questionData)
     console.log(status)
       if (status.status === 200) {

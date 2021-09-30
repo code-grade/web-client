@@ -43,14 +43,21 @@ export const router_config = [
                 name: 'Assignments',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/assignments')
             },
+
+
             {
-                path: 'assignments/create',
+                path: '/app/assignments-create',
                 name: 'Create Assignment',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/create-assignment')
             },
             {
-                path: 'assignments/:id',
-                name: 'InstructorViewSubmission',
+                path: 'assignments/:state',
+                name: 'Assignments State',
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/assignments')
+            },
+            {
+                path: 'manageAssignment/:id',
+                name: 'Manage Assignments',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/view-assignment-participants-instructor')
             },
             {
@@ -76,7 +83,7 @@ export const router_config = [
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/student-assignments')
             },
             {
-                path: 'view-assignment',
+                path: 'view-assignment/:assignmentId',
                 name: 'View Assignment',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/view-assignment')
             },

@@ -19,14 +19,11 @@
     <v-row>
       <v-col
           cols="12"
-          sm="6"
-          md="8">
+          md="6">
         <v-row  v-for="i in questionSummary.length" :key="i">
-          <v-col
-
-          >
+          <v-col>
             <v-card
-                class="pa-1   ml-5 mr-5"
+                class="pa-1   ml-5 "
                 outlined
                 tile
                 elevation="5"
@@ -95,28 +92,42 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col>
-      </v-col>
-      <v-col>
-        <v-card>
-<!--          <v-card-subtitle class="pb-0">-->
-<!--            Start Time:{{assignment.openTime}}-->
-<!--          </v-card-subtitle>-->
-<!--          <v-card-subtitle class="pt-0">-->
-<!--            Due Time:{{assignment.endTime}}-->
-<!--          </v-card-subtitle>-->
-<!--          <h5 class="pa-4">-->
-<!--            Note: The assignment will automaticaly close after the time is due!-->
-<!--          </h5>-->
-          <v-card-subtitle class="pb-0">
-            Start Time:
-          </v-card-subtitle>
-          <v-card-subtitle class="pt-0">
-            Due Time:
-          </v-card-subtitle>
-          <h5 class="pa-4">
-            Note: The assignment will automaticaly close after the time is due!
-          </h5>
+
+      <v-col
+          >
+        <v-card class="pa-5">
+          <v-form class="rounded-lg elevation-3 ma-10 pa-5"
+                  ref="finalMarksForm"
+                  id="marks-form"
+                  @submit.prevent="submitFeedback"
+                  v-model="valid"
+                  lazy-validation>
+            <v-row>
+              <v-col>
+                <h5>finalGrade</h5>
+                <v-text-field
+                    dense
+                    outlined
+
+                    v-model="finalGrade"
+                    type="number"
+                    :rules="finalMarksValidator"
+                    placeholder="Final Score"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <h5>Feedback</h5>
+                <v-flex class="mb-2">
+                  <vue-editor v-model="feedback" :rules="feedbackRules"/>
+                </v-flex>
+              </v-col>
+            </v-row>
+            <div class="text-center ">
+              <v-btn :disabled="!valid" :loading="submitting" rounded color="secondary accent-3"  type="submit" form="marks-form" dark>Submit</v-btn>
+            </div>
+          </v-form>
         </v-card>
       </v-col>
     </v-row>
@@ -126,17 +137,24 @@
 <script>
 import router from '../../../router'
 import api from "@/api";
+import Validators from "@/utils/validators";
+import {VueEditor} from "vue2-editor";
 export default {
   name:'index',
-
+  components: { VueEditor },
   data: () => ({
-
     dialog: false,
+    submitting:false,
     loading:'true',
     assignmentId:'',
     studentId:"",
+    valid:"true",
     title:"",
     description:"",
+    finalGrade:"",
+    feedback:"",
+    finalMarksValidator: [Validators.required(),Validators.greater(0),Validators.lesser(101)],
+    feedbackRules:[Validators.required()],
     headers: [
       { text: 'NAME', value: 'username' },
       { text: 'EMAIL', value: 'email.email' },
@@ -179,6 +197,21 @@ export default {
     },
     async viewSubmissions(stId) {
       await router.push(`/app/assignments/${this.assignmentId}/${stId}`)
+    },
+    async submitFeedback(){
+      this.submitting = true
+      const [status,res_data] = await api.assignment.grade(this.assignmentId,this.studentId,{finalGrade:this.finalGrade,feedback:this.feedback})
+      console.log(res_data)
+      this.submitting = false
+      if (status.status === 200) {
+        this.$vToastify.success(status.message, "Successfully Added Feedback!")
+        this.$refs.finalMarksForm.reset()
+        this.navigate()
+
+      } else {
+        this.$vToastify.error(res_data, "Done")
+      }
+
     },
     navigate() {
       router.go(-1);
