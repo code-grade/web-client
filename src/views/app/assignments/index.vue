@@ -312,6 +312,7 @@ export default {
         console.log(this.$route.params.state)
         this.loading = true;
         const [status, res_data] = await api.assignment.instructor(this.$route.params.state)
+        console.log(res_data)
         this.loading = false;
         if (status.status === 200) {
 
