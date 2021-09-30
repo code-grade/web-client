@@ -21,8 +21,8 @@
 
     <v-data-table
       :headers="headers"
-      :items="questions"
-      item-key="name"
+      :items="assignments"
+      item-key="assignmentId"
       :items-per-page="5"
       class="elevation-3 ma-10 pa-5"
       :search="search"
@@ -32,183 +32,21 @@
     >
     <!--Edit question area start-->
 
-      <template v-slot:top>
-        <v-dialog
-          v-model="qdialog"
-          max-width="1000px"
-        >
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">Edit Question</span>
-            </v-card-title>
 
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col>
-                  <h5>Question Title</h5>
-                    <v-text-field
-                    dense
-                      v-model="editedQuestion.title"
-                      placeholder="Question Title"
-                      outlined
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col>
-                  <h5>Question Description</h5>
-                     <vue-editor
-                     v-model="editedQuestion.description" 
-                     />
-                  </v-col>
-                </v-row>
-                  <v-row>
-                  <v-col>
-                    <h5>Points</h5>
-                    <v-text-field
-                    dense
-                      v-model="editedQuestion.points"
-                      placeholder="Max Points"
-                      type="number" min="0" step="1" 
-                      outlined
-                    ></v-text-field>
-                  </v-col>
-                  </v-row>
-                  <v-row>
-                  <v-col>
-                    <h5>Difficulty
-                    </h5>
-                   <v-select
-                   dense
-                    :items="dificulties"
-                    v-model="editedQuestion.difficulty"
-                    outlined
-                  ></v-select>
-                  </v-col>
-                  </v-row>
-                   <v-row>
-                    <v-col>
-                    <h5>Test Cases</h5>
-                    <v-data-table
-                  :headers="testCaseheaders"
-                  :items="editedQuestion.testCases"
-                  class="elevation-2 mb-4"
-                  disable-sort
-                  hide-default-footer>
-                 
-                   <template v-slot:[`item.actions`]="{ item }">
-                    <v-icon
-                      small
-                      color="primary"
-                      class="mr-2"
-                      @click="editTestCase(item)"
-                    >
-                      mdi-pencil-outline
-                    </v-icon>
-                    <v-icon
-                      small
-                      color="red"
-                      @click="deleteTestCase(item)"
-                    >
-                      mdi-delete-outline
-                    </v-icon>   
-                  </template>
-                </v-data-table>
-                    </v-col>
-                  </v-row>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="close"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="updateQuestion(editedQuestion.questionId,editedQuestion)"
-              >
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-<!--Edit question area end-->
-
-<!--Delete question area start-->
-        <v-dialog v-model="dialogDeleteQuestion" max-width="500px">
-          <v-card>
-            <v-card-title class="justify-center" ><v-icon x-large color="red">mdi-alert-circle-outline</v-icon></v-card-title>
-            <v-spacer></v-spacer>
-            <v-card-text class="text-h5">Are you sure you want to delete this item?</v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="primary" text @click="closeDelete">Cancel</v-btn>
-              <v-btn color="primary" text @click="deleteConfirm(editedQuestion.questionId)">OK</v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-<!--Delete question area end-->
-
-<!--Data table header start-->
-
-        <v-row>
-        <v-col
-          cols="12"
-          sm="6"
-          md="8"
-        >
-        <v-row class="ml-1">
-        <v-checkbox class="my-5"></v-checkbox>
-         <v-btn color="primary lighten-5" class="ml-5 my-5" fab x-small><v-icon color="primary">mdi-archive-arrow-down-outline</v-icon></v-btn>
-          <v-btn color="primary lighten-5" class="ml-2 my-5" fab x-small><v-icon color="primary">mdi-delete-outline</v-icon></v-btn>
-        </v-row>
-       </v-col>
-        <v-col
-          cols="12"
-          sm="6"
-          md="3"
-        >
-       
-        <v-text-field
-        dense
-          v-model="search"
-          label="Search..."
-          outlined
-          prepend-inner-icon="mdi-magnify"
-        ></v-text-field>  
-        </v-col>
-        </v-row>
-        </template>
 <!--Data table header end-->
 <!--actions for question section start-->
-        <template v-slot:start>
-            <v-checkbox></v-checkbox>        
+    <template v-slot:[`item.submissions`]="{ item }">
+        <v-icon
+            small
+            color="primary"
+            class="mr-2"
+            @click="viewSubmissions(item.assignmentId)"
+        >
+          mdi-pencil-outline
+        </v-icon>
+        View
     </template>
-        <template v-slot:[`item.actions`]="{ item }">
-      <v-icon
-        small
-        color="primary"
-        class="mr-2"
-        @click="editQuestion(item)"
-      >
-        mdi-pencil-outline
-      </v-icon>
-      <v-icon
-        small
-        color="red"
-        @click="deleteQuestion(item)"
-      >
-        mdi-delete-outline
-      </v-icon>   
-    </template>
+
     <!--actions for question section end--> 
         <template v-slot:[`item.type`]="{ item }">
            <v-btn 
@@ -235,6 +73,24 @@
         
         </template>
 
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-icon
+            small
+            color="primary"
+            class="mr-2"
+            @click="editQuestion(item)"
+        >
+          mdi-pencil-outline
+        </v-icon>
+        <v-icon
+            small
+            color="red"
+            @click="deleteQuestion(item)"
+        >
+          mdi-delete-outline
+        </v-icon>
+      </template>
+
     </v-data-table>
 
     <!--data table end-->
@@ -244,16 +100,16 @@
 </template>
 
 <script>
-import { VueEditor } from "vue2-editor";
+
+import router from "@/router"
 import api from "@/api";
 
 export default {
   name: "index",
-  components: { VueEditor },
+
   data: () => ({
 
 
-      dialogDeleteQuestion: false,
       search:'',
       loading:'true',
 
@@ -267,17 +123,10 @@ export default {
           { text: 'NO OF Question', value: 'questions.length' },
           { text: 'TYPE', value: 'type' },
           { text: 'ACTIONS', value: 'actions' },
+          { text: 'SUBMISSIONS', value: 'submissions' },
         ],
-      testCaseheaders:[{
-          text: 'INPUT',
-            align: 'start',
-            filterable: true,
-            value: 'input',
-          },
-          { text: 'OUTPUT', value: 'output' },
-          { text: 'IsEvaluate', value: 'evaluation' },
-      ],
-      questions: [],      
+
+      assignments: [],
 
       editedQuestion: {
             title: '',
@@ -286,16 +135,10 @@ export default {
             description:"",
             testCases:[{}]
           },
-    select: null,
-    dificulties: ['Hard', 'Medium', 'Easy'],
+      select: null,
+
 
         }),
-
-
-
-
-
-
     created () {
       this.initialize()
     },
@@ -308,10 +151,13 @@ export default {
         this.loading = false;
         if (status.status === 200) {
 
-        this.questions = [...res_data]
+        this.assignments = [...res_data]
       } else {
         this.$vToastify.error(res_data, "Done")
       }
+    },
+    async viewSubmissions(id) {
+      await router.push(`assignments/${id}`)
     },
 
     editQuestion (item) {

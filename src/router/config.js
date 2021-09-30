@@ -48,6 +48,16 @@ export const router_config = [
                 name: 'Create Assignment',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/create-assignment')
             },
+            {
+                path: 'assignments/:id',
+                name: 'InstructorViewSubmission',
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/view-assignment-participants-instructor')
+            },
+            {
+                path: 'assignments/:id/:stId',
+                name: 'InstructorViewParticipantAttempts',
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/view-participant-assignment-summary-instructor')
+            },
 
             {
                 path: 'users',

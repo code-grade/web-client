@@ -18,6 +18,30 @@ export const assignment = {
             params: {state}
         })
     ),
+    /**
+     * Get a single assignment by id
+     * @param assignmentID
+     * @returns {Promise<[*, *]>}
+     */
+    instructorGetAssignmentById: (assignmentID) => extractDataResolve(
+        axios.get(`/api/assignment/${assignmentID}`)
+    ),
+    /**
+     * Get assignment participants
+     * @param assignmentID
+     * @returns {Promise<[*, *]>}
+     */
+    instructorGetParticipants: (assignmentID) => extractDataResolve(
+        axios.get(`/api/assignment/participate/${assignmentID}`)
+    ),
+    /**
+     * Get assignment participants
+     * @param assignmentID
+     * @returns {Promise<[*, *]>}
+     */
+    instructorGetParticipantsSummary: (assignmentID,studentId) => extractDataResolve(
+        axios.get(`/api/submission/summary/${assignmentID}/${studentId}`)
+    ),
 
     participate: {
         /**
