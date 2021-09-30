@@ -12,23 +12,26 @@
             :headers="headers"
             :items="publicAssignments"
             class="elevation-3 ma-10 pa-5"
-            items-per-page="5"
+            :items-per-page="15"
             disable-sort
         >
-   
-    <template v-slot:[`item.enroll`]="{ item }">
-      <v-switch
+   <template v-slot:[`item.description`]="{ item }">
+      <div v-html='item.description'></div>
+    </template>
+    <template v-slot:[`item.join`]="{ item }">
+      <v-btn
         small
-        class="mr-2"
-        @change:prepend="enrollMe(item)"
-      >
-      </v-switch>
+        class="mr-2 primary"
+        @click="addMe(item)"
+      > Join
+      </v-btn>
     </template>
   </v-data-table>
     </div>
 </template>
 
 <script>
+import api from "@/api";
 export default {
     name:'index',
     data: () => ({
@@ -39,7 +42,7 @@ export default {
           value: 'title',
         },
         { text: 'DESCRIPTION', value: 'description' },
-        { text: 'ENROLL', value: 'enroll'},
+        { text: 'JOIN', value: 'join'},
       ],
       publicAssignments: [],
     }),
@@ -49,53 +52,19 @@ export default {
     },
 
     methods: {
-      initialize () {
-        this.publicAssignments = [
-          {
-            assignmentId:1,
-            title: 'Public Assignment 1',
-            description: 'This assignment for the students who are want to improve their knowledge in oop',
-          },
-          {
-            assignmentId:2,
-            title: 'Public Assignment 2',
-            description: 'This assignment for the students who are want to improve their knowledge in oop',
-          },
-          {
-            assignmentId:3, 
-            title: 'Public Assignment 3',
-            description: 'This assignment for the students who are want to improve their knowledge in oop',
-          },
-          {
-            assignmentId:4,
-            title: 'Public Assignment 4',
-            description: 'This assignment for the students who are want to improve their knowledge in oop',
-          },
-         {
-            assignmentId:5,
-            title: 'Public Assignment 5',
-            description: 'This assignment for the students who are want to improve their knowledge in oop',
-          },
-          {
-            assignmentId:6,
-            title: 'Public Assignment 6',
-            description: 'This assignment for the students who are want to improve their knowledge in oop',
-          },
-          {
-            assignmentId:7,
-            title: 'Public Assignment 7',
-            description: 'This assignment for the students who are want to improve their knowledge in oop',
-          },
-          {
-            assignmentId:8,
-            title: 'Public Assignment 8',
-            description: 'This assignment for the students who are want to improve their knowledge in oop',
-          },
-        ]
+      async initialize () {
+        const[status,res_data] = await api.assignment.getPublished('PUBLISHED')
+        if(status.status==200){
+        this.publicAssignments= res_data
+        }
       },
 
-      enrollMe(item){
+      async addMe(item){
+        const[status1] = await api.assignment.participate.student(item.assignmentId)
+        if(status1.status==200){
           this.$vToastify.success("Successfully Enrolled to the Assignment!")
+        }
+
       }
     },
 }

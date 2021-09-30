@@ -14,9 +14,37 @@ export const assignment = {
      * @returns {Promise<[*, *]>}
      */
     instructor: (state) => extractDataResolve(
-        axios.get("/api/assignment", {
-            params: {state}
-        })
+        axios.get("/api/assignment", {params: {state}})
+    ),
+
+    /**
+     * Get one assignment of current user (instructor) by assignmentId
+     * @returns {Promise<[*, *]>}
+     */
+     get: (assignmentId) => extractDataResolve(
+        axios.get(`/api/assignment/${assignmentId}`)
+    ),
+
+     /**
+         * get participants of the current assignment
+         * @param assignmentId {string} UUID
+         * @returns {Promise<[*, *]>}
+         */
+      participants: (assignmentId) => extractDataResolve(
+        axios.get(`/api/participate/${assignmentId}`)
+    ),
+
+    /**
+     * change state of the assignment
+     * @param {*} state 
+     * @returns 
+     */
+    change:(assignmentId,state)=>extractDataResolve(
+        axios.put(`/api/assignment/changeState/${assignmentId}/${state}`)
+    ),
+
+    getPublished:(state) => extractDataResolve(
+        axios.get(`/api/assignment/all/${state}`)
     ),
 
     participate: {
@@ -27,7 +55,7 @@ export const assignment = {
          * @returns {Promise<[*, *]>}
          */
         student: (assignmentId) => extractDataResolve(
-            axios.put(`/api/participate/${assignmentId}`)
+            axios.put(`/api/assignment/participate/${assignmentId}`)
         ),
 
         /**

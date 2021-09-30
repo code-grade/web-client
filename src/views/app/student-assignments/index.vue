@@ -1,7 +1,7 @@
-<template v-slot:`assignments`>
+<template>
     <div>
         <v-row class="ma-10">
-            <v-flex
+            <v-flex name="v-flex"
             style="float:left">
             <h2>My Assignments
             </h2>
@@ -23,26 +23,26 @@
         v-slot="{ active, toggle }"
       >
         <div>
-          <!--v-btn v-if="(n==1)"
-            :input-value="active"
-            @click="toggle"
-            plain
-          >
-          UPCOMING
-          </v-btn-->
-          <v-btn v-if="(n==2)"
+          <v-btn v-if="(n==1)"
             :input-value="active"
             @click="toggle"
             plain
           >
           ONGOING
           </v-btn>
+          <v-btn v-if="(n==2)"
+            :input-value="active"
+            @click="toggle"
+            plain
+          >
+          CLOSED
+          </v-btn>
           <v-btn v-if="(n==3)"
             :input-value="active"
             @click="toggle"
             plain
           >
-          PAST
+          FINALIZED
           </v-btn>
         </div>
       </v-item>
@@ -55,35 +55,10 @@
         vertical
       >
         <v-window-item
-        :items="assignments" 
           v-for="n in length"
           :key="n"
         >
-          <!--v-card flat v-if="(n==1)">
-             <v-row no-gutters>
-      <v-col
-        v-for="i in upcoming.length"
-        :key="i"
-        cols="12"
-        sm="4"
-      >
-        <v-card
-          class="pa-2 ma-10"
-          outlined
-          tile
-          elevation="5"
-          hover
-        >
-          <v-img
-          :src="require('../../../assets/card-background.jpg')">
-          <v-card-title>{{upcoming[i-1].name}}</v-card-title>
-          </v-img>
-        </v-card>
-      </v-col>
-    </v-row>
-          </v-card-->
-
-          <v-card flat v-if="(n==2)">
+          <v-card flat v-if="(n==1)">
              <v-row no-gutters>
       <v-col
         v-for="i in ongoing.length"
@@ -98,17 +73,19 @@
           elevation="5"
           hover
         >
-        <v-img
+          <v-img
           :src="require('../../../assets/card-background.jpg')">
-          <v-card-title>{{ongoing[i-1].name}}</v-card-title>
-          <v-btn :to="{name:'View Assignment', params:{id:ongoing[i-1].id}}" outlined color="primary" class="ma-5">VIEW</v-btn>
+          <v-card-title>{{ongoing[i-1].title}}</v-card-title>
+          <v-card-subtitle>Open Date : {{ongoing[i-1].openTime}}</v-card-subtitle>
+          <v-card-subtitle>Due Date : {{ongoing[i-1].closeTime}}</v-card-subtitle>
+          <v-btn :to="{name:'View Assignment', params:{assignmentId:ongoing[i-1].assignmentId}}" outlined color="primary" class="ma-5">VIEW</v-btn>
           </v-img>
         </v-card>
       </v-col>
     </v-row>
           </v-card>
 
-          <v-card flat v-if="(n==3)">
+          <v-card flat v-if="(n==2)">
              <v-row no-gutters>
       <v-col
         v-for="i in past.length"
@@ -125,8 +102,35 @@
         >
         <v-img
           :src="require('../../../assets/card-background.jpg')">
-          <v-card-title>{{past[i-1].name}}</v-card-title>
-          <v-btn :to="{name:'View Assignment', params:{id:past[i-1].id}}" outlined color="primary" class="ma-5">VIEW</v-btn>
+          <v-card-title>{{past[i-1].title}}</v-card-title>
+          <v-btn :to="{name:'View Assignment', params:{assignmentId:past[i-1].assignmentId}}" outlined color="primary" class="ma-5">VIEW</v-btn>
+          <v-card-subtitle>Assignment is Due.You cannot edit this submission...</v-card-subtitle>
+          </v-img>
+        </v-card>
+      </v-col>
+    </v-row>
+          </v-card>
+
+          <v-card flat v-if="(n==3)">
+             <v-row no-gutters>
+      <v-col
+        v-for="i in finalized.length"
+        :key="i"
+        cols="12"
+        sm="4"
+      >
+        <v-card
+          class="pa-2 ma-10"
+          outlined
+          tile
+          elevation="5"
+          hover
+        >
+        <v-img
+          :src="require('../../../assets/card-background.jpg')">
+          <v-card-title>{{finalized[i-1].title}}</v-card-title>
+          <v-card-subtitle>Final Grade : {{finalized[i-1].finalGrade}}</v-card-subtitle>
+          <v-btn :to="{name:'View Assignment', params:{assignmentId:finalized[i-1].assignmentId}}" outlined color="primary" class="ma-5">VIEW</v-btn>
           </v-img>
         </v-card>
       </v-col>
@@ -143,36 +147,43 @@
 </template>
 
 <script>
+import api from '@/api'
 export default {
     name:"index",
     data: () => ({
     length: 3,
-    window: 1,
+    window: 0,
  
-    upcoming:[
-        {id:1,name:"assignment 1"},
-        {id:2,name:"assignment 2"},
-        {id:3,name:"assignment 3"},
-        {id:4,name:"assignment 4"},
-        {id:5,name:"assignment 5"},
-            ],
-    ongoing:[
-        {id:1,name:"assignment 1"},
-        {id:2,name:"assignment 2"},
-        {id:3,name:"assignment 3"},
-        {id:4,name:"assignment 4"},
-    ],
-    past:[
-        {id:1,name:"assignment 1"},
-        {id:2,name:"assignment 2"},
-        {id:3,name:"assignment 3"},
-        {id:4,name:"assignment 4"},
-        {id:5,name:"assignment 5"},
-        {id:6,name:"assignment 6"},
-        {id:7,name:"assignment 7"},
-        {id:8,name:"assignment 8"},
-    ],
+    finalized:[],
+    ongoing:[],
+    past:[],
     }),
+
+    created(){
+      this.initialize()
+    },
+
+    methods:{
+      async initialize(){
+        const[status_ongoing,res_data_ongoing]=await api.assignment.getPublished('OPEN')
+        console.log(res_data_ongoing)
+        if(status_ongoing.status==200){
+          this.ongoing=res_data_ongoing
+        }
+
+        console.log(status_ongoing.message)
+
+        const[status_past,res_data_past]= await api.assignment.getPublished('CLOSED')
+        if(status_past.status==200){
+          this.past=res_data_past
+        }
+
+        const[status_finalized,res_data_finalized]= await api.assignment.getPublished('FINALIZED')
+        if(status_finalized.status==200){
+          this.finalized=res_data_finalized
+        }
+      },
+    }
     
   }
 </script>
