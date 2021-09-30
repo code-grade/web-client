@@ -14,7 +14,7 @@ export const assignment = {
      * @returns {Promise<[*, *]>}
      */
     instructor: (state) => extractDataResolve(
-        axios.get("/api/assignment", {
+        axios.get("/api/assignment/instructor", {
             params: {state}
         })
     ),

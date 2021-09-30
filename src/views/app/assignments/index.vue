@@ -147,7 +147,6 @@ export default {
       async initialize () {
         this.loading = true;
         const [status, res_data] = await api.assignment.instructor()
-
         this.loading = false;
         if (status.status === 200) {
 
