@@ -78,8 +78,10 @@ export const assignment = {
         axios.put(`/api/assignment/${assignmentId}/state/${state}`)
     ),
 
-    getPublished:() => extractDataResolve(
-        axios.get(`/api/assignment/public`,{params:state})
+    getPublished:(state) => extractDataResolve(
+        axios.get(`/api/assignment/public`,{
+            params:{state}
+        })
     ),
 
     grade:(assignmentId,userId,data) => extractDataResolve(
