@@ -8,7 +8,6 @@
           <v-tab
             v-for="n in 2"
             :key="n"
-            
           >
             <p v-if="(n==1)">
               TASK
@@ -23,7 +22,7 @@
       <v-tab-item>
         
         <TaskView :questionId='this.questionId'></TaskView>
-        <CodeEditor/>
+        <CodeEditor />
     
       </v-tab-item>
       <v-tab-item>
