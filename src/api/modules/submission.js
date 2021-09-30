@@ -30,8 +30,8 @@ export const submission = {
      * Get all submissions for a question by Id to the current user(student)
      * @returns {Promise<[*, *]>}
      */
-      questionSubmissions: (assignmentId,data) => extractDataResolve(
-        axios.get(`/api/submission/${assignmentId}`,data)
+      questionSubmissions: (assignmentId,questionId) => extractDataResolve(
+        axios.get(`/api/submission/${assignmentId}/${questionId}`)
     ),
 
     /**
