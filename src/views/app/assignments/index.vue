@@ -5,9 +5,9 @@
     >
         <v-flex 
         style="float:left">
-          <h2>Assignments
+          <h2>Assignments : {{$route.params.state}}
           </h2>
-          <h5> You can manage all Assignments here</h5>
+          <h5> You can manage all ({{$route.params.state}}) Assignments here</h5>
         </v-flex>
         <v-flex
         style="float:right">
@@ -21,9 +21,9 @@
 
     <v-data-table
       :headers="headers"
-      :items="questions"
+      :items="assignments"
       item-key="name"
-      :items-per-page="5"
+      :items-per-page="15"
       class="elevation-3 ma-10 pa-5"
       :search="search"
       disable-sort
@@ -33,7 +33,7 @@
     <!--Edit question area start-->
 
       <template v-slot:top>
-        <v-dialog
+        <!--v-dialog
           v-model="qdialog"
           max-width="1000px"
         >
@@ -138,10 +138,10 @@
               </v-btn>
             </v-card-actions>
           </v-card>
-        </v-dialog>
+        </v-dialog-->
 <!--Edit question area end-->
 
-<!--Delete question area start-->
+<!--Delete question area start>
         <v-dialog v-model="dialogDeleteQuestion" max-width="500px">
           <v-card>
             <v-card-title class="justify-center" ><v-icon x-large color="red">mdi-alert-circle-outline</v-icon></v-card-title>
@@ -155,7 +155,7 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-<!--Delete question area end-->
+<Delete question area end-->
 
 <!--Data table header start-->
 
@@ -192,37 +192,14 @@
         <template v-slot:start>
             <v-checkbox></v-checkbox>        
     </template>
-        <template v-slot:[`item.actions`]="{ item }">
-      <v-icon
-        small
-        color="primary"
-        class="mr-2"
-        @click="editQuestion(item)"
-      >
-        mdi-pencil-outline
-      </v-icon>
-      <v-icon
-        small
-        color="red"
-        @click="deleteQuestion(item)"
-      >
-        mdi-delete-outline
-      </v-icon>   
-    </template>
+
     <!--actions for question section end--> 
         <template v-slot:[`item.type`]="{ item }">
-           <v-btn 
-            x-small
-            id="easy-btn"
-            class="green--text"
-            v-if="(item.difficulty==='Easy')" color="green lighten-4"
-              >Easy
-          </v-btn>
           <v-btn
             x-small
             id="medium-btn"
             class="orange--text"
-            v-else-if="(item.type==='PUBLIC')" color="orange lighten-4"
+            v-if="(item.type==='PUBLIC')" color="orange lighten-4"
               >PUBLIC
           </v-btn>
           <v-btn 
@@ -231,6 +208,51 @@
             class="red--text"
             v-else color="red lighten-4"
               >PRIVATE
+          </v-btn>
+        
+        </template>
+
+        <template v-slot:[`item.action`]="{ item }">
+          <v-btn
+            small
+            class="primary mr-10"
+            v-if="($route.params.state==='DRAFT')"
+            @click="publishAssignment(item)"
+              >PUBLISH
+          </v-btn>
+          <v-btn
+            small
+            class="primary"
+            v-if="($route.params.state==='DRAFT')"
+            @click="manageAssignment(item)"
+              >MANAGE
+          </v-btn>
+          <v-btn
+            small
+            class="primary mr-5"
+            v-if="($route.params.state==='PUBLISHED')"
+            @click="openAssignment(item)"
+              >OPEN
+          </v-btn>
+          <v-btn
+            small
+            class="primary"
+            v-if="($route.params.state==='PUBLISHED')"
+            @click="manageAssignment(item)"
+              >VIEW
+          </v-btn>
+          <v-btn
+            small
+            class="primary mr-5"
+            v-if="($route.params.state==='OPEN')"
+            @click="closeAssignment(item)"
+              >CLOSE
+          </v-btn>
+          <v-btn
+            small
+            class="primary"
+            v-if="($route.params.state==='CLOSED')"
+              >FINALIZE
           </v-btn>
         
         </template>
@@ -246,13 +268,12 @@
 <script>
 import { VueEditor } from "vue2-editor";
 import api from "@/api";
+import router from "@/router";
 
 export default {
   name: "index",
   components: { VueEditor },
   data: () => ({
-
-
       dialogDeleteQuestion: false,
       search:'',
       loading:'true',
@@ -266,51 +287,89 @@ export default {
           },
           { text: 'NO OF Question', value: 'questions.length' },
           { text: 'TYPE', value: 'type' },
-          { text: 'ACTIONS', value: 'actions' },
+          { text: 'START DATE', value: 'openTime' },
+          { text: 'DUE DATE', value: 'closeTime' },
+          { text: 'ACTION', value: 'action' },
         ],
-      testCaseheaders:[{
-          text: 'INPUT',
-            align: 'start',
-            filterable: true,
-            value: 'input',
-          },
-          { text: 'OUTPUT', value: 'output' },
-          { text: 'IsEvaluate', value: 'evaluation' },
-      ],
-      questions: [],      
-
-      editedQuestion: {
-            title: '',
-            points: 0,
-            difficulty: '',
-            description:"",
-            testCases:[{}]
-          },
-    select: null,
-    dificulties: ['Hard', 'Medium', 'Easy'],
+      assignments: [],      
 
         }),
-
-
-
-
-
 
     created () {
       this.initialize()
     },
 
+    watch: {
+      // will fire on route changes
+    //'$route.params.id': function(val, oldVal){ // Same
+      '$route.path': function(){
+        this.initialize();
+      }
+    },
+
     methods: {
       async initialize () {
+        console.log(this.$route.params.state)
         this.loading = true;
-        const [status, res_data] = await api.assignment.instructor()
-
+        const [status, res_data] = await api.assignment.instructor(this.$route.params.state)
         this.loading = false;
         if (status.status === 200) {
 
-        this.questions = [...res_data]
+        this.assignments = [...res_data]
       } else {
         this.$vToastify.error(res_data, "Done")
+      }
+    },
+
+    async manageAssignment(item){
+      //console.log(item.assignmentId)
+      //var assignmentId=item.assignmentId;
+        await router.push({
+          name:'Manage Assignments',
+          params:{
+            assignmentId:item.assignmentId
+          }
+        }
+        )
+    },
+
+    async publishAssignment(item){
+      const[status1,res_data1]= await api.assignment.change(item.assignmentId,'PUBLISHED')
+      if(status1.status==200){
+        this.$vToastify.success("Assignment Published Successfully! Students can view the assignment")
+        this.initialize()
+      }else{
+        this.$vToastify.error("Somthing went wrong with the publish")
+      }
+    },
+
+    async draftAssignment(item){
+      const[status2,res_data2]= await api.assignment.change(item.assignmentId,'DRAFT')
+      if(status2.status==200){
+        this.$vToastify.success("Assignment Send to the Drafts!")
+        this.initialize()
+      }else{
+        this.$vToastify.error("Somthing went wrong with the send to draft")
+      }
+    },
+
+    async openAssignment(item){
+      const[status3,res_data3]= await api.assignment.change(item.assignmentId,'OPEN')
+      if(status3.status==200){
+        this.$vToastify.success("Assignment is open now!")
+        this.initialize()
+      }else{
+        this.$vToastify.error("Somthing went wrong with opening the assignment")
+      }
+    },
+
+    async closeAssignment(item){
+      const[status4,res_data3]= await api.assignment.change(item.assignmentId,'CLOSED')
+      if(status4.status==200){
+        this.$vToastify.success("Assignment closed successfully!")
+        this.initialize()
+      }else{
+        this.$vToastify.error("Somthing went wrong with closing assignment")
       }
     },
 
@@ -379,9 +438,3 @@ export default {
 
 </script>
 
-
-<style scoped>
-  #easy-btn, #medium-btn, #hard-btn{
-    pointer-events: none;
-  }
-</style>

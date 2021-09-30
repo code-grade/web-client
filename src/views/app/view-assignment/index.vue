@@ -4,9 +4,9 @@
         <div>
         <v-flex 
         style="float:left">
-          <h2>{{assignment.name}}
+          <h2>{{assignment.title}}
           </h2>
-          <h5>{{assignment.description}}</h5>
+          <div v-html='assignment.description'></div>
         </v-flex>
         </div>
         <v-flex
@@ -34,29 +34,13 @@
               {{assignment.questions[i-1].title}}
           </v-card-title>
           <v-btn class="float-right mr-10"
-          v-if="(assignment.student_question[i-1].marks==0)"
           outlined
-        color="green">
-              Solve Task
-        </v-btn>
-         <v-btn class="float-right mr-10"
-         v-if="(assignment.student_question[i-1].marks!==0 && assignment.student_question[i-1].marks<assignment.questions[i-1].points )"
-          outlined
-        color="gray">
-              Try Again
-        </v-btn>
-         <v-btn class="float-right mr-10"
-         v-if="(assignment.student_question[i-1].marks==assignment.questions[i-1].points)"
-          tile
-          
-        color="green">
-              Completed
+        color="primary"
+        :to="{name:'View Question', params:{questionId:assignment.questions[i-1].questionId}}">
+              Go To Question
         </v-btn>
           <v-card-subtitle class="pt-0 pb-0">
-              Max Score: {{assignment.questions[i-1].points}}
-              </v-card-subtitle>
-              <v-card-subtitle class="pt-0 pb-0">
-              Your Score: {{assignment.questions[i-1].points}}
+              Max Score: {{assignment.questions[i-1].totalPoints}}
               </v-card-subtitle>
           <v-card-subtitle  v-if="(assignment.questions[i-1].difficulty=='Easy')" class="green--text pt-0">
             {{assignment.questions[i-1].difficulty}}
@@ -77,7 +61,7 @@
             Start Time:{{assignment.openTime}}
         </v-card-subtitle>
         <v-card-subtitle class="pt-0">
-            Due Time:{{assignment.endTime}}
+            Due Time:{{assignment.closeTime}}
         </v-card-subtitle>
         <h5 class="pa-4">
             Note: The assignment will automaticaly close after the time is due!
@@ -89,84 +73,30 @@
 </template>
 
 <script>
-import router from '../../../router'
+import router from "@/router";
+import api from '@/api'
 export default {
     name:'index',
 
-    data () {
-            return {
-                id: 0,
-                assignment:{
-                    id:1,
-                    name:'Assignment 1',
-                    description:'description of assignment 1',
-                    openTime:'8:00am 2021/09/28',
-                    endTime:'11:59pm 2021/09/28',
-                    questions:[
-                        {
-                            id:1,
-                            title:'question 1',
-                            points:10,
-                            difficulty:'Easy'
-                        },
-                        {
-                            id:2,
-                            title:'question 2',
-                            points:10,
-                            difficulty:'Medium'
-                        },
-                        {
-                            id:3,
-                            title:'question 3',
-                            points:10,
-                            difficulty:'Hard'
-                        },
-                        {
-                            id:4,
-                            title:'question 2',
-                            points:10,
-                            difficulty:'Medium'
-                        },
-                        {
-                            id:5,
-                            title:'question 3',
-                            points:10,
-                            difficulty:'Hard'
-                        },
-                        
-                    ],
-                    student_question:[
-                        {
-                            id:1,
-                            marks:10
-                        },
-                        {
-                            id:2,
-                            marks:5
-                        },
-                        {
-                            id:3,
-                            marks:8
-                        },
-                        {
-                            id:4,
-                            marks:8
-                        },
-                        {
-                            id:5,
-                            marks:0
-                        }
-                    ]
-                }
-            }
-        },
+    data: ()=> ({
+                assignment:[],
+        }),
         created() {
-            this.id = this.$route.params.id;
+            this.initialize()
         },
         methods: {
             navigate() {
                 router.go(-1);
-            }
+            },
+
+            async initialize(){
+                const[status,res_data] = await api.assignment.get(this.$route.params.assignmentId)
+                console.log(res_data)
+                if(status.status==200){
+                    this.assignment=res_data
+                }
+            },
+
         }
 }
 </script>
