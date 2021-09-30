@@ -307,14 +307,14 @@ export default {
     }
   },
 
-  methods: {
-    async initialize () {
-      console.log(this.$route.params.state)
-      this.loading = true;
-      const [status, res_data] = await api.assignment.instructor(this.$route.params.state)
-      this.loading = false;
-      if (status.status === 200) {
-
+    methods: {
+      async initialize () {
+        console.log(this.$route.params.state)
+        this.loading = true;
+        const [status, res_data] = await api.assignment.instructor(this.$route.params.state)
+        console.log(res_data)
+        this.loading = false;
+        if (status.status === 200) {
         this.assignments = [...res_data]
       } else {
         this.$vToastify.error(res_data, "Done")
