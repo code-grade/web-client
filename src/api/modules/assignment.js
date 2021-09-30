@@ -52,7 +52,7 @@ export const assignment = {
     ),
 
     getPublished:() => extractDataResolve(
-        axios.get(`/api/assignment/public`)
+        axios.get(`/api/assignment/public`,{params:state})
     ),
 
     grade:(assignmentId,userId) => extractDataResolve(
