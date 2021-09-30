@@ -14,7 +14,34 @@ export const assignment = {
      * @returns {Promise<[*, *]>}
      */
     instructor: (state) => extractDataResolve(
-        axios.get("/api/assignment/instructor", {params: {state}})
+        axios.get("/api/assignment/instructor", {
+            params: {state}
+        })
+
+    ),
+    /**
+     * Get a single assignment by id
+     * @param assignmentID
+     * @returns {Promise<[*, *]>}
+     */
+    instructorGetAssignmentById: (assignmentID) => extractDataResolve(
+        axios.get(`/api/assignment/${assignmentID}`)
+    ),
+    /**
+     * Get assignment participants
+     * @param assignmentID
+     * @returns {Promise<[*, *]>}
+     */
+    instructorGetParticipants: (assignmentID) => extractDataResolve(
+        axios.get(`/api/assignment/participate/${assignmentID}`)
+    ),
+    /**
+     * Get assignment participants
+     * @param assignmentID
+     * @returns {Promise<[*, *]>}
+     */
+    instructorGetParticipantsSummary: (assignmentID,studentId) => extractDataResolve(
+        axios.get(`/api/submission/summary/${assignmentID}/${studentId}`)
     ),
 
     /**
@@ -55,8 +82,8 @@ export const assignment = {
         axios.get(`/api/assignment/public`,{params:state})
     ),
 
-    grade:(assignmentId,userId) => extractDataResolve(
-        axios.post(`/api/assignment/${assignmentId}/grade/${userId}`)
+    grade:(assignmentId,userId,data) => extractDataResolve(
+        axios.post(`/api/assignment/${assignmentId}/grade/${userId}`,data)
     ),
     /**
          * Get final grade by assignment Id

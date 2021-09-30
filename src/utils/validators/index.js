@@ -26,5 +26,6 @@ export default {
     integer: () => (s) => Boolean(s?.match(/^\d+$/)) || "Only integer values are allowed",
     decimal: () => (s) => Boolean(s?.match(/^\d+(\.\d+)?$/)) || "Only numerical values are allowed",
     youtube: () => (s) => Boolean(s?.match(youtube_link)) || youtube_link_help_text,
-    greater: (val) => (s) => Number(s) > val || "too small"
+    greater: (val) => (s) => Number(s) > val || "too small",
+    lesser: (val) => (s) => Number(s) < val || "too big"
 }
