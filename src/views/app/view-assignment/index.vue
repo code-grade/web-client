@@ -36,7 +36,7 @@
           <v-btn class="float-right mr-10"
           outlined
         color="primary"
-        :to="{name:'View Question', params:{questionId:assignment.questions[i-1].questionId}}">
+        :to="{name:'View Question', params:{questionId:assignment.questions[i-1].questionId,assignmentId:assignment.assignmentId}}">
               Go To Question
         </v-btn>
           <v-card-subtitle class="pt-0 pb-0">
