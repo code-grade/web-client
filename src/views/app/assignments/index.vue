@@ -1,36 +1,36 @@
 <template>
-   <div>
+  <div>
     <v-row
-    class="ma-10"
+        class="ma-10"
     >
-        <v-flex 
-        style="float:left">
-          <h2>Assignments : {{$route.params.state}}
-          </h2>
-          <h5> You can manage all ({{$route.params.state}}) Assignments here</h5>
-        </v-flex>
-        <v-flex
-        style="float:right">
+      <v-flex
+          style="float:left">
+        <h2>Assignments : {{$route.params.state}}
+        </h2>
+        <h5> You can manage all ({{$route.params.state}}) Assignments here</h5>
+      </v-flex>
+      <v-flex
+          style="float:right">
         <div style="float:right">
           <v-btn to="/app/assignments/create" class="mt-3" color="secondary"><v-icon>mdi-plus</v-icon>Create Assignment</v-btn>
-          </div>
-        </v-flex>
+        </div>
+      </v-flex>
     </v-row>
 
     <!--data table start-->
 
     <v-data-table
-      :headers="headers"
-      :items="assignments"
-      item-key="name"
-      :items-per-page="15"
-      class="elevation-3 ma-10 pa-5"
-      :search="search"
-      disable-sort
-      :loading="loading"
-      ref="questionTable"
+        :headers="headers"
+        :items="assignments"
+        item-key="name"
+        :items-per-page="15"
+        class="elevation-3 ma-10 pa-5"
+        :search="search"
+        disable-sort
+        :loading="loading"
+        ref="questionTable"
     >
-    <!--Edit question area start-->
+      <!--Edit question area start-->
 
       <template v-slot:top>
         <!--v-dialog
@@ -59,7 +59,7 @@
                   <v-col>
                   <h5>Question Description</h5>
                      <vue-editor
-                     v-model="editedQuestion.description" 
+                     v-model="editedQuestion.description"
                      />
                   </v-col>
                 </v-row>
@@ -70,7 +70,7 @@
                     dense
                       v-model="editedQuestion.points"
                       placeholder="Max Points"
-                      type="number" min="0" step="1" 
+                      type="number" min="0" step="1"
                       outlined
                     ></v-text-field>
                   </v-col>
@@ -96,7 +96,7 @@
                   class="elevation-2 mb-4"
                   disable-sort
                   hide-default-footer>
-                 
+
                    <template v-slot:[`item.actions`]="{ item }">
                     <v-icon
                       small
@@ -112,7 +112,7 @@
                       @click="deleteTestCase(item)"
                     >
                       mdi-delete-outline
-                    </v-icon>   
+                    </v-icon>
                   </template>
                 </v-data-table>
                     </v-col>
@@ -139,130 +139,130 @@
             </v-card-actions>
           </v-card>
         </v-dialog-->
-<!--Edit question area end-->
+        <!--Edit question area end-->
 
-<!--Delete question area start>
-        <v-dialog v-model="dialogDeleteQuestion" max-width="500px">
-          <v-card>
-            <v-card-title class="justify-center" ><v-icon x-large color="red">mdi-alert-circle-outline</v-icon></v-card-title>
-            <v-spacer></v-spacer>
-            <v-card-text class="text-h5">Are you sure you want to delete this item?</v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="primary" text @click="closeDelete">Cancel</v-btn>
-              <v-btn color="primary" text @click="deleteConfirm(editedQuestion.questionId)">OK</v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-<Delete question area end-->
+        <!--Delete question area start>
+                <v-dialog v-model="dialogDeleteQuestion" max-width="500px">
+                  <v-card>
+                    <v-card-title class="justify-center" ><v-icon x-large color="red">mdi-alert-circle-outline</v-icon></v-card-title>
+                    <v-spacer></v-spacer>
+                    <v-card-text class="text-h5">Are you sure you want to delete this item?</v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="primary" text @click="closeDelete">Cancel</v-btn>
+                      <v-btn color="primary" text @click="deleteConfirm(editedQuestion.questionId)">OK</v-btn>
+                      <v-spacer></v-spacer>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+        <Delete question area end-->
 
-<!--Data table header start-->
+        <!--Data table header start-->
 
         <v-row>
-        <v-col
-          cols="12"
-          sm="6"
-          md="8"
-        >
-        <v-row class="ml-1">
-        <v-checkbox class="my-5"></v-checkbox>
-         <v-btn color="primary lighten-5" class="ml-5 my-5" fab x-small><v-icon color="primary">mdi-archive-arrow-down-outline</v-icon></v-btn>
-          <v-btn color="primary lighten-5" class="ml-2 my-5" fab x-small><v-icon color="primary">mdi-delete-outline</v-icon></v-btn>
-        </v-row>
-       </v-col>
-        <v-col
-          cols="12"
-          sm="6"
-          md="3"
-        >
-       
-        <v-text-field
-        dense
-          v-model="search"
-          label="Search..."
-          outlined
-          prepend-inner-icon="mdi-magnify"
-        ></v-text-field>  
-        </v-col>
-        </v-row>
-        </template>
-<!--Data table header end-->
-<!--actions for question section start-->
-        <template v-slot:start>
-            <v-checkbox></v-checkbox>        
-    </template>
+          <v-col
+              cols="12"
+              sm="6"
+              md="8"
+          >
+            <v-row class="ml-1">
+              <v-checkbox class="my-5"></v-checkbox>
+              <v-btn color="primary lighten-5" class="ml-5 my-5" fab x-small><v-icon color="primary">mdi-archive-arrow-down-outline</v-icon></v-btn>
+              <v-btn color="primary lighten-5" class="ml-2 my-5" fab x-small><v-icon color="primary">mdi-delete-outline</v-icon></v-btn>
+            </v-row>
+          </v-col>
+          <v-col
+              cols="12"
+              sm="6"
+              md="3"
+          >
 
-    <!--actions for question section end--> 
-        <template v-slot:[`item.type`]="{ item }">
-          <v-btn
+            <v-text-field
+                dense
+                v-model="search"
+                label="Search..."
+                outlined
+                prepend-inner-icon="mdi-magnify"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+      </template>
+      <!--Data table header end-->
+      <!--actions for question section start-->
+      <template v-slot:start>
+        <v-checkbox></v-checkbox>
+      </template>
+
+      <!--actions for question section end-->
+      <template v-slot:[`item.type`]="{ item }">
+        <v-btn
             x-small
             id="medium-btn"
             class="orange--text"
             v-if="(item.type==='PUBLIC')" color="orange lighten-4"
-              >PUBLIC
-          </v-btn>
-          <v-btn 
+        >PUBLIC
+        </v-btn>
+        <v-btn
             x-small
             id="hard-btn"
             class="red--text"
             v-else color="red lighten-4"
-              >PRIVATE
-          </v-btn>
-        
-        </template>
+        >PRIVATE
+        </v-btn>
 
-        <template v-slot:[`item.action`]="{ item }">
-          <v-btn
+      </template>
+
+      <template v-slot:[`item.action`]="{ item }">
+        <v-btn
             small
             class="primary mr-10"
             v-if="($route.params.state==='DRAFT')"
             @click="publishAssignment(item)"
-              >PUBLISH
-          </v-btn>
-          <v-btn
+        >PUBLISH
+        </v-btn>
+        <v-btn
             small
             class="primary"
             v-if="($route.params.state==='DRAFT')"
             @click="manageAssignment(item)"
-              >MANAGE
-          </v-btn>
-          <v-btn
+        >MANAGE
+        </v-btn>
+        <v-btn
             small
             class="primary mr-5"
             v-if="($route.params.state==='PUBLISHED')"
             @click="openAssignment(item)"
-              >OPEN
-          </v-btn>
-          <v-btn
+        >OPEN
+        </v-btn>
+        <v-btn
             small
             class="primary"
             v-if="($route.params.state==='PUBLISHED')"
             @click="manageAssignment(item)"
-              >VIEW
-          </v-btn>
-          <v-btn
+        >VIEW
+        </v-btn>
+        <v-btn
             small
             class="primary mr-5"
             v-if="($route.params.state==='OPEN')"
             @click="closeAssignment(item)"
-              >CLOSE
-          </v-btn>
-          <v-btn
+        >CLOSE
+        </v-btn>
+        <v-btn
             small
             class="primary"
             v-if="($route.params.state==='CLOSED')"
-              >FINALIZE
-          </v-btn>
-        
-        </template>
+        >FINALIZE
+        </v-btn>
+
+      </template>
 
     </v-data-table>
 
     <!--data table end-->
 
-   </div>
-   
+  </div>
+
 </template>
 
 <script>
@@ -274,46 +274,46 @@ export default {
   name: "index",
   components: { VueEditor },
   data: () => ({
-      dialogDeleteQuestion: false,
-      search:'',
-      loading:'true',
+    dialogDeleteQuestion: false,
+    search:'',
+    loading:'true',
 
-      headers: [
-          {
-            text: 'TITLE',
-            align: 'start',
-            filterable: true,
-            value: 'title',
-          },
-          { text: 'NO OF Question', value: 'questions.length' },
-          { text: 'TYPE', value: 'type' },
-          { text: 'START DATE', value: 'openTime' },
-          { text: 'DUE DATE', value: 'closeTime' },
-          { text: 'ACTION', value: 'action' },
-        ],
-      assignments: [],      
+    headers: [
+      {
+        text: 'TITLE',
+        align: 'start',
+        filterable: true,
+        value: 'title',
+      },
+      { text: 'NO OF Question', value: 'questions.length' },
+      { text: 'TYPE', value: 'type' },
+      { text: 'START DATE', value: 'schedule.openTime' },
+      { text: 'DUE DATE', value: 'schedule.closeTime' },
+      { text: 'ACTION', value: 'action' },
+    ],
+    assignments: [],
 
-        }),
+  }),
 
-    created () {
-      this.initialize()
-    },
+  created () {
+    this.initialize()
+  },
 
-    watch: {
-      // will fire on route changes
+  watch: {
+    // will fire on route changes
     //'$route.params.id': function(val, oldVal){ // Same
-      '$route.path': function(){
-        this.initialize();
-      }
-    },
+    '$route.path': function(){
+      this.initialize();
+    }
+  },
 
-    methods: {
-      async initialize () {
-        console.log(this.$route.params.state)
-        this.loading = true;
-        const [status, res_data] = await api.assignment.instructor(this.$route.params.state)
-        this.loading = false;
-        if (status.status === 200) {
+  methods: {
+    async initialize () {
+      console.log(this.$route.params.state)
+      this.loading = true;
+      const [status, res_data] = await api.assignment.instructor(this.$route.params.state)
+      this.loading = false;
+      if (status.status === 200) {
 
         this.assignments = [...res_data]
       } else {
@@ -324,13 +324,13 @@ export default {
     async manageAssignment(item){
       //console.log(item.assignmentId)
       //var assignmentId=item.assignmentId;
-        await router.push({
-          name:'Manage Assignments',
-          params:{
-            assignmentId:item.assignmentId
+      await router.push({
+            name:'Manage Assignments',
+            params:{
+              id:item.assignmentId
+            }
           }
-        }
-        )
+      )
     },
 
     async publishAssignment(item){
@@ -374,67 +374,67 @@ export default {
     },
 
     editQuestion (item) {
-        this.editedIndex = this.questions.indexOf(item)
-        this.editedQuestion = Object.assign({}, item)
-        this.qdialog = true
-      },
+      this.editedIndex = this.questions.indexOf(item)
+      this.editedQuestion = Object.assign({}, item)
+      this.qdialog = true
+    },
 
     async updateQuestion(questionId,data){
-      
-       const[status,res_data]= await api.question.update(questionId,data)
-       if(status.status===200){
+
+      const[status,res_data]= await api.question.update(questionId,data)
+      if(status.status===200){
         this.$vToastify.success(status.message, "Successfully Updated!")
         this.close()
         this.initialize()
-       }else{
-         this.$vToastify.error(res_data, "Error")
-       }
+      }else{
+        this.$vToastify.error(res_data, "Error")
+      }
     },
 
-      deleteQuestion (item) {
-        this.editedIndex = this.questions.indexOf(item)
-        this.editedQuestion = Object.assign({}, item)
-        this.dialogDeleteQuestion = true
-      },
+    deleteQuestion (item) {
+      this.editedIndex = this.questions.indexOf(item)
+      this.editedQuestion = Object.assign({}, item)
+      this.dialogDeleteQuestion = true
+    },
 
-      async deleteConfirm (questionId) {
-        const[status]= await api.question.delete(questionId)
-        if(status.status===200){
-          this.$vToastify.success("Successfully Deleted")
-        }else{
-          this.$vToastify.error("Something went wrong")
-        }
-        this.closeDelete()
-        this.initialize()
-      },
+    async deleteConfirm (questionId) {
+      const[status]= await api.question.delete(questionId)
+      if(status.status===200){
+        this.$vToastify.success("Successfully Deleted")
+      }else{
+        this.$vToastify.error("Something went wrong")
+      }
+      this.closeDelete()
+      this.initialize()
+    },
 
-      close () {
-        this.qdialog = false
-        this.$nextTick(() => {
-          this.editedQuestion = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
+    close () {
+      this.qdialog = false
+      this.$nextTick(() => {
+        this.editedQuestion = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
+    },
 
-      closeDelete () {
-        this.dialogDeleteQuestion = false
-        this.$nextTick(() => {
-          this.editedQuestion = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
+    closeDelete () {
+      this.dialogDeleteQuestion = false
+      this.$nextTick(() => {
+        this.editedQuestion = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
+    },
 
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.questions[this.editedIndex], this.editedQuestion)
-        } else {
-          this.questions.push(this.editedQuestion)
-        }
-        this.close()
-      },
+    save () {
+      if (this.editedIndex > -1) {
+        Object.assign(this.questions[this.editedIndex], this.editedQuestion)
+      } else {
+        this.questions.push(this.editedQuestion)
+      }
+      this.close()
+    },
 
-    }
   }
+}
 
 </script>
 
