@@ -1,77 +1,53 @@
 <template>
     <v-container>
 		<h4>Write your code here : </h4>
-        <div id="edi" style="min-height: 500px;">
-        <div ref="editor" style="min-height: 500px;"></div>
-        </div>
-		<v-btn color="primary" class="ma-5" @click="runningCode()">Run Code</v-btn>
-		<v-btn color="accent">Submit Code</v-btn>
+      <MonacoEditor class="editor" v-model="code" language="python" theme="vs-dark"/>
+<!--		<v-btn color="primary" class="ma-5" @click="runningCode()">Run Code</v-btn>-->
+      <v-btn  :loading="submitting" @click="submitCode" rounded color="secondary accent-3"   dark>Submit</v-btn>
 		<RunView :runCode='this.runCode' />
     </v-container>
+
 	
 </template>
 
 <script>
-import * as monaco from 'monaco-editor';
+import MonacoEditor from 'vue-monaco'
 import RunView from '@/components/RunView'
+import api from "@/api";
 
 export default {
   name: 'CodeEditor',
-  components:{RunView},
+  components:{RunView,MonacoEditor  },
   data:()=>({
 	  runCode:false,
+    submitting:false,
+    code: '#write your code here',
+    options: {
+      selectOnLineNumbers: false
+    }
   }),
-  
-  async mounted() {
-    const el = this.$refs.editor;
-    this.editor = monaco.editor.create(el, {
-        value: "print('Hello, World!')",
-        language: 'python',
-        theme:'vs-dark',
-        lineNumbers: "on",
-	    roundedSelection: false,
-	    scrollBeyondLastLine: false,
-	    readOnly: false,
-        wordWrap: 'wordWrapColumn',
-	    wordWrapColumn: 40,
-
-	// Set this to false to not auto word wrap minified files
-	    wordWrapMinified: true,
-
-	// try "same", "indent" or "none"
-	    wrappingIndent: "indent",
-        scrollbar: {
-		// Subtle shadows to the left & top. Defaults to true.
-		useShadows: false,
-
-		// Render vertical arrows. Defaults to false.
-		verticalHasArrows: true,
-		// Render horizontal arrows. Defaults to false.
-		horizontalHasArrows: true,
-
-		// Render vertical scrollbar.
-		// Accepted values: 'auto', 'visible', 'hidden'.
-		// Defaults to 'auto'
-		vertical: 'visible',
-		// Render horizontal scrollbar.
-		// Accepted values: 'auto', 'visible', 'hidden'.
-		// Defaults to 'auto'
-		horizontal: 'visible',
-
-		verticalScrollbarSize: 17,
-		horizontalScrollbarSize: 17,
-		arrowSize: 30
-	}
-    });
-    monaco.editor.colorizeElement(document.getElementById('edi'));
-
-  },
-
-  methods:{
-	  runningCode(){
-		  this.runCode=true;
-	  }
+  methods: {
+    async submitCode() {
+      this.submitting = true
+      const [status,res_data] = await api.submission.make(this.$route.params.assignmentId,this.$route.params.questionId,{
+        source:this.code,
+        language:"PYTHON"
+      })
+      console.log(res_data)
+      this.submitting = false
+      if (status.status === 200) {
+        this.$vToastify.success(status.message, "Successfully Added Feedback!")
+      } else {
+        this.$vToastify.error(res_data, "Done")
+      }
+    }
   }
 
 };
 </script>
+<style>
+.editor {
+  width: 600px;
+  height: 800px;
+}
+</style>
