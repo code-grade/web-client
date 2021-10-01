@@ -5,9 +5,9 @@
     >
       <v-flex
           style="float:left">
-        <h2>Assignments : {{$route.params.state}}
+        <h2>Assignments : {{ $route.params.state }}
         </h2>
-        <h5> You can see all ({{$route.params.state}}) Assignments here</h5>
+        <h5> You can see all ({{ $route.params.state }}) Assignments here</h5>
       </v-flex>
     </v-row>
 
@@ -25,7 +25,7 @@
     >
 
       <template v-slot:top>
-        
+
         <!--Data table header start-->
 
         <v-row>
@@ -47,24 +47,29 @@
       </template>
       <!--Data table header end-->
       <template v-slot:[`item.description`]={item}>
-          <div v-html='item.description'></div>
+        <div v-html='item.description'></div>
       </template>
 
       <template v-slot:[`item.final`]={item}>
-          <p v-if="item.state=='PUBLISHED'">--</p>
-          <p v-if="item.state=='OPEN'">--</p>
-          <p v-if="item.state=='CLOSED'">--</p>
+        <p v-if="item.state=='PUBLISHED'">--</p>
+        <p v-if="item.state=='OPEN'">--</p>
+        <p v-if="item.state=='CLOSED'">--</p>
       </template>
 
       <template v-slot:[`item.action`]={item}>
-          <v-btn x-small v-if="(item.state=='OPEN')" class="primary"
-         :to="{name:'View Assignment', params:{assignmentId:item.assignmentId}}">
-              Atempt Assignment
-          </v-btn>
-           <v-btn x-small v-if="(item.state=='PUBLISHED')" class="primary"
-            @click="unenrollMe(item)">
-              UnEnroll
-          </v-btn>
+        <v-btn x-small v-if="(item.state=='OPEN')" class="primary"
+               :to="{name:'View Assignment', params:{assignmentId:item.assignmentId}}">
+          Atempt Assignment
+        </v-btn>
+        <v-btn x-small v-if="(item.state=='PUBLISHED')" class="primary"
+               @click="unenrollMe(item)">
+          UnEnroll
+        </v-btn>
+        <v-btn x-small v-if="(item.state=='FINALIZED')" class="primary"
+               :to="{name: 'View Assignment Result', params: {assignmentId: item.assignmentId}}"
+        >
+          View Grade
+        </v-btn>
       </template>
 
     </v-data-table>
@@ -81,43 +86,38 @@ import api from "@/api";
 export default {
   name: "index",
   data: () => ({
-    search:'',
-    loading:'true',
+    search: '',
+    loading: 'true',
 
     headers: [
-      {
-        text: 'TITLE',
-        align: 'start',
-        filterable: true,
-        value: 'title',
-      },
-      { text: 'DESCRIPTION', value: 'description' },
-      { text: 'Final Grade', value: 'final' },
-      {text:'',value:'action'}
+      {text: 'Title', align: 'start', filterable: true, value: 'title'},
+      {text: 'Description', value: 'description'},
+      {text: 'Final Grade', value: 'final'},
+      {text: 'Actions', value: 'action'}
     ],
     assignments: [],
 
   }),
 
-  created () {
+  created() {
     this.initialize()
   },
 
   watch: {
     // will fire on route changes
     //'$route.params.id': function(val, oldVal){ // Same
-    '$route.path': function(){
+    '$route.path': function () {
       this.initialize();
     }
   },
 
-    methods: {
-      async initialize () {
-        this.loading = true;
-        const [status, res_data] = await api.assignment.participate.all()
-        //console.log('HERE', res_data)
-        this.loading = false;
-        if (status.status === 200) {
+  methods: {
+    async initialize() {
+      this.loading = true;
+      const [status, res_data] = await api.assignment.participate.all()
+      //console.log('HERE', res_data)
+      this.loading = false;
+      if (status.status === 200) {
         // const assignmentsList = [...res_data].filter(a=>a.enrolled=true)
         this.assignments = res_data.filter(a => (a.state === this.$route.params.state))
       } else {
@@ -125,15 +125,15 @@ export default {
       }
     },
 
-    async unenrollMe(item){
-        const[status1] = await api.assignment.participate.unenroll(item.assignmentId)
-        if(status1.status==200){
-          this.$vToastify.success("Successfully leave from the Assignment!")
-          this.initialize()
-        }
+    async unenrollMe(item) {
+      const [status1] = await api.assignment.participate.unenroll(item.assignmentId)
+      if (status1.status == 200) {
+        this.$vToastify.success("Successfully leave from the Assignment!")
+        this.initialize()
+      }
     }
 
-   
+
   }
 }
 
