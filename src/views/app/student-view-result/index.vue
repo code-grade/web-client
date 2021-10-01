@@ -6,53 +6,48 @@
             style="float:left">
           <h2>
             Title:
-<!--            {{title}}-->
+            <!--            {{title}}-->
           </h2>
           <h5>
             Description:
-<!--            {{description}}-->
+            <!--            {{description}}-->
           </h5>
         </v-flex>
       </div>
       <v-flex
           style="float:right">
         <div style="float:right">
-          <v-btn color="secondary"  v-on:click="navigate()"><v-icon>mdi-arrow-left-thick</v-icon>Go Back</v-btn>
+          <v-btn color="secondary" v-on:click="navigate()">
+            <v-icon>mdi-arrow-left-thick</v-icon>
+            Go Back
+          </v-btn>
         </div>
       </v-flex>
     </v-row>
     <v-row class="ma-10">
-      <v-col
-          cols="12"
-          md="6">
+      <v-col cols="12" md="6">
         <v-list two-line>
-          <v-list-item-group
-              v-model="selected"
-          >
-            <template v-for="(item, index) in questionResult">
-              <v-list-item :key="item.question">
-                <template v-slot:default="{ active }">
-                  <v-list-item-content>
-                    <v-list-item-title v-text="item.question.title"></v-list-item-title>
+            <v-list-item
+                v-for="(item, index) in questionResult" :key="index"
+                class="elevation-4 mb-2"
+            >
+              <v-list-item-content>
+                <v-list-item-title v-text="item.question.title"></v-list-item-title>
+                <v-list-item-subtitle
+                    class="text--primary"
+                    v-html="item.question.description"
+                ></v-list-item-subtitle>
 
-                    <v-list-item-subtitle
-                        class="text--primary"
-                        v-html="item.question.description"
-                    ></v-list-item-subtitle>
+                <v-divider class="mb-2 mt-2"/>
+                <h4>SCORE: {{ item.result.totalPoints }}</h4>
+              </v-list-item-content>
 
-                    <v-list-item-subtitle v-text="item.result.totalPoints"></v-list-item-subtitle>
-                  </v-list-item-content>
+            </v-list-item>
 
-
-                </template>
-              </v-list-item>
-
-              <v-divider
-                  v-if="index < items.length - 1"
-                  :key="index"
-              ></v-divider>
-            </template>
-          </v-list-item-group>
+            <v-divider
+                v-if="index < questionResult.length - 1"
+                :key="index"
+            ></v-divider>
         </v-list>
       </v-col>
 
@@ -60,20 +55,20 @@
       >
         <v-card class="pa-5">
 
-            <v-row>
-              <v-col>
-                <h5>finalGrade</h5>
-                <h4>{{finalGrade}}</h4>
+          <v-row>
+            <v-col>
+              <h5>finalGrade</h5>
+              <h4>{{ finalGrade }}</h4>
 
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                <h5 class="mb-3">Feedback</h5>
-                <p v-html="feedback"></p>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <h5 class="mb-3">Feedback</h5>
+              <p v-html="feedback"></p>
 
-              </v-col>
-            </v-row>
+            </v-col>
+          </v-row>
 
         </v-card>
       </v-col>
@@ -89,50 +84,17 @@ import router from "@/router";
 export default {
   data: () => ({
     selected: [2],
-    finalGrade:"",
-    feedback:"",
-    questionResult:[],
-
-    items: [
-      {
-        action: '15 min',
-        headline: 'Brunch this weekend?',
-        subtitle: `I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`,
-        title: 'Ali Connors',
-      },
-      {
-        action: '2 hr',
-        headline: 'Summer BBQ',
-        subtitle: `Wish I could come, but I'm out of town this weekend.`,
-        title: 'me, Scrott, Jennifer',
-      },
-      {
-        action: '6 hr',
-        headline: 'Oui oui',
-        subtitle: 'Do you have Paris recommendations? Have you ever been?',
-        title: 'Sandra Adams',
-      },
-      {
-        action: '12 hr',
-        headline: 'Birthday gift',
-        subtitle: 'Have any ideas about what we should get Heidi for her birthday?',
-        title: 'Trevor Hansen',
-      },
-      {
-        action: '18hr',
-        headline: 'Recipe to try',
-        subtitle: 'We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
-        title: 'Britta Holt',
-      },
-    ],
+    finalGrade: "",
+    feedback: "",
+    questionResult: [],
     loading: false,
   }),
-  created () {
+  created() {
     this.fetchResult()
 
   },
   methods: {
-    async fetchResult () {
+    async fetchResult() {
       this.loading = true;
       this.assignmentId = this.$route.params.assignmentId;
       const [status, res_data] = await api.assignment.final(this.assignmentId)
