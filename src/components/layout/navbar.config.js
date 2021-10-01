@@ -19,11 +19,11 @@ const config = [
     {name: 'divider-2', type: nav_item_types.DIVIDER, roles: [USER_ROLES.INSTRUCTOR] },
     {name: 'Create Assignment', icon: 'mdi-new-box', to: '/app/assignments-create', roles: [USER_ROLES.INSTRUCTOR]},
     //{name: 'Assignment', icon: 'mdi-comment-question', to: '/app/assignments', roles: [USER_ROLES.INSTRUCTOR]},
-    {name: 'Draft Assignments', icon: 'mdi-comment-question', to: '/app/assignments/DRAFT', roles: [USER_ROLES.INSTRUCTOR]},
-    {name: 'Publish Assignments', icon: 'mdi-comment-question', to: '/app/assignments/PUBLISHED', roles: [USER_ROLES.INSTRUCTOR]},
-    {name: 'Opened Assignments', icon: 'mdi-comment-question', to: '/app/assignments/OPEN', roles: [USER_ROLES.INSTRUCTOR]},
-    {name: 'Closed Assignments', icon: 'mdi-comment-question', to: '/app/assignments/CLOSED', roles: [USER_ROLES.INSTRUCTOR]},
-    {name: 'Finalized Assignments', icon: 'mdi-comment-question', to: '/app/assignments/FINALIZED', roles: [USER_ROLES.INSTRUCTOR]},
+    {name: 'Draft Assignments', icon: 'mdi-file-alert', to: '/app/assignments/DRAFT', roles: [USER_ROLES.INSTRUCTOR]},
+    {name: 'Publish Assignments', icon: 'mdi-file-eye', to: '/app/assignments/PUBLISHED', roles: [USER_ROLES.INSTRUCTOR]},
+    {name: 'Opened Assignments', icon: 'mdi-file-clock', to: '/app/assignments/OPEN', roles: [USER_ROLES.INSTRUCTOR]},
+    {name: 'Closed Assignments', icon: 'mdi-file-code', to: '/app/assignments/CLOSED', roles: [USER_ROLES.INSTRUCTOR]},
+    {name: 'Finalized Assignments', icon: 'mdi-file-check', to: '/app/assignments/FINALIZED', roles: [USER_ROLES.INSTRUCTOR]},
 
     // for student
     //{name: 'Assignments', icon: 'mdi-new-box', to: '/app/student-assignments', roles: [USER_ROLES.STUDENT]},
