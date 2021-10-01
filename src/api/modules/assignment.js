@@ -120,8 +120,8 @@ export const assignment = {
          * @param state - DRAFT | PUBLISHED | OPEN | CLOSED | SCHEDULED | FINALIZED
          * @returns {Promise<[*, *]>}
          */
-        all: (state) => extractDataResolve(
-           axios.get("/assignment/participate")
+        all: () => extractDataResolve(
+           axios.get("/api/assignment/participate")
         ),
 
         /**

@@ -77,9 +77,9 @@ export const router_config = [
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/user-profile')
             },
             {
-                path: 'student-assignments',
-                name: 'Student Assignment',
-                component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/student-assignments')
+                path: 'my-assignments/:state',
+                name: 'My Assignment',
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/my-assignments')
             },
             {
                 path: 'view-assignment/:assignmentId',
@@ -95,6 +95,11 @@ export const router_config = [
                 path: 'public-assignments',
                 name: 'Public Assignments',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/public-assignments')
+            },
+            {
+                path: 'my-enrollments',
+                name: 'Enrolled Assignments',
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/my-enrollments')
             },
             
 
