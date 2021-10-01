@@ -114,7 +114,11 @@
                     flat
                 >
                   <v-card-text>
-                    <SubmissionsList ref="submissionList"/>
+                    <SubmissionsList
+                        :assignment-id="assignmentId"
+                        :question-id="questionId"
+                        ref="submissionList"
+                    />
                   </v-card-text>
                 </v-card>
               </v-tab-item>

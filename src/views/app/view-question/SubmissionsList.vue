@@ -14,6 +14,16 @@ import api from "@/api";
 
 export default {
   name: "SubmissionsList",
+  props: {
+    assignmentId: {
+      type: String,
+      required: true
+    },
+    questionId: {
+      type: String,
+      required: true
+    }
+  },
   data: () => ({
     submissions: [],
     headers: [
@@ -24,6 +34,9 @@ export default {
     ]
   }),
   methods: {
+    twoDigit(num){
+      return ("00" + num).slice(-2)
+    },
     extractData(sub) {
       let totalTestCases = "?"
       let passedTestCases = "?"
@@ -41,7 +54,7 @@ export default {
         result: sub.result,
         testCaseCount: `${passedTestCases}/${totalTestCases}`,
         totalPoints,
-        time: `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`
+        time: `${this.twoDigit(time.getHours())}:${this.twoDigit(time.getMinutes())}:${this.twoDigit(time.getSeconds())}`
       });
     },
     add(submission) {
@@ -68,6 +81,12 @@ export default {
       return new Promise((resolve) => {
         setTimeout(() => resolve(), time)
       })
+    }
+  },
+  async created() {
+    const [status, res] = await api.submission.questionSubmissions(this.assignmentId, this.questionId)
+    if (status.status === 200) {
+      this.submissions = res.map(s => this.extractData(s))
     }
   }
 }
