@@ -87,6 +87,11 @@ export const router_config = [
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/view-assignment')
             },
             {
+                path: 'view-assignment-result/:assignmentId',
+                name: 'View Assignment Result',
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/student-view-result')
+            },
+            {
                 path: 'view-question/:assignmentId/qn/:questionId',
                 name: 'View Question',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/view-question')
