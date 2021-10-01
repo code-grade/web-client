@@ -18,11 +18,11 @@
           <p style="background-color: #d5d5d5; padding: 3px">{{ tCase.input }}</p>
         </div>
         <div class="mt-2">
-          <h4>Input</h4>
+          <h4>Output</h4>
           <p style="background-color: #d5d5d5; padding: 3px">{{ tCase.output || ">>empty<<" }}</p>
         </div>
         <div class="mt-2">
-          <h4>Input</h4>
+          <h4>Expected Output</h4>
           <p style="background-color: #d5d5d5; padding: 3px">{{ tCase.expectedOutput }}</p>
         </div>
       </v-tab-item>
