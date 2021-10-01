@@ -165,11 +165,7 @@
               sm="6"
               md="8"
           >
-            <v-row class="ml-1">
-              <v-checkbox class="my-5"></v-checkbox>
-              <v-btn color="primary lighten-5" class="ml-5 my-5" fab x-small><v-icon color="primary">mdi-archive-arrow-down-outline</v-icon></v-btn>
-              <v-btn color="primary lighten-5" class="ml-2 my-5" fab x-small><v-icon color="primary">mdi-delete-outline</v-icon></v-btn>
-            </v-row>
+
           </v-col>
           <v-col
               cols="12"
