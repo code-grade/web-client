@@ -31,6 +31,7 @@ export default {
   methods: {
     async submitCode() {
       this.submitting = true
+      this.moveToSubmissions()
       const [status,res_data] = await api.submission.make(this.$route.params.assignmentId,this.$route.params.questionId,{
         source:this.code,
         language:"PYTHON"
@@ -38,6 +39,7 @@ export default {
       this.submitting = false
       if (status.status === 200) {
         this.$vToastify.success(status.message, "Successfully Submitted the Code!")
+
       } else {
         this.$vToastify.error(res_data, "Done")
       }
@@ -55,6 +57,9 @@ export default {
       } else {
         this.$vToastify.error(res_data, "ERROR")
       }
+    },
+    moveToSubmissions() {
+      this.$emit('incrementStep','')
     }
   }
 

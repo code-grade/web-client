@@ -11,6 +11,7 @@
     <v-dialog
         v-model="dialog"
         width="500"
+        :retain-focus="false"
     >
       <template  v-slot:activator="{ on, attrs }">
         <v-btn
@@ -29,7 +30,7 @@
         </v-card-title>
 
         <v-card-text>
-          <MonacoEditor class="editor" readonly  language="python" theme="vs-dark"/>
+          <MonacoEditor class="editor"  :value="item.sourceCode.source" language="python" />
         </v-card-text>
 
         <v-divider></v-divider>
@@ -80,7 +81,7 @@
       submissions: [],
     }),
     components:{MonacoEditor },
-    created () {
+   mounted() {
       this.initialize()
     },
 
