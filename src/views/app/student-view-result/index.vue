@@ -5,13 +5,9 @@
         <v-flex
             style="float:left">
           <h2>
-            Title:
-            <!--            {{title}}-->
+            Title: {{assignment.title}}
           </h2>
-          <h5>
-            Description:
-            <!--            {{description}}-->
-          </h5>
+          <p v-html="assignment.description"></p>
         </v-flex>
       </div>
       <v-flex
@@ -88,12 +84,22 @@ export default {
     feedback: "",
     questionResult: [],
     loading: false,
+    assignment: {}
   }),
   created() {
+    this.fetchAssignment()
     this.fetchResult()
-
   },
   methods: {
+    async fetchAssignment() {
+      this.assignmentId = this.$route.params.assignmentId;
+      const [status, res_data] = await api.assignment.get(this.assignmentId)
+      if (status.status === 200) {
+        this.assignment = res_data
+      } else {
+        this.$vToastify.error(status.message, "Done")
+      }
+    },
     async fetchResult() {
       this.loading = true;
       this.assignmentId = this.$route.params.assignmentId;
