@@ -3,19 +3,21 @@
     <NavDrawer/>
     <v-alert
         v-if="!isVerified"
-        dismissible
-        elevation="0"
+        class="font-weight-medium"
+        icon="mdi-alert"
         color="warning"
         type="success"
-        icon="mdi-alert"
-
+        dismissible
+        outlined
         dense
+        text
         tile
     >
       Your account has not been verified yet.
       <v-btn
           small
           outlined
+          color="warning"
           class="ml-3"
           @click="$router.push({name: 'VerifyEmail'})"
       >
