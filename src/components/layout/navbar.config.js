@@ -27,11 +27,11 @@ const config = [
 
     // for student
     //{name: 'Assignments', icon: 'mdi-new-box', to: '/app/student-assignments', roles: [USER_ROLES.STUDENT]},
-    {name: 'Public Assignments', icon: 'mdi-new-box', to: '/app/public-assignments', roles: [USER_ROLES.STUDENT]},
-    {name: 'Enrolled Assignments', icon: 'mdi-new-box', to: '/app/my-assignments/PUBLISHED', roles: [USER_ROLES.STUDENT]},
-    {name: 'Ongoing Assignments', icon: 'mdi-new-box', to: '/app/my-assignments/OPEN', roles: [USER_ROLES.STUDENT]},
-    {name: 'Closed Assignments', icon: 'mdi-new-box', to: '/app/my-assignments/CLOSED', roles: [USER_ROLES.STUDENT]},
-    {name: 'Finalized Assignments', icon: 'mdi-new-box', to: '/app/my-assignments/FINALIZED', roles: [USER_ROLES.STUDENT]},
+    {name: 'Public Assignments', icon: 'mdi-account-multiple-plus', to: '/app/public-assignments', roles: [USER_ROLES.STUDENT]},
+    {name: 'Enrolled Assignments', icon: 'mdi-lock-plus', to: '/app/my-assignments/PUBLISHED', roles: [USER_ROLES.STUDENT]},
+    {name: 'Ongoing Assignments', icon: 'mdi-cloud-upload', to: '/app/my-assignments/OPEN', roles: [USER_ROLES.STUDENT]},
+    {name: 'Closed Assignments', icon: 'mdi-cloud-braces', to: '/app/my-assignments/CLOSED', roles: [USER_ROLES.STUDENT]},
+    {name: 'Finalized Assignments', icon: 'mdi-notebook-check-outline', to: '/app/my-assignments/FINALIZED', roles: [USER_ROLES.STUDENT]},
 ]
 
 
