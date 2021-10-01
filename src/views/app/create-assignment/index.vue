@@ -197,13 +197,13 @@ export default {
     selected: [],
     headers: [
       {
-        text: 'TITLE',
+        text: 'Title',
         align: 'start',
         filterable: true,
         value: 'title',
       },
-      {text: 'MAX POINTS', value: 'points'},
-      {text: 'DIFFICULTY', value: 'difficulty'},
+      {text: 'Max Points', value: 'totalPoints'},
+      {text: 'Difficulty', value: 'difficulty'},
     ],
     questions: [],
   }),
