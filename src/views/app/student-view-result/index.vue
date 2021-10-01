@@ -28,8 +28,6 @@
         <v-list two-line>
           <v-list-item-group
               v-model="selected"
-
-
           >
             <template v-for="(item, index) in questionResult">
               <v-list-item :key="item.question">
