@@ -50,12 +50,6 @@
         <div v-html='item.description'></div>
       </template>
 
-      <template v-slot:[`item.final`]={item}>
-        <p v-if="item.state=='PUBLISHED'">--</p>
-        <p v-if="item.state=='OPEN'">--</p>
-        <p v-if="item.state=='CLOSED'">--</p>
-      </template>
-
       <template v-slot:[`item.action`]={item}>
         <v-btn x-small v-if="(item.state=='OPEN')" class="primary"
                :to="{name:'View Assignment', params:{assignmentId:item.assignmentId}}">
@@ -92,7 +86,6 @@ export default {
     headers: [
       {text: 'Title', align: 'start', filterable: true, value: 'title'},
       {text: 'Description', value: 'description'},
-      {text: 'Final Grade', value: 'final'},
       {text: 'Actions', value: 'action'}
     ],
     assignments: [],
