@@ -57,7 +57,7 @@
 
           <v-row>
             <v-col>
-              <h5>finalGrade</h5>
+              <h5>Final Grade</h5>
               <h4>{{ finalGrade }}</h4>
 
             </v-col>
