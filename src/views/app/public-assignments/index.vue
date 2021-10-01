@@ -20,18 +20,10 @@
     </template>
     <template v-slot:[`item.join`]="{ item }">
       <v-btn
-      v-if="item.enrolled==false"
-        small
+        x-small
         class="mr-2 primary"
         @click="addMe(item)"
       > Join
-      </v-btn>
-      <v-btn
-      v-if="item.enrolled==true"
-        small
-        class="mr-2 primary"
-        @click="unenrollMe(item)"
-      > Unenroll
       </v-btn>
     </template>
   </v-data-table>
@@ -63,7 +55,7 @@ export default {
       async initialize () {
         const[status,res_data] = await api.assignment.getPublished('PUBLISHED')
         if(status.status==200){
-        this.publicAssignments= res_data
+        this.publicAssignments= [...res_data].filter(a=>a.enrolled===false)
         }
       },
 

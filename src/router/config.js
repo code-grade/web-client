@@ -101,12 +101,6 @@ export const router_config = [
                 name: 'Public Assignments',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/public-assignments')
             },
-            {
-                path: 'my-enrollments',
-                name: 'Enrolled Assignments',
-                component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/my-enrollments')
-            },
-            
 
         ]
     },
