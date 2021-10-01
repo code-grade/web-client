@@ -15,8 +15,8 @@ const config = [
 
     // for instructor
     {name: 'Create Question', icon: 'mdi-new-box', to: '/app/question/create', roles: [USER_ROLES.INSTRUCTOR]},
-    {name: 'Questions', icon: 'mdi-comment-question', to: '/app/questions', roles: [USER_ROLES.INSTRUCTOR]},
-    {name: 'divider-1', type: nav_item_types.DIVIDER, roles: [USER_ROLES.INSTRUCTOR] },
+    {name: 'Question Bank', icon: 'mdi-comment-question', to: '/app/questions', roles: [USER_ROLES.INSTRUCTOR]},
+    {name: 'divider-2', type: nav_item_types.DIVIDER, roles: [USER_ROLES.INSTRUCTOR] },
     {name: 'Create Assignment', icon: 'mdi-new-box', to: '/app/assignments-create', roles: [USER_ROLES.INSTRUCTOR]},
     //{name: 'Assignment', icon: 'mdi-comment-question', to: '/app/assignments', roles: [USER_ROLES.INSTRUCTOR]},
     {name: 'Draft Assignments', icon: 'mdi-comment-question', to: '/app/assignments/DRAFT', roles: [USER_ROLES.INSTRUCTOR]},
