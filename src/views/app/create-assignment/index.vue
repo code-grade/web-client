@@ -151,7 +151,7 @@
                 min-width="100"
                 class="ml-2 mr-2"
                 :loading="loading"
-                @click="submitAssignment"
+                @click="submit"
                 dark
             >
               Submit
@@ -221,7 +221,7 @@ export default {
         this.$vToastify.error(res_data, "Done")
       }
     },
-    async submitAssignment() {
+    async submit() {
       await this.$refs.assignmentForm.validate()
       if (!this.valid || this.description === "") {
         await this.$pop.info({
@@ -255,7 +255,7 @@ export default {
       if (status.status === 200) {
         this.$vToastify.success(status.message, "Successfully Added!")
         this.$refs.assignmentForm.reset()
-        await router.push("/app/assignments")
+        await router.push("/app/assignments/DRAFT")
       } else {
         this.$vToastify.error(res_data, "Done")
       }
