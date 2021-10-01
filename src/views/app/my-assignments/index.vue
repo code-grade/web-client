@@ -46,6 +46,26 @@
         </v-row>
       </template>
       <!--Data table header end-->
+      <template v-slot:[`item.description`]={item}>
+          <div v-html='item.description'></div>
+      </template>
+
+      <template v-slot:[`item.final`]={item}>
+          <p v-if="item.state=='PUBLISHED'">--</p>
+          <p v-if="item.state=='OPEN'">--</p>
+          <p v-if="item.state=='CLOSED'">--</p>
+      </template>
+
+      <template v-slot:[`item.action`]={item}>
+          <v-btn x-small v-if="(item.state=='OPEN')" class="primary"
+         :to="{name:'View Assignment', params:{assignmentId:item.assignmentId}}">
+              Atempt Assignment
+          </v-btn>
+           <v-btn x-small v-if="(item.state=='PUBLISHED')" class="primary"
+            @click="unenrollMe(item)">
+              UnEnroll
+          </v-btn>
+      </template>
 
     </v-data-table>
 
@@ -73,6 +93,7 @@ export default {
       },
       { text: 'DESCRIPTION', value: 'description' },
       { text: 'Final Grade', value: 'final' },
+      {text:'',value:'action'}
     ],
     assignments: [],
 
@@ -94,7 +115,7 @@ export default {
       async initialize () {
         this.loading = true;
         const [status, res_data] = await api.assignment.participate.all()
-        console.log('HERE', res_data)
+        //console.log('HERE', res_data)
         this.loading = false;
         if (status.status === 200) {
         // const assignmentsList = [...res_data].filter(a=>a.enrolled=true)
@@ -103,6 +124,14 @@ export default {
         this.$vToastify.error(res_data, "Done")
       }
     },
+
+    async unenrollMe(item){
+        const[status1] = await api.assignment.participate.unenroll(item.assignmentId)
+        if(status1.status==200){
+          this.$vToastify.success("Successfully leave from the Assignment!")
+          this.initialize()
+        }
+    }
 
    
   }
