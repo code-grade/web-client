@@ -28,7 +28,8 @@ const config = [
     // for student
     //{name: 'Assignments', icon: 'mdi-new-box', to: '/app/student-assignments', roles: [USER_ROLES.STUDENT]},
     {name: 'Public Assignments', icon: 'mdi-new-box', to: '/app/public-assignments', roles: [USER_ROLES.STUDENT]},
-    {name: 'Enrolled Assignments', icon: 'mdi-new-box', to: '/app/my-enrollments', roles: [USER_ROLES.STUDENT]},
+    {name: 'Enrolled Assignments', icon: 'mdi-new-box', to: '/app/my-assignments/PUBLISHED', roles: [USER_ROLES.STUDENT]},
+    {name: 'Ongoing Assignments', icon: 'mdi-new-box', to: '/app/my-assignments/OPEN', roles: [USER_ROLES.STUDENT]},
     {name: 'Closed Assignments', icon: 'mdi-new-box', to: '/app/my-assignments/CLOSED', roles: [USER_ROLES.STUDENT]},
     {name: 'Finalized Assignments', icon: 'mdi-new-box', to: '/app/my-assignments/FINALIZED', roles: [USER_ROLES.STUDENT]},
 ]
