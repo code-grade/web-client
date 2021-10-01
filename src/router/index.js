@@ -16,6 +16,7 @@ router.beforeEach(async (to, from, next) => {
         if (store.getters["isLogged"]) {
             next()
         } else {
+            await Vue.prototype.$pop.info({title: 'info', text: 'You need to login first!'})
             next({name: "Login"})
         }
     } if (to.path.match(/^\/login($|\/)/)) {

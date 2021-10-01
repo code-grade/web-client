@@ -18,18 +18,13 @@ export const PopupManagerPlugin = {
         }
 
         /**
-         * Open popup
-         * @type {{
-         *          info: (function({text: string, title: string, ok: string}): Promise<*>)
-         *          error: (function({text: string, title: string, ok: string}): Promise<*>)
-         *          warn: (function({text: string, title: string, ok: string}): Promise<*>)
-         *       }}
+         * Open Popup
+         * @type {{warn, error, addCity: ((function({district: *, city: *}): (Promise|Promise<*>))|*), info}}
          */
         Vue.prototype.$pop = {
             info: vm.info,
             error: vm.error,
-            warn: vm.warn,
-            addCity: vm.addCity
+            warn: vm.warn
         }
     }
 };
