@@ -94,11 +94,11 @@ export default {
       async initialize () {
         this.loading = true;
         const [status, res_data] = await api.assignment.participate.all()
-        console.log(res_data)
+        console.log('HERE', res_data)
         this.loading = false;
         if (status.status === 200) {
-        const assignmentsList = [...res_data].filter(a=>a.enrolled=true)
-        this.assignments =assignmentsList.filter(a=>a.state=this.$route.params.state)
+        // const assignmentsList = [...res_data].filter(a=>a.enrolled=true)
+        this.assignments = res_data.filter(a => (a.state === this.$route.params.state))
       } else {
         this.$vToastify.error(res_data, "Done")
       }
