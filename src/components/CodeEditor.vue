@@ -1,15 +1,13 @@
 <template>
-    <v-container>
-		<h4>Write your code here : </h4>
-      <MonacoEditor class="editor" v-model="code" language="python" theme="vs-dark"/>
+<div>
+		<h4 class="ma-10">Write your code here : </h4>
+      <MonacoEditor class="editor" v-model="code" language="python" style="max-height:500px" ></MonacoEditor>
 <!--		<v-btn color="primary" class="ma-5" @click="runningCode()">Run Code</v-btn>-->
-      <v-btn  :loading="submitting" @click="submitCode" rounded color="secondary accent-3"   dark>Submit</v-btn>
-      <v-btn  :loading="testing" @click="testCode" rounded color="primary accent-3"   dark>Test</v-btn>
-      {{testCases}}
-		<RunView :runCode='this.runCode' />
-    </v-container>
+      <v-btn class="ml-10" :loading="submitting" @click="submitCode"  color="secondary accent-3"   dark>Submit Code</v-btn>
+      <v-btn class="ml-10" :loading="testing" @click="testCode"  color="primary accent-3"   dark>Test Code</v-btn>
+		<RunView :testCases='this.testCases' />
 
-	
+</div>
 </template>
 
 <script>
@@ -39,7 +37,7 @@ export default {
       })
       this.submitting = false
       if (status.status === 200) {
-        this.$vToastify.success(status.message, "Successfully Added Feedback!")
+        this.$vToastify.success(status.message, "Successfully Submitted the Code!")
       } else {
         this.$vToastify.error(res_data, "Done")
       }
@@ -54,9 +52,8 @@ export default {
       console.log(res_data)
       if (status.status === 200) {
         this.testCases = [...res_data]
-        this.$vToastify.success(status.message, "Successfully Added Feedback!")
       } else {
-        this.$vToastify.error(res_data, "Done")
+        this.$vToastify.error(res_data, "ERROR")
       }
     }
   }

@@ -24,7 +24,7 @@
             <div class="mt-5">
               <v-btn
                   class="ml-1 mr-1" color="primary"
-                  :to="{name: 'App'}"
+                  :to="{name: 'Public Assignments'}"
               >
                 Test Skills!
               </v-btn>
@@ -32,8 +32,9 @@
                   class="ml-1 mr-1"
                   color="primary"
                   outlined
-                  :to="{name: 'App'}"
-              >Create Assignment
+                  :to="{name: 'Create Assignment'}"
+              >
+                Create Assignment
               </v-btn>
             </div>
           </v-col>

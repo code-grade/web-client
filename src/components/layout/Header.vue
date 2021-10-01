@@ -8,13 +8,13 @@
     <!--  Logo  -->
     <router-link class="d-inline text-decoration-none" to="/">
       <v-img
-          :src="require('../../assets/code.svg')"
+          :src="require('../../assets/code-logo.svg')"
           aspect-ratio="1"
-          max-width="36px"
-          class="mr-2 d-inline-block"
+          max-width="32px"
+          class="mr-4 d-inline-block"
       />
       <v-toolbar-title
-          class="d-inline-block text--primary text-h5"
+          class="d-inline-block text--primary text-h5 font-weight-bold"
       >
         Code Grade
       </v-toolbar-title>

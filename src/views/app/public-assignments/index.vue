@@ -20,10 +20,18 @@
     </template>
     <template v-slot:[`item.join`]="{ item }">
       <v-btn
+      v-if="item.enrolled==false"
         small
         class="mr-2 primary"
         @click="addMe(item)"
       > Join
+      </v-btn>
+      <v-btn
+      v-if="item.enrolled==true"
+        small
+        class="mr-2 primary"
+        @click="unenrollMe(item)"
+      > Unenroll
       </v-btn>
     </template>
   </v-data-table>
@@ -63,6 +71,16 @@ export default {
         const[status1] = await api.assignment.participate.student(item.assignmentId)
         if(status1.status==200){
           this.$vToastify.success("Successfully Enrolled to the Assignment!")
+          this.initialize()
+        }
+
+      },
+
+      async unenrollMe(item){
+        const[status1] = await api.assignment.participate.unenroll(item.assignmentId)
+        if(status1.status==200){
+          this.$vToastify.success("Successfully leave from the Assignment!")
+          this.initialize()
         }
 
       }
