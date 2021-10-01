@@ -130,7 +130,7 @@
           :src="require('../../../assets/card-background.jpg')">
           <v-card-title>{{finalized[i-1].title}}</v-card-title>
           <v-card-subtitle>Final Grade : {{finalized[i-1].finalGrade}}</v-card-subtitle>
-          <v-btn :to="{name:'View Assignment', params:{assignmentId:finalized[i-1].assignmentId}}" outlined color="primary" class="ma-5">VIEW</v-btn>
+          <v-btn :to="{name:'View Assignment Result', params:{assignmentId:finalized[i-1].assignmentId}}" outlined color="primary" class="ma-5">VIEW RESULT</v-btn>
           </v-img>
         </v-card>
       </v-col>
@@ -170,15 +170,12 @@ export default {
         if(status_ongoing.status==200){
           this.ongoing=res_data_ongoing
         }
-
-        console.log(status_ongoing.message)
-
         const[status_past,res_data_past]= await api.assignment.getPublished('CLOSED')
         if(status_past.status==200){
           this.past=res_data_past
         }
-
         const[status_finalized,res_data_finalized]= await api.assignment.getPublished('FINALIZED')
+        console.log(res_data_finalized)
         if(status_finalized.status==200){
           this.finalized=res_data_finalized
         }

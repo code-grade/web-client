@@ -48,7 +48,7 @@ export const submission = {
      */
      best: (assignmentId,userId) => extractDataResolve(
         axios.get(`/api/submission/summary/${assignmentId}/${userId}`)
-    ),
+     ),
 
     }
 

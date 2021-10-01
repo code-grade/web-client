@@ -223,7 +223,7 @@
         <v-btn
             small
             class="primary"
-            v-if="($route.params.state==='DRAFT')"
+            v-if="($route.params.state==='CLOSED')"
             @click="manageAssignment(item)"
         >MANAGE
         </v-btn>
@@ -252,6 +252,7 @@
             small
             class="primary"
             v-if="($route.params.state==='CLOSED')"
+            @click="finalizeAssignment(item)"
         >FINALIZE
         </v-btn>
 
@@ -352,6 +353,15 @@ export default {
         this.$vToastify.error("Somthing went wrong with the send to draft")
       }
     },
+    async finalizeAssignment(item){
+      const[status2,res_data2]= await api.assignment.change(item.assignmentId,'FINALIZED')
+      if(status2.status==200){
+        this.$vToastify.success("Assignment Send to the Drafts!")
+        this.initialize()
+      }else{
+        this.$vToastify.error("Somthing went wrong with the send to draft")
+      }
+    },
 
     async openAssignment(item){
       const[status3,res_data3]= await api.assignment.change(item.assignmentId,'OPEN')
@@ -379,59 +389,6 @@ export default {
       this.qdialog = true
     },
 
-    async updateQuestion(questionId,data){
-
-      const[status,res_data]= await api.question.update(questionId,data)
-      if(status.status===200){
-        this.$vToastify.success(status.message, "Successfully Updated!")
-        this.close()
-        this.initialize()
-      }else{
-        this.$vToastify.error(res_data, "Error")
-      }
-    },
-
-    deleteQuestion (item) {
-      this.editedIndex = this.questions.indexOf(item)
-      this.editedQuestion = Object.assign({}, item)
-      this.dialogDeleteQuestion = true
-    },
-
-    async deleteConfirm (questionId) {
-      const[status]= await api.question.delete(questionId)
-      if(status.status===200){
-        this.$vToastify.success("Successfully Deleted")
-      }else{
-        this.$vToastify.error("Something went wrong")
-      }
-      this.closeDelete()
-      this.initialize()
-    },
-
-    close () {
-      this.qdialog = false
-      this.$nextTick(() => {
-        this.editedQuestion = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
-    },
-
-    closeDelete () {
-      this.dialogDeleteQuestion = false
-      this.$nextTick(() => {
-        this.editedQuestion = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
-    },
-
-    save () {
-      if (this.editedIndex > -1) {
-        Object.assign(this.questions[this.editedIndex], this.editedQuestion)
-      } else {
-        this.questions.push(this.editedQuestion)
-      }
-      this.close()
-    },
 
   }
 }
