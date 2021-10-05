@@ -180,7 +180,6 @@ export default {
         this.$pop.error({title: 'Incomplete', text: 'Please fill-out all necessary fields.'})
         return;
       }
-
       const {button} = await this.$pop.info({
         title: 'Confirm', text: 'You want to submit the form?',
         ok: 'Yes', cancel: 'No'
