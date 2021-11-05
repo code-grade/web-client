@@ -211,7 +211,7 @@
                     color="green"
                     text-color="white"
                     v-if="isEnabled"
-                    v-else
+                    
                 >
                   <v-icon left>
                     mdi-archive-lock-open-outline
