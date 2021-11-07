@@ -49,7 +49,7 @@
               <v-tab-item style="min-height: 100vh">
                 <v-row>
                   <v-col>
-                    <p style="font-size: 16px">{{ question.description }}</p>
+                    <p style="font-size: 16px" v-html="question.description"></p>
                   </v-col>
                 </v-row>
                 <v-row>
