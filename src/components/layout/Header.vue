@@ -118,7 +118,7 @@ export default {
   methods: {
     async logout() {
       await this.$store.dispatch("logout")
-      this.$vToastify.success("Successfully logged out!", "Done")
+      this.$pop.info({title: "Bye!", text: "Success, your session is ended"})
       await this.$router.push({name: "Home"})
     },
     async viewUserProfile() {
