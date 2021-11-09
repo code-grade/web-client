@@ -37,7 +37,7 @@ export default {
   computed: {
 
     isVerified(){
-      return this.$store.getters.isVerified
+      return this.$store.getters.user.email.verified
     },
     app_bar_color() {
       // return Boolean(this.$route.path.match(/^\/app($|\/)/))? '#fcfcfc' : '#f5f5f5'

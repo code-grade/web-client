@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <v-row>
+  <v-container class="pa-10">
+    <v-row class="ml-1">
       <v-avatar color="indigo" class="mr-5">
       <v-icon dark>
         mdi-account-circle
