@@ -173,7 +173,7 @@ export default {
 
 <style scoped>
 .signup__form {
-
+  min-width: 510px;
   display: flex;
   flex-direction: column;
 
