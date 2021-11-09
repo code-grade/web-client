@@ -117,9 +117,11 @@ export default {
   },
   methods: {
     async logout() {
-      await this.$store.dispatch("logout")
-      this.$pop.info({title: "Bye!", text: "Success, your session is ended"})
-      await this.$router.push({name: "Home"})
+      const {button} = await this.$pop.info({title: "Confirm!", text: "Do you want to logout?", ok: 'Yes', cancel: 'No'})
+      if (button === 1) {
+        await this.$store.dispatch("logout")
+        await this.$router.push({name: "Home"})
+      }
     },
     async viewUserProfile() {
       await router.push("/app/users/view")
