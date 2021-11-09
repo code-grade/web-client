@@ -69,7 +69,7 @@
       text-color="white" small v-if="(item.state=='CLOSED')" class="danger"
            
         >
-          {{formatDate(item.schedule.closeTime)}}
+          {{formatDateTime(item.schedule.closeTime)}}
         </v-chip>
       </template>
 
@@ -84,9 +84,10 @@
 <script>
 import api from "@/api";
 import dateFormatter from "@/utils/dateFormatter"
-
+import dateFormat from "@/mixins/dateFormat"
 export default {
   name: "index",
+  mixins:[dateFormat],
   data: () => ({
     search: '',
     loading: 'true',
@@ -155,6 +156,7 @@ export default {
         
   },
 
+  
 }
 
 </script>
