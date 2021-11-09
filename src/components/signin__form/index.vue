@@ -86,7 +86,8 @@ export default {
 
 <style scoped>
 .login__form {
-  padding: 30px;
+  padding: 30px 10px;
+  min-width: 450px;
 
   display: flex;
   flex-direction: column;
