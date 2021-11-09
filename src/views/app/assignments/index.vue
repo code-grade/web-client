@@ -210,42 +210,42 @@
 
       <template v-slot:[`item.action`]="{ item }">
         <v-btn
-            small
+            x-small
             class="primary mr-10"
             v-if="($route.params.state==='DRAFT')"
             @click="publishAssignment(item)"
         >PUBLISH
         </v-btn>
         <v-btn
-            small
-            class="primary"
+            x-small
+            class="primary mr-5"
             v-if="($route.params.state==='CLOSED')"
             @click="manageAssignment(item)"
         >MANAGE
         </v-btn>
         <v-btn
-            small
+            x-small
             class="primary mr-5"
             v-if="($route.params.state==='PUBLISHED')"
             @click="openAssignment(item)"
         >OPEN
         </v-btn>
         <v-btn
-            small
+            x-small
             class="primary"
             v-if="($route.params.state==='PUBLISHED')"
             @click="manageAssignment(item)"
         >VIEW
         </v-btn>
         <v-btn
-            small
+            x-small
             class="primary mr-5"
             v-if="($route.params.state==='OPEN')"
             @click="closeAssignment(item)"
         >CLOSE
         </v-btn>
         <v-btn
-            small
+            x-small
             class="primary"
             v-if="($route.params.state==='CLOSED')"
             @click="finalizeAssignment(item)"
