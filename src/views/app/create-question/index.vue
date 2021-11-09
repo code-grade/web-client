@@ -11,13 +11,13 @@
       <v-form ref="questionForm" v-model="valid" lazy-validation>
         <v-row>
           <v-col cols="12" sm="6" md="8">
-            <h5 class="mb-2">Question title</h5>
+            <h5 class="mb-2">Question Title</h5>
             <v-text-field
                 dense
                 outlined
                 v-model="title"
                 :rules="titleRules"
-                placeholder="Enter the title of question"
+                placeholder="Enter the Title of Question"
             ></v-text-field>
           </v-col>
           <v-col cols="12" sm="6" md="4">

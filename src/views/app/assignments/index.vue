@@ -21,7 +21,7 @@
 
     <v-data-table
         :headers="headers"
-        :items="assignments"
+        :items="formattedAssignments"
         item-key="name"
         :items-per-page="15"
         class="elevation-3 ma-10 pa-5"
@@ -216,9 +216,10 @@
             @click="publishAssignment(item)"
         >PUBLISH
         </v-btn>
+       
         <v-btn
             x-small
-            class="primary mr-5"
+            class="primary mb-1"
             v-if="($route.params.state==='CLOSED')"
             @click="manageAssignment(item)"
         >MANAGE
@@ -266,9 +267,12 @@
 import { VueEditor } from "vue2-editor";
 import api from "@/api";
 import router from "@/router";
+import dateFormat from "@/mixins/dateFormat"
+
 
 export default {
   name: "index",
+  mixins:[dateFormat],
   components: { VueEditor },
   data: () => ({
     dialogDeleteQuestion: false,
@@ -284,7 +288,7 @@ export default {
       },
       { text: 'NO OF Question', value: 'questions.length' },
       { text: 'TYPE', value: 'type' },
-      { text: 'START DATE', value: 'schedule.openTime' },
+      { text: 'START DATE', value: `schedule.openTime` },
       { text: 'DUE DATE', value: 'schedule.closeTime' },
       { text: 'ACTION', value: 'action' },
     ],
@@ -295,6 +299,7 @@ export default {
   created () {
     this.initialize()
   },
+ 
 
   watch: {
     // will fire on route changes
@@ -303,8 +308,20 @@ export default {
       this.initialize();
     }
   },
-
-    methods: {
+  computed: {
+    formattedAssignments() {
+      const dateTimeFormat = this.formatDateTime
+      return this.assignments.map(item => ({
+          ...item,
+          schedule:{
+            closeTime: dateTimeFormat(item.schedule.closeTime),
+            openTime: dateTimeFormat(item.schedule.openTime),
+            isSchedule:item.schedule.isSchedule,
+          }
+        }))
+    }
+  },
+  methods: {
       async initialize () {
         console.log(this.$route.params.state)
         this.loading = true;
@@ -312,6 +329,7 @@ export default {
         console.log(res_data)
         this.loading = false;
         if (status.status === 200) {
+        
         this.assignments = [...res_data]
       } else {
         this.$vToastify.error(res_data, "Done")
