@@ -29,6 +29,7 @@
           outlined
           tile
           elevation="5"
+          min-height="150px"
         >
           <v-card-title>
               {{assignment.questions[i-1].title}}
@@ -36,42 +37,26 @@
           <v-btn class="float-right mr-10"
           outlined
         color="primary"
-        :to="{name:'View Question', params:{questionId:assignment.questions[i-1].questionId,assignmentId:assignment.assignmentId}}">
-              Go To Question
+        :to="{name:'View Report', params:{questionId:assignment.questions[i-1].questionId,assignmentId:assignment.assignmentId}}">
+              View Report
         </v-btn>
           <v-card-subtitle class="pt-0 pb-0">
               Max Score: {{assignment.questions[i-1].totalPoints}}
               </v-card-subtitle>
-          <v-card-subtitle  v-if="(assignment.questions[i-1].difficulty=='EASY')" class="green--text pt-0">
+          <v-card-subtitle  v-if="(assignment.questions[i-1].difficulty=='Easy')" class="green--text pt-0">
             {{assignment.questions[i-1].difficulty}}
             </v-card-subtitle>
-        <v-card-subtitle  v-if="(assignment.questions[i-1].difficulty=='MEDIUM')" class="orange--text pt-0">
+        <v-card-subtitle  v-if="(assignment.questions[i-1].difficulty=='Medium')" class="orange--text pt-0">
             {{assignment.questions[i-1].difficulty}}
             </v-card-subtitle>
-            <v-card-subtitle  v-if="(assignment.questions[i-1].difficulty=='HARD')" class="red--text pt-0">
+            <v-card-subtitle  v-if="(assignment.questions[i-1].difficulty=='Hard')" class="red--text pt-0">
             {{assignment.questions[i-1].difficulty}}
-            </v-card-subtitle>
-            <v-card-subtitle  v-if="(assignment.questions[i-1].difficulty!='Hard' ||assignment.questions[i-1].difficulty!='Medium' || assignment.questions[i-1].difficulty!='Easy' )" class="red--text pt-0">
-            <!-- {{assignment.questions[i-1].difficulty}} -->
             </v-card-subtitle>
         </v-card>
-        
      </v-col>
     </v-row>
         </v-col>
-<v-col>
-    <v-card>
-        <v-card-subtitle class="pb-0">
-            Start Time:{{assignment.openTime}}
-        </v-card-subtitle>
-        <v-card-subtitle class="pt-0">
-            Due Time:{{assignment.closeTime}}
-        </v-card-subtitle>
-        <h5 class="pa-4">
-            Note: The assignment will automaticaly close after the time is due!
-        </h5>
-    </v-card>
-</v-col>
+
     </v-row>
 </div>
 </template>
@@ -101,7 +86,6 @@ export default {
                 }
             },
 
-        },
-    
+        }
 }
 </script>

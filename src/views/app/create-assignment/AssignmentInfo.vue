@@ -62,8 +62,6 @@
 
       </v-col>
     </v-row>
-
-
   </v-form>
 </template>
 
@@ -75,7 +73,6 @@ export default {
   name: "AssignmentInfo",
   components: { VueEditor },
   data: () => ({
-
     valid: true,
     title: '',
     description:'',

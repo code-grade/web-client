@@ -7,6 +7,12 @@
           <h2>{{ question.title }}</h2>
           <h5>{{ assignment.title }}</h5>
         </v-flex>
+        <v-flex
+        style="float:right">
+        <div style="float:right">
+          <v-btn color="secondary"  v-on:click="navigate()"><v-icon>mdi-arrow-left-thick</v-icon>Go to Question List</v-btn>
+          </div>
+        </v-flex>
       </v-col>
     </v-row>
     <v-card class="mt-5 pa-6">
@@ -135,6 +141,7 @@ import MonacoEditor from 'vue-monaco'
 import api from "@/api";
 import RunTestCaseResult from "@/views/app/view-question/RunTestCaseResult";
 import SubmissionsList from "@/views/app/view-question/SubmissionsList";
+import router from "@/router";
 
 export default {
   name: 'index',
@@ -219,6 +226,9 @@ export default {
       } else {
         this.$vToastify.error("Couldn't load question details")
       }
+    },
+    navigate() {
+      router.go(-1);
     },
   },
   created() {

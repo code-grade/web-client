@@ -10,6 +10,13 @@
         <h5> {{ title }}</h5>
       </v-flex>
 
+      <v-flex
+          style="float:right">
+        <div style="float:right">
+          <v-btn :to="{name:'Assignment Questions', params:{assignmentId:this.assignmentId}}" class="mt-3" color="secondary"><v-icon>mdi-plus</v-icon>Check Plagarism</v-btn>
+        </div>
+      </v-flex>
+
     </v-row>
 
     <!--data table start-->
