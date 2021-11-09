@@ -38,22 +38,8 @@
       <!--Data table header end-->
       <!--actions for question section start-->
       <template v-slot:[`item.submissions`]="{ item }">
-        <v-icon
-            small
-            color="primary"
-            class="mr-2"
-            @click="viewSubmissions(item.userId)"
-        >
-          mdi-pencil-outline
-        </v-icon>
-        View Submissions
+        <v-btn x-small color="primary"  @click="viewSubmissions(item.userId)">View</v-btn>
       </template>
-
-
-
-
-
-
     </v-data-table>
 
     <!--data table end-->

@@ -104,7 +104,7 @@
                   lazy-validation>
             <v-row>
               <v-col>
-                <h5>finalGrade</h5>
+                <h5>Final Grade</h5>
                 <v-text-field
                     dense
                     outlined
