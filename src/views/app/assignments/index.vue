@@ -211,43 +211,43 @@
       <template v-slot:[`item.action`]="{ item }">
         <v-btn
             x-small
-            class="primary mr-10"
+            class="primary ml-2"
             v-if="($route.params.state==='DRAFT')"
             @click="publishAssignment(item)"
         >PUBLISH
         </v-btn>
-       
+
         <v-btn
             x-small
-            class="primary mb-1"
+            class="primary ml-2"
             v-if="($route.params.state==='CLOSED')"
             @click="manageAssignment(item)"
         >MANAGE
         </v-btn>
         <v-btn
             x-small
-            class="primary mr-5"
+            class="primary ml-2"
             v-if="($route.params.state==='PUBLISHED')"
             @click="openAssignment(item)"
         >OPEN
         </v-btn>
         <v-btn
             x-small
-            class="primary"
+            class="primary ml-2"
             v-if="($route.params.state==='PUBLISHED')"
             @click="manageAssignment(item)"
         >VIEW
         </v-btn>
         <v-btn
             x-small
-            class="primary mr-5"
+            class="primary ml-2"
             v-if="($route.params.state==='OPEN')"
             @click="closeAssignment(item)"
         >CLOSE
         </v-btn>
         <v-btn
             x-small
-            class="primary"
+            class="primary ml-2"
             v-if="($route.params.state==='CLOSED')"
             @click="finalizeAssignment(item)"
         >FINALIZE
@@ -290,7 +290,7 @@ export default {
       { text: 'TYPE', value: 'type' },
       { text: 'START DATE', value: `schedule.openTime` },
       { text: 'DUE DATE', value: 'schedule.closeTime' },
-      { text: 'ACTION', value: 'action' },
+      { text: 'ACTION', value: 'action', width: 250 },
     ],
     assignments: [],
 
@@ -299,7 +299,7 @@ export default {
   created () {
     this.initialize()
   },
- 
+
 
   watch: {
     // will fire on route changes
@@ -329,7 +329,7 @@ export default {
         console.log(res_data)
         this.loading = false;
         if (status.status === 200) {
-        
+
         this.assignments = [...res_data]
       } else {
         this.$vToastify.error(res_data, "Done")
