@@ -14,7 +14,7 @@
     <!--data table start-->
 
     <v-data-table
-        :headers="headers"
+        :headers="check_header"
         :items="assignments"
         item-key="name"
         :items-per-page="15"
@@ -64,6 +64,13 @@
         >
           View Grade
         </v-btn>
+        
+        <v-chip color="red"
+      text-color="white" small v-if="(item.state=='CLOSED')" class="danger"
+           
+        >
+          {{formatDate(item.schedule.closeTime)}}
+        </v-chip>
       </template>
 
     </v-data-table>
@@ -76,18 +83,25 @@
 
 <script>
 import api from "@/api";
+import dateFormatter from "@/utils/dateFormatter"
 
 export default {
   name: "index",
   data: () => ({
     search: '',
     loading: 'true',
-
+    formatDate: dateFormatter.convertDate,
     headers: [
       {text: 'Title', align: 'start', filterable: true, value: 'title'},
       {text: 'Description', value: 'description'},
       {text: 'Actions', value: 'action'}
     ],
+    closedHeader: [
+      {text: 'Title', align: 'start', filterable: true, value: 'title'},
+      {text: 'Description', value: 'description'},
+      {text: 'Date Closed', value: 'action'}
+    ],
+    
     assignments: [],
 
   }),
@@ -113,6 +127,7 @@ export default {
       if (status.status === 200) {
         // const assignmentsList = [...res_data].filter(a=>a.enrolled=true)
         this.assignments = res_data.filter(a => (a.state === this.$route.params.state))
+      
       } else {
         this.$vToastify.error(res_data, "Done")
       }
@@ -127,7 +142,19 @@ export default {
     }
 
 
-  }
+  },
+  computed: {
+        check_header() {
+            if(this.$route.params.state === 'CLOSED') {
+              return this.closedHeader;
+            } else {
+              return this.headers;
+            }
+        
+        },
+        
+  },
+
 }
 
 </script>
