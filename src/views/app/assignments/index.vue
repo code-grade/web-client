@@ -216,9 +216,10 @@
             @click="publishAssignment(item)"
         >PUBLISH
         </v-btn>
+       
         <v-btn
             small
-            class="primary"
+            class="primary mb-1"
             v-if="($route.params.state==='CLOSED')"
             @click="manageAssignment(item)"
         >MANAGE

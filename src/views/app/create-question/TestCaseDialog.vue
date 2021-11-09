@@ -17,7 +17,7 @@
             <v-col>
               <v-switch
                   v-model="formData.sample"
-                  label="Sample test case. Student can see the input and expected output"
+                  label="Sample test case. Student can see the input and expected output."
                   dense
                   hide-details
               ></v-switch>
