@@ -2,7 +2,7 @@
   <v-navigation-drawer
       dark app
       fixed clipped
-      width="250px"
+      width="280px"
       mini-variant-width="75"
       class="pl-3"
       style="border-top-right-radius: 5px"

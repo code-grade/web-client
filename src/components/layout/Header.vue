@@ -48,22 +48,27 @@
     <div class="header--vertical-line"/>
 
     <!--  User Account   -->
-    <div v-if="isLogged">
+    <div v-if="isLogged" style="display: inline-block">
 
+
+
+      <v-avatar color="primary" size="32" @click="viewUserProfile" style="cursor:pointer;">
+        <v-icon dark>
+          mdi-account-circle
+        </v-icon>
+
+      </v-avatar>
+
+      <h5 @click="viewUserProfile" class="ml-2 d-inline-block" style="cursor: pointer">{{ firstName }}</h5>
 
       <v-btn
           small color="primary"
           @click="logout"
           outlined
-          class="ma-2"
+          class="ma-2 ml-4 inline"
       >
         Logout
       </v-btn>
-      <v-avatar  color="primary" size="32" @click="viewUserProfile" style="cursor:pointer;">
-        <v-icon dark >
-          mdi-account-circle
-        </v-icon>
-      </v-avatar>
 
     </div>
 
@@ -99,6 +104,10 @@ export default {
   computed: {
     isLogged() {
       return this.$store.getters.isLogged
+    },
+
+    firstName() {
+      return this.$store.getters.user.firstName
     },
 
     app_bar_color() {
