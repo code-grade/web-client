@@ -51,7 +51,11 @@
             <v-card-subtitle  v-if="(assignment.questions[i-1].difficulty=='Hard')" class="red--text pt-0">
             {{assignment.questions[i-1].difficulty}}
             </v-card-subtitle>
+            <v-card-subtitle  v-if="(assignment.questions[i-1].difficulty!='Hard' ||assignment.questions[i-1].difficulty!='Medium' || assignment.questions[i-1].difficulty!='Easy' )" class="red--text pt-0">
+            <!-- {{assignment.questions[i-1].difficulty}} -->
+            </v-card-subtitle>
         </v-card>
+        
      </v-col>
     </v-row>
         </v-col>
