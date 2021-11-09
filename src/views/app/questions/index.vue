@@ -193,21 +193,21 @@
             <v-checkbox></v-checkbox>        
     </template>
         <template v-slot:[`item.actions`]="{ item }">
-      <v-icon
-        small
+      <v-btn
+        x-small
         color="primary"
         class="mr-2"
         @click="editQuestion(item)"
       >
-        mdi-pencil-outline
-      </v-icon>
-      <v-icon
-        small
+        Edit
+      </v-btn>
+      <v-btn
+        x-small
         color="red"
         @click="deleteQuestion(item)"
       >
-        mdi-delete-outline
-      </v-icon>   
+        Delete
+      </v-btn>   
     </template>
     <!--actions for question section end--> 
         <template v-slot:[`item.difficulty`]="{ item }">

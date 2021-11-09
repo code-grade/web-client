@@ -50,6 +50,16 @@ export const router_config = [
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/create-assignment')
             },
             {
+                path: '/app/question-list/:assignmentId',
+                name: 'Assignment Questions',
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/question-list')
+            },
+            {
+                path: '/app/plagarism-report/:assignmentId/qn/:questionId',
+                name: 'View Report',
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/plagarism-report')
+            },
+            {
                 path: 'assignments/:state',
                 name: 'Assignments State',
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/app/assignments')
