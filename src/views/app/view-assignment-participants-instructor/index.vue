@@ -38,7 +38,7 @@
       <!--Data table header end-->
       <!--actions for question section start-->
       <template v-slot:[`item.submissions`]="{ item }">
-        <v-btn x-small color="primary"  @click="viewSubmissions(item.userId)">View</v-btn>
+        <v-btn x-small color="primary"  @click="viewSubmissions(item.userId)">View Submissions</v-btn>
       </template>
     </v-data-table>
 
