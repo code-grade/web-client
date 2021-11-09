@@ -42,18 +42,18 @@
           <v-card-subtitle class="pt-0 pb-0">
               Max Score: {{assignment.questions[i-1].totalPoints}}
               </v-card-subtitle>
-          <v-card-subtitle  v-if="(assignment.questions[i-1].difficulty=='EASY')" class="green--text pt-0">
+          <v-card-subtitle  v-if="(assignment.questions[i-1].difficulty.toUpperCase()=='EASY')" class="green--text pt-0">
             {{assignment.questions[i-1].difficulty}}
             </v-card-subtitle>
-        <v-card-subtitle  v-if="(assignment.questions[i-1].difficulty=='MEDIUM')" class="orange--text pt-0">
+        <v-card-subtitle  v-if="(assignment.questions[i-1].difficulty.toUpperCase()=='MEDIUM')" class="orange--text pt-0">
             {{assignment.questions[i-1].difficulty}}
             </v-card-subtitle>
-            <v-card-subtitle  v-if="(assignment.questions[i-1].difficulty=='HARD')" class="red--text pt-0">
+            <v-card-subtitle  v-if="(assignment.questions[i-1].difficulty.toUpperCase()=='HARD')" class="red--text pt-0">
             {{assignment.questions[i-1].difficulty}}
             </v-card-subtitle>
-            <v-card-subtitle  v-if="(assignment.questions[i-1].difficulty!='Hard' ||assignment.questions[i-1].difficulty!='Medium' || assignment.questions[i-1].difficulty!='Easy' )" class="red--text pt-0">
-            <!-- {{assignment.questions[i-1].difficulty}} -->
-            </v-card-subtitle>
+            <!--v-card-subtitle  v-if="(assignment.questions[i-1].difficulty!='Hard' ||assignment.questions[i-1].difficulty!='Medium' || assignment.questions[i-1].difficulty!='Easy' )" class="red--text pt-0">
+            <{{assignment.questions[i-1].difficulty}} >
+            </v-card-subtitle-->
         </v-card>
         
      </v-col>
@@ -101,6 +101,7 @@ export default {
                 }
             },
 
-        }
+        },
+    
 }
 </script>

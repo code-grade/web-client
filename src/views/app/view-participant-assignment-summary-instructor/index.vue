@@ -6,7 +6,7 @@
             style="float:left">
           <h2>{{title}}
           </h2>
-          <h5>{{description}}</h5>
+          <h5 v-html="description"></h5>
         </v-flex>
       </div>
       <v-flex
